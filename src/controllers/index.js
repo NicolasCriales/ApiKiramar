@@ -4,6 +4,7 @@ import world from './world.controllers.js'
 import category from './category.cotrollers.js'
 import search from './search.controllers.js'
 import supplier from './supplier.controllers.js'
+import specialized_store from './specialized_store.controllers.js'
 
 module.exports = {
     ...products,
@@ -12,4 +13,5 @@ module.exports = {
     ...category,
     ...search,
     ...supplier,
+    ...specialized_store,
 }

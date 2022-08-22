@@ -40,14 +40,14 @@ export const tsqlsupplier = {
                     )   AS AUX
                 `,
 
-    categorydkasa: `
+        categorydkasa: `
                     select DISTINCT NombreSubLinea,CodSubLinea 
                     from MtArticulo 
                     where NombreProveedor='dkasa' and not CodSubLinea='1070' and not NombreSubLinea='repuestos'
 
                 `,
 
-    codcategorydkasa: `
+        categorydkasaproduc: `
                         SELECT	AUX.IdArticulo, AUX.Codigo_Barras, AUX.NombreArticulo, AUX.NombreAlterno, AUX.CodProveedor, AUX.NombreProveedor,
                                       AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,
                                       AUX.Descripcion, AUX.Inventario, AUX.IdListaPrecios , AUX.BRUTO, aux.Descuento , aux.Precio_descuento, AUX.NETO_CON_DESCUENTO,

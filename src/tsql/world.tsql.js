@@ -38,7 +38,7 @@ export const tsqlworld = {
                                         INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
                                         INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                                 WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND PROV.SWACTIVO='1' AND
-                                        MTA. NombreLinea=@world AND MTA.CodSubLinea=@codcategory AND
+                                        MTA. CodLinea=@CODLINEA AND MTA.CodSubLinea=@codcategory AND
                                         PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
                          )   AS AUX
                 `

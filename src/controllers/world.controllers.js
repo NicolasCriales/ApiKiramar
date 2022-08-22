@@ -21,10 +21,10 @@ const getworld = async (req,res) => {
 const getcategoryworld = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { world } = req.body
+        const { CODLINEA } = req.body
         const result = await pool
                 .request()
-                .input('world', sql.VarChar,world)
+                .input('CODLINEA', sql.VarChar,CODLINEA)
                 .query(tsqlworld.categoryworld)
         if (result.rowsAffected[0] > 0) {
             res.send({

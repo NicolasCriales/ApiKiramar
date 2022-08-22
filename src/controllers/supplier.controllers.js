@@ -20,7 +20,7 @@ const getsupplier = async (req,res) =>{
         }
     } catch (error) {
         console.log('Error: no se pudo consultar los proveedores');
-        res.status(500).sjon({
+        res.status(500).json({
             message: 'Problema al consultar el producto'
         })
     }
@@ -45,7 +45,7 @@ const getcategorysupplier = async (req,res) =>{
         }
     } catch (error) {
         console.log('Error: no se pudo consultar la categoria del proveedor');
-        res.status(500).sjon({
+        res.status(500).json({
             message: 'Problema al consultar la categoria del proveedor'
         })
     }
@@ -72,7 +72,57 @@ const getcodcategorysupplier = async (req,res) =>{
         }
     } catch (error) {
         console.log('Error: no se pudo consultar el proveedor');
-        res.status(500).sjon({
+        res.status(500).json({
+            message: 'Problema al consultar el proveedor'
+        })
+    }
+}
+
+
+const getcategorydkasa = async (req,res) =>{
+    try {
+        const pool = await getConnection();
+        const result = await pool
+                .request()
+                .query(tsqlsupplier.categorydkasa)
+        if (result.rowsAffected[0] > 0) {
+            res.send({
+                supplier: result.recordsets
+            })
+        } else {
+            res.status(500).json({
+                message: "No se encontro codigo de  proveedores"
+            })
+        }
+    } catch (error) {
+        console.log('Error: no se pudo consultar el proveedor');
+        res.status(500).json({
+            message: 'Problema al consultar el proveedor'
+        })
+    }
+}
+
+const getcategorydkasaproduct = async (req,res) =>{
+    try {
+        const pool = await getConnection();
+        const { IdListaPrecios, CodSubLinea } = req.body
+        const result = await pool
+                .request()
+                .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
+                .input('CodSubLinea', sql.VarChar, CodSubLinea)
+                .query(tsqlsupplier.categorydkasaproduc)
+        if (result.rowsAffected[0] > 0) {
+            res.send({
+                supplier: result.recordsets
+            })
+        } else {
+            res.status(500).json({
+                message: "No se encontro codigo de  proveedores"
+            })
+        }
+    } catch (error) {
+        console.log('Error: no se pudo consultar el proveedor');
+        res.status(500).json({
             message: 'Problema al consultar el proveedor'
         })
     }
@@ -83,4 +133,6 @@ module.exports = {
     getsupplier,
     getcategorysupplier,
     getcodcategorysupplier,
+    getcategorydkasa,
+    getcategorydkasaproduct,
 }
