@@ -1,20 +1,22 @@
 export const tsqlsupplier = {
     supplier: `
-                select RTRIM(CODSUMIN) as CODSUMIN, RTRIM(NOMBRE) as NOMBRE
+                select RTRIM(CODSUMIN) as CODSUMIN, RTRIM(NOMBRE) as NOMBRE, '' as URL_Image
                 from MtSumini 
                 where swactivo='1' and swappkiramar='1'  and not swappdkasa='1' and not CODSUMIN='1440'
     `,
 
 
     categorysupplier: `
-                        select DISTINCT NombreSubLinea,CodSubLinea from MtArticulo where CodProveedor=@CodProveedor and not CodSubLinea='1070' and not NombreSubLinea='repuestos'
+                        select DISTINCT NombreSubLinea,CodSubLinea, '' as URL_Image, '' as Banners
+                        from MtArticulo 
+                        where CodProveedor=@CodProveedor and not CodSubLinea='1070' and not NombreSubLinea='repuestos'
                     `,
 
     codcategorysupplier: `
                     SELECT	AUX.IdArticulo, AUX.Codigo_Barras, AUX.NombreArticulo, AUX.NombreAlterno, AUX.CodProveedor, AUX.NombreProveedor,
                             AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,
                             AUX.Descripcion, AUX.Inventario, AUX.IdListaPrecios , AUX.BRUTO, aux.Descuento , aux.Precio_descuento, AUX.NETO_CON_DESCUENTO,
-                            AUX.NETO_SIN_DESCUENTO , AUX.Iva, aux.IVA_CON_DESCUENTO, AUX.IVA_SIN_DESCUENTO , AUX.PRECIO_CON_DESCUENTO, AUX.PRECIO_SIN_DESCUENTO
+                            AUX.NETO_SIN_DESCUENTO , AUX.Iva, aux.IVA_CON_DESCUENTO, AUX.IVA_SIN_DESCUENTO , AUX.PRECIO_CON_DESCUENTO, AUX.PRECIO_SIN_DESCUENTO, '' as URL_imagen
                     
                     FROM (
                             SELECT  MTA.IdArticulo, MTA.Codigo_Barras, MTA.NombreArticulo, MTA.NombreAlterno, MTA.CodProveedor, MTA.NombreProveedor, MTA.CodLinea,
