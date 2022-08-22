@@ -1,11 +1,12 @@
 import { Router } from 'express'
 //import { validateJWT } from '../middlewares/validate-jwt'
-import { getworld } from '../controllers/index.js'
+import { getworld, getcategoryworld, getcategoryproduct } from '../controllers/index.js'
 
 const router = Router()
 
 router.get('/', getworld)
-//router.get('/mundo', GetMundo)
+router.get('/category', getcategoryworld)
+router.get('/category/product', getcategoryproduct)
 
 
 

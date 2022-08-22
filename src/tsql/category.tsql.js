@@ -1,18 +1,10 @@
-export const tsqlworld = {
-    world:  `
-                select CODLINEA,NOMBRE 
-                from MtLinea
-                where not CODLINEA='0'
+export const tsqlcategory = {
+    category: `
+                select CODSUBLINEA,NOMBRE 
+                from MtSubLinea
+                where not NOMBRE='REPUESTOS' and not CODSUBLINEA='0'
             `,
-
-    categoryworld: ` 
-                        select DISTINCT SUBL.NOMBRE,MTA.CodSubLinea 
-                        from MtArticulo MTA
-                             INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
-                         where MTA.NombreLinea=@world AND NOT SUBL.NOMBRE='REPUESTOS'
-                    `,
-
-    productcategory:`
+    productcategory: `
                                 SELECT	AUX.IdArticulo, AUX.Codigo_Barras, AUX.NombreArticulo, AUX.NombreAlterno, AUX.CodProveedor, AUX.NombreProveedor,
                                         AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,
                                         AUX.Descripcion, AUX.Inventario, AUX.IdListaPrecios , AUX.BRUTO, aux.Descuento , aux.Precio_descuento, AUX.NETO_CON_DESCUENTO,
@@ -37,11 +29,10 @@ export const tsqlworld = {
                                         INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo
                                         INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
                                         INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
-                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND PROV.SWACTIVO='1' AND
-                                        MTA. NombreLinea=@world AND MTA.CodSubLinea=@codcategory AND
-                                        PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
-                         )   AS AUX
-                `
-
+                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
+                                        MTA.CodSubLinea=@CODSUBLINEA   AND  PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
+                                )   AS AUX
+                    `
+                                       
 
 }

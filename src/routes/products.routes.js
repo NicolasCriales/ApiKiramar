@@ -4,9 +4,9 @@ import { getproducts, getproducts_individually, getproducts_discount } from '../
 
 const router = Router()
 
-router.get('/:IdListaPrecios', getproducts)
-router.get('/:IdArticulo/:IdListaPrecios', getproducts_individually)
-router.get('/discount/promotional/:IdListaPrecios', getproducts_discount)
+router.get('/', getproducts)
+router.get('/article', getproducts_individually)
+router.get('/discount', getproducts_discount)
 
 
 module.exports = router

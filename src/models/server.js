@@ -3,6 +3,7 @@ import cors from 'cors'
 import https from 'https'
 
 import config from '../config'
+import  bodyParser from 'body-parser';
 
 class Server {
     constructor() {
@@ -12,6 +13,9 @@ class Server {
             products: '/api/products',
             world: '/api/world',
             login: '/api/login',
+            category: '/api/category',
+            Search: '/api/Search',
+            supplier: '/api/supplier'
         }
 
         this.middlewares()
@@ -29,12 +33,22 @@ class Server {
         )
         //this.app.use(express.json({limit: '50mb'}))
         //this.app.use(express.static('public'))
+        
+        // parse application/x-www-form-urlencoded
+        // this.app.use(bodyParser.urlencoded({ extended: false }))
+
+        // parse application/json
+        this.app.use(bodyParser.json())
     }
 
     routes() {
         this.app.use(this.paths.products, require('../routes/products.routes'))
         this.app.use(this.paths.world, require('../routes/world.routes'))
         this.app.use(this.paths.login, require('../routes/login.routes'))
+        this.app.use(this.paths.category, require('../routes/category.routes'))
+        this.app.use(this.paths.Search, require('../routes/Search.routes'))
+        this.app.use(this.paths.supplier, require('../routes/supplier.routes'))
+
 
     }
 
