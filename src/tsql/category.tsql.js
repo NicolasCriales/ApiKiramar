@@ -1,6 +1,6 @@
 export const tsqlcategory = {
     category: `
-                select CODSUBLINEA,NOMBRE 
+                select CODSUBLINEA,NOMBRE, '' as URL_Image 
                 from MtSubLinea
                 where not NOMBRE='REPUESTOS' and not CODSUBLINEA='0'
             `,

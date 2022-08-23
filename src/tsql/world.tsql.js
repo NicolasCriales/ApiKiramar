@@ -6,10 +6,10 @@ export const tsqlworld = {
             `,
 
     categoryworld: ` 
-                        select DISTINCT SUBL.NOMBRE,MTA.CodSubLinea 
+                        select DISTINCT SUBL.NOMBRE,MTA.CodSubLinea, mta.CodLinea 
                         from MtArticulo MTA
                              INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
-                         where MTA.NombreLinea=@world AND NOT SUBL.NOMBRE='REPUESTOS'
+                         where MTA.CodLinea=@CODLINEA AND NOT SUBL.NOMBRE='REPUESTOS' and not MTA.CODSUBLINEA='0'
                     `,
 
     productcategory:`
@@ -38,7 +38,7 @@ export const tsqlworld = {
                                         INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
                                         INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                                 WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND PROV.SWACTIVO='1' AND
-                                        MTA. CodLinea=@CODLINEA AND MTA.CodSubLinea=@codcategory AND
+                                        MTA.CodLinea=@CODLINEA AND MTA.CodSubLinea=@codcategory AND
                                         PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
                          )   AS AUX
                 `

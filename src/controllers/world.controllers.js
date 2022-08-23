@@ -36,7 +36,7 @@ const getcategoryworld = async (req,res) =>{
             })  
         }
     } catch (error) {
-        console.log('Error: No se pudo consultar el mundo ', error)
+        console.log('Error: No se pudo consultar el mundo', error)
         res.status(500).json({
             message: 'Problemas al consultar el mundo',
         })  
@@ -48,11 +48,11 @@ const getcategoryworld = async (req,res) =>{
 const getcategoryproduct = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { IdListaPrecios,world,codcategory } = req.body
+        const { IdListaPrecios,CODLINEA,codcategory } = req.body
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
-                .input('world', sql.VarChar,world)
+                .input('CODLINEA', sql.VarChar,CODLINEA)
                 .input('codcategory', sql.VarChar,codcategory)
                 .query(tsqlworld.productcategory)
         if (result.rowsAffected[0] > 0) {
