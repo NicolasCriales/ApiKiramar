@@ -35,7 +35,7 @@ export const tsqlproducts = {
                                 SELECT	AUX.IdArticulo, AUX.Codigo_Barras, AUX.NombreArticulo, AUX.NombreAlterno, AUX.CodProveedor, AUX.NombreProveedor,
                                         AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,
                                         AUX.Descripcion, AUX.Inventario, AUX.IdListaPrecios , AUX.BRUTO, aux.Descuento , aux.Precio_descuento, AUX.NETO_CON_DESCUENTO,
-                                        AUX.NETO_SIN_DESCUENTO , AUX.Iva, aux.IVA_CON_DESCUENTO, AUX.IVA_SIN_DESCUENTO , AUX.PRECIO_CON_DESCUENTO, AUX.PRECIO_SIN_DESCUENTO
+                                        AUX.NETO_SIN_DESCUENTO , AUX.Iva, aux.IVA_CON_DESCUENTO, AUX.IVA_SIN_DESCUENTO , AUX.PRECIO_CON_DESCUENTO, AUX.PRECIO_SIN_DESCUENTO, '' as URL_Image
 
                                 FROM (
                                         SELECT  MTA.IdArticulo, MTA.Codigo_Barras, MTA.NombreArticulo, MTA.NombreAlterno, MTA.CodProveedor, MTA.NombreProveedor, MTA.CodLinea,
