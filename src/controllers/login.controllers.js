@@ -4,12 +4,12 @@ import { express } from 'express'
 
 const getverifydata = async (req,res) =>{
     try {
-        const { Nit, Email } = req.body
+        const { password, Nit } = req.body
         const pool = await getConnection();
         const result = await pool
                 .request()
-                .input('nit', sql.VarChar, Nit)
-                .input('email', sql.VarChar, Email)
+                .input('password', sql.VarChar, password)
+                .input('Nit', sql.VarChar, Nit)
                 .query(tsqllogin.verifydata)
         if (result.rowsAffected[0] > 0) {
             res.send({

@@ -1,8 +1,8 @@
 export const tsqllogin = {
-    verifydata: `
-                    select  RTRIM (Nit) as Nit,RTRIM(Nombre) as Nombre,RTRIM(CodCiudad) as CodCiudad,RTRIM(Ciudad) as Ciudad,'' as departamento, 
-                            RTRIM(Direccion) as Direccion,RTRIM(Telefono) as Telefono,RTRIM(Email) as Email,RTRIM(ListaPrecios) as ListaPrecios,RTRIM(Habilitado) as Habilitado
-                    from MtCliente 
-                    where Habilitado='s' and  Nit='091428061-9' and Email='DBRITOVELASQUEZ@GMAIL.COM'
+    verifydata: `       
+                    select  MTCLI.Nit, MTCLI.Nombre, mtcli.CodCiudad, mtcli.Ciudad, MTDEP.coddpto, MTDEP.departamento, mtcli.Direccion, mtcli.Celular, mtcli.Email,  mtcli.password
+                    from KellerDeskTop_Pruebas.dbo.MtCliente MTCLI
+                        inner join KellerDeskTop_Pruebas.dbo.MtDepartamento MTDEP  on  left (MTCLI.CodCiudad,2)  = MTDEP.coddpto    
+                    where MTCLI.Habilitado='s' and  MTCLI.Nit=@Nit and MTCLI.password=@password
                 `,   
 }

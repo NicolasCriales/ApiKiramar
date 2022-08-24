@@ -16,7 +16,8 @@ class Server {
             category: '/api/category',
             Search: '/api/Search',
             supplier: '/api/supplier',
-            specialized_store: '/api/specialized_store'
+            specialized_store: '/api/specialized_store',
+            auth: '/api/auth',
         }
 
         this.middlewares()
@@ -50,6 +51,8 @@ class Server {
         this.app.use(this.paths.Search, require('../routes/Search.routes'))
         this.app.use(this.paths.supplier, require('../routes/supplier.routes'))
         this.app.use(this.paths.specialized_store, require('../routes/specialized_store.routes'))
+        this.app.use(this.paths.auth, require('../routes/auth.routes'))
+
 
     }
 

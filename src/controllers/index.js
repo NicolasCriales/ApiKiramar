@@ -5,6 +5,7 @@ import category from './category.cotrollers.js'
 import search from './search.controllers.js'
 import supplier from './supplier.controllers.js'
 import specialized_store from './specialized_store.controllers.js'
+import auth from './auth.controllers'
 
 module.exports = {
     ...products,
@@ -14,4 +15,5 @@ module.exports = {
     ...search,
     ...supplier,
     ...specialized_store,
+    ...auth,
 }
