@@ -27,7 +27,11 @@ const getverifydata = async (req,res) =>{
         })  
     }
 }
+
+const update_data = async (req,res) =>{}
+
 module.exports = {
-	getverifydata
+	getverifydata,
+    update_data
 }
       

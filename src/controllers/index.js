@@ -6,6 +6,7 @@ import search from './search.controllers.js'
 import supplier from './supplier.controllers.js'
 import specialized_store from './specialized_store.controllers.js'
 import auth from './auth.controllers'
+import createuser from './createuser.controllers.js'
 
 module.exports = {
     ...products,
@@ -16,4 +17,5 @@ module.exports = {
     ...supplier,
     ...specialized_store,
     ...auth,
+    ...createuser,
 }

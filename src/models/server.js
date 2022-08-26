@@ -18,6 +18,7 @@ class Server {
             supplier: '/api/supplier',
             specialized_store: '/api/specialized_store',
             auth: '/api/auth',
+            createuser: '/api/createuser',
         }
 
         this.middlewares()
@@ -52,6 +53,8 @@ class Server {
         this.app.use(this.paths.supplier, require('../routes/supplier.routes'))
         this.app.use(this.paths.specialized_store, require('../routes/specialized_store.routes'))
         this.app.use(this.paths.auth, require('../routes/auth.routes'))
+        this.app.use(this.paths.createuser, require('../routes/createuser.routes'))
+
 
 
     }
