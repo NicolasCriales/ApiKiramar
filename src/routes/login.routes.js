@@ -5,8 +5,7 @@ import { getverifydata,update_data } from '../controllers/index.js'
 const router = Router()
 
 router.get('/',[validateJWT],getverifydata )
-router.get('/update_data',update_data
-)
+router.get('/update_data',[validateJWT],update_data)
 
 
 

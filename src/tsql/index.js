@@ -6,4 +6,5 @@ export * from './search.tsql'
 export * from './supplier.tsql'
 export * from './specialized_store.tsql'
 export * from './createuser.tsql'
+export * from './city.tsql'
 

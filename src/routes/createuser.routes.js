@@ -4,7 +4,7 @@ import {createuser } from '../controllers/index.js'
 
 const router = Router()
 
-router.post('/',createuser )
+router.post('/',[validateJWT],createuser )
 
 
 module.exports = router

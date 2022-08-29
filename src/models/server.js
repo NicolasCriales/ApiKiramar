@@ -19,6 +19,7 @@ class Server {
             specialized_store: '/api/specialized_store',
             auth: '/api/auth',
             createuser: '/api/createuser',
+            city: '/api/city'
         }
 
         this.middlewares()
@@ -54,7 +55,7 @@ class Server {
         this.app.use(this.paths.specialized_store, require('../routes/specialized_store.routes'))
         this.app.use(this.paths.auth, require('../routes/auth.routes'))
         this.app.use(this.paths.createuser, require('../routes/createuser.routes'))
-
+        this.app.use(this.paths.city, require('../routes/city.routes'))
 
 
     }
