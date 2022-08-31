@@ -1,23 +1,29 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqllogin } from '../tsql'
+import bcryptjs from 'bcryptjs'
 import { express } from 'express'
 
 const getverifydata = async (req,res) =>{
-    try {
-        const { password, Nit } = req.body
+     try {
         const pool = await getConnection();
+        const { password, Nit } = req.body
         const result = await pool
                 .request()
-                .input('password', sql.VarChar, password)
                 .input('Nit', sql.VarChar, Nit)
-                .query(tsqllogin.verifydata)
-        if (result.rowsAffected[0] > 0) {
+                .query(tsqllogin.verify)
+        const data_client = result.recordsets[0][0]
+
+       // const salt = bcryptjs.genSaltSync(10);
+       // const encryptpassword = bcryptjs.hashSync(password, salt);
+        const validPassword = bcryptjs.compareSync( password, data_client.password)
+        console.log( validPassword);
+        if (validPassword) {
             res.send({
-                mtcliente: result.recordsets
+                client: data_client
             })
-        } else {
+        }else {
             res.status(500).json({
-                message: "No se encontraron registros"
+                message: "Nit o Contraseña incorrectos"
             })  
         }
     } catch (error) {
@@ -25,7 +31,7 @@ const getverifydata = async (req,res) =>{
         res.status(500).json({
             message: 'Problemas al consultar cliente',
         })  
-    }
+    }  
 }
 
 const update_data = async (req,res) =>{}
