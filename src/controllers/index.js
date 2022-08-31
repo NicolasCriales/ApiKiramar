@@ -8,6 +8,7 @@ import specialized_store from './specialized_store.controllers.js'
 import auth from './auth.controllers'
 import createuser from './createuser.controllers.js'
 import city from './city.controllers.js'
+import order from './order.controllers.js'
 
 module.exports = {
     ...products,
@@ -20,4 +21,5 @@ module.exports = {
     ...auth,
     ...createuser,
     ...city,
+    ...order,
 }
