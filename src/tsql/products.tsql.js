@@ -20,7 +20,7 @@ export const tsqlproducts = {
                                         CONVERT(numeric(15,0),LISTAP.Precio   * (1+(LISTAP.IVA / 100 ))) as PRECIO_SIN_DESCUENTO
 
                                 FROM    MtArticulo MTA
-                                        INNER JOIN tSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
+                                        INNER JOIN MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
                                         INNER JOIN MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo
                                         INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
                                         INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
