@@ -5,7 +5,7 @@ import { getproducts, getproducts_individually, getproducts_discount } from '../
 const router = Router()
 
 router.get('/', [validateJWT],getproducts)
-router.get('/article',[validateJWT], getproducts_individually)
+router.get('/article', getproducts_individually)
 router.get('/discount',[validateJWT], getproducts_discount)
 
 
