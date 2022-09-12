@@ -5,8 +5,8 @@ import { getworld, getcategoryworld, getcategoryproduct } from '../controllers/i
 const router = Router()
 
 router.get('/', [validateJWT],getworld)
-router.get('/category',[validateJWT], getcategoryworld)
-router.get('/category/product',[validateJWT], getcategoryproduct)
+router.get('/category', [validateJWT], getcategoryworld)
+router.get('/category/product', [validateJWT], getcategoryproduct)
 
 
 

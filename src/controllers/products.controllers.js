@@ -6,7 +6,7 @@ const getproducts = async (req, res) => {
     try {
         const { IdListaPrecios } = req.body
         const { page, limit } = req.query
-        const pool = await getConnection();
+        const pool = await getConnection(); 
         const result = await pool
             .request()
             .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
@@ -56,14 +56,17 @@ const getproducts_individually = async (req, res) => {
 const getproducts_discount = async (req, res) => {
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const { IdListaPrecios } = req.body
         const result = await pool
             .request()
             .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
             .query(tsqlproducts.getproducts_discount)
         if (result.rowsAffected[0] > 0) {
+            let products_discount = result.recordsets[0]
+            products_discount = await pagination(products_discount, page, limit)
             res.send({
-                products_discount: result.recordsets
+                products_discount: products_discount
             })
         } else {
             res.status(500).json({
@@ -78,8 +81,38 @@ const getproducts_discount = async (req, res) => {
     }
 }
 
+
+const getproducts_lastunits = async (req, res) => {
+    try {
+        const pool = await getConnection();
+        const { page, limit } = req.query
+        const { IdListaPrecios } = req.body
+        const result = await pool
+            .request()
+            .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
+            .query(tsqlproducts.getproducts_lastunits)
+        if (result.rowsAffected[0] > 0) {
+            let products_lastunits = result.recordsets[0]
+            products_lastunits = await pagination(products_lastunits, page, limit)
+            res.send({
+                products_lastunits: products_lastunits
+            })
+        } else {
+            res.status(500).json({
+                message: "No se encontro la lista de las ultimas unidades"
+            })
+        }
+    } catch (error) {
+        console.log('Error: No se pudo consultar los productos con ultimas unidades ', error)
+        res.status(500).json({
+            message: 'Problemas al consultar los productos con descuento',
+        })
+    }
+}
+
 module.exports = {
     getproducts,
     getproducts_individually,
     getproducts_discount,
+    getproducts_lastunits,
 }

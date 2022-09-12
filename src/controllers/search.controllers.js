@@ -1,10 +1,12 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqlsearch } from '../tsql'
+import { pagination } from '../helpers/pagination'
 
 
 const getsearch = async (req,res) => {
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const { IdListaPrecios, buscar } = req.body;
         console.log(buscar);
         const result = await pool
@@ -13,8 +15,10 @@ const getsearch = async (req,res) => {
                 .input('buscar', sql.VarChar, '%' + buscar + '%')
                 .query(tsqlsearch.search);
         if (result.rowsAffected[0] > 0) {
+            let search = result.recordsets[0]
+            search = await pagination(search, page, limit)
             res.send({
-                search: result.recordsets
+                search: search
             })
         } else {
             res.status(500).json({

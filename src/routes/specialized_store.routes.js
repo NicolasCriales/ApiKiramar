@@ -4,7 +4,7 @@ import { getspecialized_store } from '../controllers/index.js'
 
 const router = Router()
 
-router.get('/',[validateJWT],getspecialized_store)
+router.get('/', [validateJWT],getspecialized_store)
 
 
 

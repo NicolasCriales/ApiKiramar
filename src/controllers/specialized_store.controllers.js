@@ -1,17 +1,19 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqlspecialized_store } from '../tsql'
-
-
+import { pagination } from '../helpers/pagination'
 
 const getspecialized_store = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const result = await pool
                 .request()
                 .query(tsqlspecialized_store.specialized_store)
         if (result.rowsAffected[0] > 0) {
+            let specialized_store = result.recordsets[0]
+            specialized_store = await pagination(specialized_store, page, limit)
             res.send({
-                specialized_store: result.recordsets
+                specialized_store: specialized_store
             })
         } else {
             res.status(500).json({

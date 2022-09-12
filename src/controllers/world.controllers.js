@@ -1,5 +1,7 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqlworld } from '../tsql'
+import { pagination } from '../helpers/pagination'
+
 
 const getworld = async (req,res) => {
     try {
@@ -21,14 +23,17 @@ const getworld = async (req,res) => {
 const getcategoryworld = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const { CODLINEA } = req.body
         const result = await pool
                 .request()
                 .input('CODLINEA', sql.VarChar,CODLINEA)
                 .query(tsqlworld.categoryworld)
         if (result.rowsAffected[0] > 0) {
+            let categoryworld = result.recordsets[0]
+            categoryworld = await pagination(categoryworld, page, limit)
             res.send({
-                categoryworld: result.recordsets
+                categoryworld: categoryworld
             })
         } else {
             res.status(500).json({
@@ -48,6 +53,7 @@ const getcategoryworld = async (req,res) =>{
 const getcategoryproduct = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const { IdListaPrecios,CODLINEA,codcategory } = req.body
         const result = await pool
                 .request()
@@ -56,8 +62,10 @@ const getcategoryproduct = async (req,res) =>{
                 .input('codcategory', sql.VarChar,codcategory)
                 .query(tsqlworld.productcategory)
         if (result.rowsAffected[0] > 0) {
+            let categoryworld = result.recordsets[0]
+            categoryworld = await pagination(categoryworld, page, limit)
             res.send({
-                categoryworld: result.recordsets
+                categoryworld: categoryworld
             })
         } else {
             res.status(500).json({

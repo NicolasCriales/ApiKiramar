@@ -1,16 +1,21 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqlcategory } from '../tsql'
 import { express } from 'express'
+import { pagination } from '../helpers/pagination'
+
 
 const getcategory = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const result = await pool
                 .request()
                 .query(tsqlcategory.category)
         if (result.rowsAffected[0] > 0) {
+            let category = result.recordsets[0]
+            category = await pagination(category, page, limit)
             res.send({
-                category: result.recordsets
+                category: category
             })
         } else {
             res.status(500).json({

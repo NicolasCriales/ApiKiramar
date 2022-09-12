@@ -1,17 +1,21 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqlsupplier } from '../tsql'
+import { pagination } from '../helpers/pagination'
 
 
 const getsupplier = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const result = await pool
                 .request()
                 .query(tsqlsupplier.supplier)
 
         if (result.rowsAffected[0] > 0) {
+            let supplier = result.recordsets[0]
+            supplier = await pagination(supplier, page, limit)
             res.send({
-                supplier: result.recordsets
+                supplier: supplier
             })
         } else {
             res.status(500).json({
@@ -29,14 +33,17 @@ const getsupplier = async (req,res) =>{
 const getcategorysupplier = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const { CodProveedor } = req.body;
         const result = await pool
                 .request()
                 .input('CodProveedor', sql.VarChar, CodProveedor)
                 .query(tsqlsupplier.categorysupplier)
         if (result.rowsAffected[0] > 0) {
+            let supplier = result.recordsets[0]
+            supplier = await pagination(supplier, page, limit)
             res.send({
-                supplier: result.recordsets
+                supplier: supplier
             })
         } else {
             res.status(500).json({
@@ -54,6 +61,7 @@ const getcategorysupplier = async (req,res) =>{
 const getcodcategorysupplier = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const { IdListaPrecios, CodProveedor, CodSubLinea } = req.body;
         const result = await pool
                 .request()
@@ -62,8 +70,10 @@ const getcodcategorysupplier = async (req,res) =>{
                 .input('CodSubLinea', sql.VarChar, CodSubLinea)
                 .query(tsqlsupplier.codcategorysupplier)
         if (result.rowsAffected[0] > 0) {
+            let supplier = result.recordsets[0]
+            supplier = await pagination(supplier, page, limit)
             res.send({
-                supplier: result.recordsets
+                supplier: supplier
             })
         } else {
             res.status(500).json({
@@ -82,12 +92,15 @@ const getcodcategorysupplier = async (req,res) =>{
 const getcategorydkasa = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const result = await pool
                 .request()
                 .query(tsqlsupplier.categorydkasa)
         if (result.rowsAffected[0] > 0) {
+            let supplier = result.recordsets[0]
+            supplier = await pagination(supplier, page, limit)
             res.send({
-                supplier: result.recordsets
+                supplier: supplier
             })
         } else {
             res.status(500).json({
@@ -105,6 +118,7 @@ const getcategorydkasa = async (req,res) =>{
 const getcategorydkasaproduct = async (req,res) =>{
     try {
         const pool = await getConnection();
+        const { page, limit } = req.query
         const { IdListaPrecios, CodSubLinea } = req.body
         const result = await pool
                 .request()
@@ -112,8 +126,10 @@ const getcategorydkasaproduct = async (req,res) =>{
                 .input('CodSubLinea', sql.VarChar, CodSubLinea)
                 .query(tsqlsupplier.categorydkasaproduc)
         if (result.rowsAffected[0] > 0) {
+            let supplier = result.recordsets[0]
+            supplier = await pagination(supplier, page, limit)
             res.send({
-                supplier: result.recordsets
+                supplier: supplier
             })
         } else {
             res.status(500).json({
