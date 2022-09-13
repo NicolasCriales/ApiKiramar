@@ -110,9 +110,38 @@ const getproducts_lastunits = async (req, res) => {
     }
 }
 
+const getproducts_recommends = async (req, res) => {
+    try {
+        const pool = await getConnection();
+        const { IdListaPrecios, Codlinea, CodSubLinea } = req.body
+        const result = await pool
+            .request()
+            .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
+            .input('Codlinea', sql.VarChar, Codlinea)
+            .input('CodSubLinea', sql.VarChar, CodSubLinea)
+            .query(tsqlproducts.getproducts_recommends)
+        if (result.rowsAffected[0] > 0) {
+           const products_recommends = result.recordsets[0]
+            res.send({
+                products_recommends
+            })
+        } else {
+            res.status(500).json({
+                message: "No se encontro la lista de las ultimas unidades"
+            })
+        }
+    } catch (error) {
+        console.log('Error: No se pudo consultar los productos con ultimas unidades ', error)
+        res.status(500).json({
+            message: 'Problemas al consultar los productos con descuento',
+        })
+    }
+}
+
 module.exports = {
     getproducts,
     getproducts_individually,
     getproducts_discount,
     getproducts_lastunits,
+    getproducts_recommends,
 }
