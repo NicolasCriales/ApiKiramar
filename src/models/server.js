@@ -20,7 +20,8 @@ class Server {
             auth: '/api/auth',
             createuser: '/api/createuser',
             city: '/api/city',
-            order: '/api/order'
+            order: '/api/order',
+            datasheet: '/api/datasheet'
         }
 
         this.middlewares()
@@ -58,6 +59,7 @@ class Server {
         this.app.use(this.paths.createuser, require('../routes/createuser.routes'))
         this.app.use(this.paths.city, require('../routes/city.routes'))
         this.app.use(this.paths.order, require('../routes/order.routes'))
+        this.app.use(this.paths.datasheet, require('../routes/datasheet.routes'))
 
 
 
