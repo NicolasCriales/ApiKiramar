@@ -9,4 +9,5 @@ export * from './createuser.tsql'
 export * from './city.tsql'
 export * from './order.tsql'
 export * from './datasheet.tsql'
+export * from './banners.tsql'
 

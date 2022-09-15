@@ -119,7 +119,7 @@ export const tsqlproducts = {
                                             INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
                                             INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                                     WHERE  SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
-                                           sal.Disponible > 10 AND sal.Disponible < 50     AND  PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'  AND NOT SUBL.NOMBRE='REPUESTOS'
+                                           sal.Disponible > 1 AND sal.Disponible < 20      AND  PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'  AND NOT SUBL.NOMBRE='REPUESTOS'
                                 )   AS AUX `,
 
 
@@ -152,5 +152,5 @@ export const tsqlproducts = {
                                         WHERE  SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
                                             MTA.CodLinea=@Codlinea AND MTA.CodSubLinea=@CodSubLinea AND  PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'  AND NOT SUBL.NOMBRE='REPUESTOS'
                                         )   AS AUX
-                                `
+                                `,
 }

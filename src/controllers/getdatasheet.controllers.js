@@ -26,10 +26,8 @@ const getdatasheet = async (req,res) => {
             message: 'Problemas al consultar la ficha tecnica',
         })  
     }
-
 }
 
 module.exports = {
 	getdatasheet,
 }
-//https://www3.animeflv.net/ver/kinsou-no-vermeil-11

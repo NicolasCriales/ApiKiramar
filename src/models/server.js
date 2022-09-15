@@ -21,7 +21,8 @@ class Server {
             createuser: '/api/createuser',
             city: '/api/city',
             order: '/api/order',
-            datasheet: '/api/datasheet'
+            datasheet: '/api/datasheet',
+            banners: '/api/banners',
         }
 
         this.middlewares()
@@ -60,7 +61,7 @@ class Server {
         this.app.use(this.paths.city, require('../routes/city.routes'))
         this.app.use(this.paths.order, require('../routes/order.routes'))
         this.app.use(this.paths.datasheet, require('../routes/datasheet.routes'))
-
+        this.app.use(this.paths.banners, require('../routes/banners.routes'))
 
 
     }

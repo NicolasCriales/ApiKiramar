@@ -10,6 +10,7 @@ import createuser from './createuser.controllers.js'
 import city from './city.controllers.js'
 import order from './order.controllers.js'
 import getdatasheet from './getdatasheet.controllers.js'
+import banners from './banners.controllers.js'
 
 module.exports = {
     ...products,
@@ -24,4 +25,5 @@ module.exports = {
     ...city,
     ...order,
     ...getdatasheet,
+    ...banners,
 }
