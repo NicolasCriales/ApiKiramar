@@ -6,7 +6,4 @@ const router = Router()
 
 router.get('/', [validateJWT],getdatasheet)
 
-
-
-
 module.exports = router
