@@ -4,7 +4,7 @@ import { getsearch } from '../controllers/index.js'
 
 const router = Router()
 
-router.get('/', [validateJWT],getsearch)
+router.get('/',[validateJWT], getsearch)
 
 
 

@@ -5,7 +5,7 @@ import { tsqldatasheet } from '../tsql'
 const getdatasheet = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { IdArticulo } = req.body
+        const { IdArticulo } = req.query
         const result = await pool
                 .request()
                 .input("IdArticulo", sql.VarChar, IdArticulo)

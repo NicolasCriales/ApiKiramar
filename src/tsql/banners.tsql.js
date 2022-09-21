@@ -71,7 +71,7 @@ export const tsqlbanners = {
                                     INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                         
                             WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND  
-                                    FecIng  >= DATEADD(day, -90, getdate()) AND MTA.CodProveedor=@CodProveedor AND
+                                    FecIng  >= DATEADD(day, -120, getdate()) AND MTA.CodProveedor=@CodProveedor AND
                                     PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
                         )   AS AUX
 

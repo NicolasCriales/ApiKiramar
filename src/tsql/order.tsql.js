@@ -25,7 +25,7 @@ export const tsqlorder = {
                         INNER JOIN MtEstadoPedido Estado on estado.IdEstadoPedido =pedido.ESTADOPED
                 where   fecha >= DATEADD([month], DATEDIFF([month], '19000101', GETDATE()) - 3, '19000101') AND 
                         fecha < DATEADD([month], DATEDIFF([month], '19000101', GETDATE()), '19000101') AND
-                        pedido.NIT=@Nit  and TIPODCTO=''
+                        pedido.NIT=@Nit
             `,
 
 
@@ -34,7 +34,7 @@ export const tsqlorder = {
                         TIPODCTO, NRODCTO, PRODUCTO, CANTIDAD, CANTORIG, VALORUNIT,IVA,DTOBASE,CONDCTOPROMO, DTOAUTORIZADO,
                         CONDCTOAUTORIZADO, DTOCCIAL, CONDCTOCOMERCIAL, CONIVA,NETO
                     from MvPedido
-                    where  TIPODCTO=@Tipodcto and NRODCTO=@Nrodct 
+                    where  TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto 
             `,
 
 

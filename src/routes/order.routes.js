@@ -8,7 +8,7 @@ router.get('/b2b',[validateJWT],getorderb2b )
 router.get('/b2b/facture',[validateJWT], getfactureb2b)
 
 router.get('/b2c',[validateJWT],getorderb2c)
-router.get('/b2b/facture',[validateJWT], getfactureb2c)
+router.get('/b2c/facture',[validateJWT], getfactureb2c)
 
 
 

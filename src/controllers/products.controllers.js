@@ -4,8 +4,7 @@ import { pagination } from '../helpers/pagination'
 
 const getproducts = async (req, res) => {
     try {
-        const { IdListaPrecios } = req.body
-        const { page, limit } = req.query
+        const { IdListaPrecios, page, limit } = req.query
         const pool = await getConnection(); 
         const result = await pool
             .request()
@@ -28,7 +27,7 @@ const getproducts = async (req, res) => {
 
 const getproducts_individually = async (req, res) => {
     try {
-        const { IdArticulo, IdListaPrecios } = req.body
+        const { IdArticulo, IdListaPrecios } = req.query
         const pool = await getConnection();
         const result = await pool
             .request()
@@ -36,8 +35,9 @@ const getproducts_individually = async (req, res) => {
             .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
             .query(tsqlproducts.getproducts_individually)
         if (result.rowsAffected[0] > 0) {
+            const products_individually =  result.recordsets[0]
             res.send({
-                products_individually: result.recordsets
+                products_individually
             })
         } else {
             res.status(500).json({
@@ -56,8 +56,7 @@ const getproducts_individually = async (req, res) => {
 const getproducts_discount = async (req, res) => {
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { IdListaPrecios } = req.body
+        const { IdListaPrecios, page, limit } = req.query
         const result = await pool
             .request()
             .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
@@ -66,7 +65,7 @@ const getproducts_discount = async (req, res) => {
             let products_discount = result.recordsets[0]
             products_discount = await pagination(products_discount, page, limit)
             res.send({
-                products_discount: products_discount
+                products_discount
             })
         } else {
             res.status(500).json({
@@ -85,8 +84,7 @@ const getproducts_discount = async (req, res) => {
 const getproducts_lastunits = async (req, res) => {
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { IdListaPrecios } = req.body
+        const { IdListaPrecios, page, limit } = req.query
         const result = await pool
             .request()
             .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
@@ -113,7 +111,7 @@ const getproducts_lastunits = async (req, res) => {
 const getproducts_recommends = async (req, res) => {
     try {
         const pool = await getConnection();
-        const { IdListaPrecios, Codlinea, CodSubLinea } = req.body
+        const { IdListaPrecios, Codlinea, CodSubLinea } = req.query
         const result = await pool
             .request()
             .input('IdListaPrecios', sql.VarChar, IdListaPrecios)

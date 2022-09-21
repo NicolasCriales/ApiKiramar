@@ -4,11 +4,11 @@ import { getproducts, getproducts_individually, getproducts_discount,getproducts
 
 const router = Router()
 
-router.get('/', [validateJWT],getproducts)
+router.get('/',[validateJWT], getproducts)
 router.get('/article', [validateJWT], getproducts_individually)
-router.get('/discount', [validateJWT], getproducts_discount)
-router.get('/lastunits', [validateJWT], getproducts_lastunits)
-router.get('/recommends', [validateJWT], getproducts_recommends)
+router.get('/discount',[validateJWT],  getproducts_discount)
+router.get('/lastunits',[validateJWT],  getproducts_lastunits)
+router.get('/recommends',[validateJWT],  getproducts_recommends)
 
 
 

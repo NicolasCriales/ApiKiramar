@@ -23,8 +23,7 @@ const getworld = async (req,res) => {
 const getcategoryworld = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { CODLINEA } = req.body
+        const { CODLINEA, page, limit } = req.query
         const result = await pool
                 .request()
                 .input('CODLINEA', sql.VarChar,CODLINEA)
@@ -33,7 +32,7 @@ const getcategoryworld = async (req,res) =>{
             let categoryworld = result.recordsets[0]
             categoryworld = await pagination(categoryworld, page, limit)
             res.send({
-                categoryworld: categoryworld
+                categoryworld
             })
         } else {
             res.status(500).json({
@@ -53,8 +52,7 @@ const getcategoryworld = async (req,res) =>{
 const getcategoryproduct = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { IdListaPrecios,CODLINEA,codcategory } = req.body
+        const { IdListaPrecios,CODLINEA,codcategory, page, limit } = req.query
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar,IdListaPrecios)

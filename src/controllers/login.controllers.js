@@ -12,9 +12,6 @@ const getverifydata = async (req,res) =>{
                 .input('Nit', sql.VarChar, Nit)
                 .query(tsqllogin.verify)
         const data_client = result.recordsets[0][0]
-
-       // const salt = bcryptjs.genSaltSync(10);
-       // const encryptpassword = bcryptjs.hashSync(password, salt);
         const validPassword = bcryptjs.compareSync( password, data_client.password)
         console.log( validPassword);
         if (validPassword) {

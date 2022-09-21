@@ -4,10 +4,10 @@ import { getsupplier,getcategorysupplier, getcodcategorysupplier,getcategorydkas
 
 const router = Router()
 
-router.get('/', [validateJWT],getsupplier)
-router.get('/category', [validateJWT],getcategorysupplier)
-router.get('/category/product', [validateJWT],getcodcategorysupplier)
-router.get('/Dkasa', [validateJWT],getcategorydkasa)
+router.get('/',[validateJWT], getsupplier)
+router.get('/category',[validateJWT],getcategorysupplier)
+router.get('/category/product',[validateJWT], getcodcategorysupplier)
+router.get('/Dkasa',[validateJWT], getcategorydkasa)
 router.get('/Dkasa/product', [validateJWT],getcategorydkasaproduct)
 
 

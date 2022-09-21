@@ -31,8 +31,7 @@ const getbanners = async (req,res) => {
 const getproducts_banners = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { IdListaPrecios, LikeNombreAlterno, LikeCodProveedor } = req.body
+        const { IdListaPrecios, LikeNombreAlterno, LikeCodProveedor, page, limit } = req.query
         const result = await pool
                 .request()
                 .input('IdListaPrecios',sql.VarChar,IdListaPrecios)
@@ -85,8 +84,7 @@ const getbanners_releases = async (req,res) => {
 const getproducts_releases = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { IdListaPrecios, CodProveedor } = req.body
+        const { IdListaPrecios, CodProveedor , page, limit } = req.query
         const result = await pool
                 .request()
                 .input('IdListaPrecios',sql.VarChar,IdListaPrecios)

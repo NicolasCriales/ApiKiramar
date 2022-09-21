@@ -15,7 +15,7 @@ const getcategory = async (req,res) =>{
             let category = result.recordsets[0]
             category = await pagination(category, page, limit)
             res.send({
-                category: category
+                category
             })
         } else {
             res.status(500).json({
@@ -33,15 +33,16 @@ const getcategory = async (req,res) =>{
 const getproductcategory = async(req,res) =>{
     try {
         const pool = await getConnection();
-        const { IdListaPrecios,CODSUBLINEA } = req.body
+        const { IdListaPrecios,CODSUBLINEA } = req.query
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
                 .input('CODSUBLINEA',sql.VarChar,CODSUBLINEA)
                 .query(tsqlcategory.productcategory)
         if (result.rowsAffected[0] > 0) {
+            let productcategory = result.recordsets[0]
             res.send({
-                productcategory: result.recordsets
+                productcategory
             })
         } else {
             res.status(500).json({

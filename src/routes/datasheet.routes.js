@@ -3,7 +3,7 @@ import { getdatasheet } from '../controllers/index.js'
 
 const router = Router()
 
-router.get('/', getdatasheet)
+router.get('/', [validateJWT],getdatasheet)
 
 
 

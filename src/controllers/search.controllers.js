@@ -6,8 +6,7 @@ import { pagination } from '../helpers/pagination'
 const getsearch = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { IdListaPrecios, buscar } = req.body;
+        const { IdListaPrecios, buscar, page, limit } = req.query
         console.log(buscar);
         const result = await pool
                 .request()

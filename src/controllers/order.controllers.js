@@ -5,14 +5,15 @@ import { express } from 'express'
 const getorderb2b = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { Nit } = req.body
+        const { Nit } = req.query
         const result = await pool
                 .request()
                 .input('Nit', sql.VarChar, Nit)
                 .query(tsqlorder.orderb2b)
             if (result.rowsAffected[0] > 0) {
+                const order = result.recordsets[0]
                 res.send({
-                    order: result.recordsets
+                    order
                 })
             } else {
                 res.status(500).send({
@@ -31,15 +32,16 @@ const getorderb2b = async (req,res) => {
 const getfactureb2b = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { Tipodcto, Nrodcto }  = req.body
+        const { Tipodcto, Nrodcto }  = req.query
         const result = await pool
                 .request()
                 .input('Tipodcto', sql.VarChar, Tipodcto)
                 .input('Nrodcto', sql.VarChar, Nrodcto)
                 .query(tsqlorder.factureb2b)
         if (result.rowsAffected[0] > 0) {
+            const facture = result.recordsets[0]
             res.send({
-                facture: result.recordsets
+                facture
             })
         } else {
             res.satus(500).send({
@@ -58,15 +60,15 @@ const getfactureb2b = async (req,res) => {
 const getorderb2c = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { Tipodcto, Nrodcto } = req.body
+        const { Nit } = req.query
         const result = await pool
                 .request()
-                .input('Tipodcto', sql.VarChar, Tipodcto)
-                .input('Nrodcto', sql.VarChar, Nrodcto)
+                .input('Nit', sql.VarChar, Nit)
                 .query(tsqlorder.orderb2c)
         if (result.rowsAffected[0] > 0) {
+            const order = result.recordsets[0]
             res.send({
-                facture: result.recordsets
+                order
             })
         } else {
             res.satus(500).send({
@@ -85,15 +87,16 @@ const getorderb2c = async (req,res) => {
 const getfactureb2c = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { Tipodcto, Nrodcto }  = req.body
+        const { Tipodcto, Nrodcto }  = req.query
         const result = await pool
                 .request()
                 .input('Tipodcto', sql.VarChar, Tipodcto)
                 .input('Nrodcto', sql.VarChar, Nrodcto)
                 .query(tsqlorder.factureb2c)
         if (result.rowsAffected[0] > 0) {
+            const facture =  result.recordsets[0]
             res.send({
-                facture: result.recordsets
+                facture
             })
         } else {
             res.satus(500).send({

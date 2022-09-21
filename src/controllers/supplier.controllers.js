@@ -10,12 +10,11 @@ const getsupplier = async (req,res) =>{
         const result = await pool
                 .request()
                 .query(tsqlsupplier.supplier)
-
         if (result.rowsAffected[0] > 0) {
             let supplier = result.recordsets[0]
             supplier = await pagination(supplier, page, limit)
             res.send({
-                supplier: supplier
+                supplier
             })
         } else {
             res.status(500).json({
@@ -33,8 +32,7 @@ const getsupplier = async (req,res) =>{
 const getcategorysupplier = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { CodProveedor } = req.body;
+        const { CodProveedor, page, limit } = req.query
         const result = await pool
                 .request()
                 .input('CodProveedor', sql.VarChar, CodProveedor)
@@ -61,8 +59,7 @@ const getcategorysupplier = async (req,res) =>{
 const getcodcategorysupplier = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { IdListaPrecios, CodProveedor, CodSubLinea } = req.body;
+        const { IdListaPrecios, CodProveedor, CodSubLinea, page, limit } = req.query
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
@@ -73,7 +70,7 @@ const getcodcategorysupplier = async (req,res) =>{
             let supplier = result.recordsets[0]
             supplier = await pagination(supplier, page, limit)
             res.send({
-                supplier: supplier
+                supplier
             })
         } else {
             res.status(500).json({
@@ -118,8 +115,7 @@ const getcategorydkasa = async (req,res) =>{
 const getcategorydkasaproduct = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { page, limit } = req.query
-        const { IdListaPrecios, CodSubLinea } = req.body
+        const { IdListaPrecios, CodSubLinea, page, limit } = req.query
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
@@ -129,7 +125,7 @@ const getcategorydkasaproduct = async (req,res) =>{
             let supplier = result.recordsets[0]
             supplier = await pagination(supplier, page, limit)
             res.send({
-                supplier: supplier
+                supplier
             })
         } else {
             res.status(500).json({
