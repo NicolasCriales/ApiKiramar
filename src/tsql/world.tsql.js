@@ -1,6 +1,6 @@
 export const tsqlworld = {
     world:  `
-                select CODLINEA,NOMBRE , '' as URL_image
+               	select CODLINEA,NOMBRE , 'https://dkasa.com.co/media/Imageneskiramar/mundos/' + CODLINEA + '.jpg' AS IMAGEN
                 from MtLinea
                 where not CODLINEA='0'
             `,
