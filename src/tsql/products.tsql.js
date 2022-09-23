@@ -59,7 +59,7 @@ export const tsqlproducts = {
                                                 LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = mta.IdArticulo
 
                                         WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND  
-                                                 MTA.IdArticulo=@IdArticulo AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS' AMD
+                                                 MTA.IdArticulo=@IdArticulo AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS' AND
                                                  IMG.item_order ='0'
                                 )       AS AUX
                         `,
