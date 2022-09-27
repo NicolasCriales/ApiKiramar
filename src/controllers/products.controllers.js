@@ -136,10 +136,39 @@ const getproducts_recommends = async (req, res) => {
     }
 }
 
+
+const getBest_sellers = async (req, res) => {
+    try {
+        const pool = await getConnection();
+        const {IdListaPrecios, page, limit} =  req.query
+        const result = await pool
+            .request()
+            .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
+            .query(tsqlproducts.getBest_sellers)
+        if (result.rowsAffected[0] > 0) {
+           let Best_sellers = result.recordsets[0]
+           Best_sellers = await pagination(Best_sellers, page, limit)
+            res.send({
+                Best_sellers
+            })
+        } else {
+            res.status(500).json({
+                message: "No se encontro la lista de las ultimas unidades"
+            })
+        }
+    } catch (error) {
+        console.log('Error: No se pudo consultar los productos con ultimas unidades ', error)
+        res.status(500).json({
+            message: 'Problemas al consultar los productos con descuento',
+        })
+    }
+}
+
 module.exports = {
     getproducts,
     getproducts_individually,
     getproducts_discount,
     getproducts_lastunits,
     getproducts_recommends,
+    getBest_sellers,
 }

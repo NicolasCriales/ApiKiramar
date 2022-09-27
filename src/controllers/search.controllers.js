@@ -6,26 +6,31 @@ import { pagination } from '../helpers/pagination'
 const getsearch = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { IdListaPrecios, buscar,PrecioDesde,PrecioHasta , page, limit } = req.query
+        const { IdListaPrecios, buscar, page, limit } = req.query
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
                 .input('buscar', sql.VarChar, '%' + buscar + '%')
-                .input('PrecioDesde', sql.VarChar, PrecioDesde )
-                .input('PrecioHasta', sql.VarChar, PrecioHasta )
                 .query(tsqlsearch.search);
         const result2 = await pool
                 .request()
                 .input('buscar', sql.VarChar, '%' + buscar + '%')
                 .query(tsqlsearch.supplier);
 
+        const result3 = await pool
+                .request()
+                .input('buscar', sql.VarChar, '%' + buscar + '%')
+                .query(tsqlsearch.category);
+
         if (result.rowsAffected[0] > 0) {
             let search = result.recordsets[0]
             search = await pagination(search, page, limit)
             const supplier = result2.recordsets[0]
+            const category = result3.recordsets[0]
             res.send({
                 search,
-                supplier
+                supplier,
+                category
             })
         } else {
             res.status(500).json({

@@ -28,17 +28,36 @@ export const tsqlsearch = {
                                 WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
                                         MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS' AND
                                         IMG.item_order ='0'
-                        )   AS AUX WHERE AUX.PRECIO_CON_DESCUENTO >= @PrecioDesde AND PRECIO_CON_DESCUENTO <= @PrecioHasta order by aux.NombreAlterno asc
+                        )   AS AUX
             `,
 
-        supplier:       `
-                                SELECT	DISTINCT (MTA.NombreProveedor)
+        supplier:       `       SELECT	DISTINCT (MTA.NombreProveedor), MTA.CodProveedor
+                                
                                 FROM    MtArticulo MTA
+                                        INNER JOIN KellerDeskTop.[dbo].MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
+                                        INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo
                                         INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
                                         INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
-                                WHERE   MTA.Habilitado='1' AND MTA.NombreAlterno like  @buscar   AND 
-                                        PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
+                                        LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
+                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios='WEB' AND 
+                                        MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
+                                        AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'
+   
                         `,
+
+        category:       `       SELECT	DISTINCT  (MTA.CodSubLinea), MTA.NombreSubLinea
+                                
+                        FROM    MtArticulo MTA
+                                INNER JOIN KellerDeskTop.[dbo].MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
+                                INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo
+                                INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
+                                INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
+                                LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
+                        WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios='WEB' AND 
+                                MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
+                                AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'
+
+                `,
 
 
         searchsupplier: `
