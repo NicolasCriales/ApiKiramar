@@ -7,8 +7,8 @@ const router = Router()
 router.get('/',[validateJWT], getproducts)
 router.get('/article', [validateJWT], getproducts_individually)
 router.get('/discount',[validateJWT],  getproducts_discount)
-router.get('/lastunits',  getproducts_lastunits)
-router.get('/recommends',  getproducts_recommends)
+router.get('/lastunits',  [validateJWT],etproducts_lastunits)
+router.get('/recommends',[validateJWT],  getproducts_recommends)
 router.get('/Best_sellers',[validateJWT],  getBest_sellers)
 
 
