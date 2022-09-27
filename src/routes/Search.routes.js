@@ -4,8 +4,8 @@ import { getsearch, getsearchsupplier } from '../controllers/index.js'
 
 const router = Router()
 
-router.get('/', getsearch)
-router.get('/supplier', getsearchsupplier)
+router.get('/',[validateJWT], getsearch)
+router.get('/supplier',[validateJWT], getsearchsupplier)
 
 
 
