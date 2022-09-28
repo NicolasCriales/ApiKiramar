@@ -25,7 +25,7 @@ export const tsqlsearch = {
                                         INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
                                         INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                                         LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
-                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
+                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios= @IdListaPrecios AND 
                                         MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS' AND
                                         IMG.item_order ='0'
                         )   AS AUX
@@ -39,25 +39,54 @@ export const tsqlsearch = {
                                         INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
                                         INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                                         LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
-                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios='WEB' AND 
+                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios= @IdListaPrecios AND 
                                         MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
                                         AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'
    
                         `,
 
-        category:       `       SELECT	DISTINCT  (MTA.CodSubLinea), MTA.NombreSubLinea
-                                
-                        FROM    MtArticulo MTA
-                                INNER JOIN KellerDeskTop.[dbo].MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
-                                INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo
-                                INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
-                                INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
-                                LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
-                        WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios='WEB' AND 
+        category:       `       
+                                SELECT	DISTINCT  (MTA.CodSubLinea), MTA.NombreSubLinea
+                                FROM    MtArticulo MTA
+                                        INNER JOIN KellerDeskTop.[dbo].MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
+                                        INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo
+                                        INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
+                                        INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
+                                        LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
+                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios= @IdListaPrecios AND 
                                 MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
                                 AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'
 
-                `,
+                        `,
+
+        max_min:       `       
+                                SELECT	MAX(aux.PRECIO_SIN_DESCUENTO) AS MAX, MIN(aux.PRECIO_SIN_DESCUENTO) AS MIN 
+
+                                        FROM (
+                                                SELECT  MTA.IdArticulo, MTA.Codigo_Barras, MTA.NombreArticulo, MTA.NombreAlterno, MTA.CodProveedor, MTA.NombreProveedor, MTA.CodLinea,
+                                                        MTA.NombreLinea, MTA.CodSubLinea, MTA.NombreSubLinea, MTA.CodTipoInv, MTA.TipoInventario, LISTAP.Iva,
+                                                        MTA.IdCategoria, MTA.Descripcion, SAL.Disponible AS Inventario, LISTAP.IdListaPrecios, IMG.small_img as IMAGEN, 
+                                                        CONVERT(numeric(15,0),(LISTAP.Precio)) as BRUTO,
+                                                        CONVERT(numeric(3,0),(LISTAP.DctoPromocional)) as Descuento,
+                                                        CONVERT(numeric(15,0),((LISTAP.Precio)) -  ((LISTAP.Precio * ((100-LISTAP.DctoPromocional))/100) )) as Precio_descuento,  
+                                                        CONVERT(numeric(15,0),  ((LISTAP.Precio * ((100-LISTAP.DctoPromocional))/100) ))  AS NETO_CON_DESCUENTO,
+                                                        CONVERT(numeric(15,0),(LISTAP.Precio))  AS NETO_SIN_DESCUENTO,
+                                                        CONVERT(numeric(15,0), ((LISTAP.Precio * ((100-LISTAP.DctoPromocional))/100) ) * (1+(LISTAP.IVA / 100 )) - ((LISTAP.Precio * ((100-LISTAP.DctoPromocional))/100) )) as IVA_CON_DESCUENTO,
+                                                        CONVERT(numeric(15,0), ((LISTAP.Precio * ((100-LISTAP.DctoPromocional))/100) ) * (1+(LISTAP.IVA / 100 )) -  (LISTAP.Precio)   ) as IVA_SIN_DESCUENTO,
+                                                        CONVERT(numeric(15,0),((LISTAP.Precio * ((100-LISTAP.DctoPromocional))/100) ) * (1+(LISTAP.IVA / 100 ))) as PRECIO_CON_DESCUENTO,
+                                                        CONVERT(numeric(15,0),LISTAP.Precio   * (1+(LISTAP.IVA / 100 ))) as PRECIO_SIN_DESCUENTO
+                                        
+                                                FROM    MtArticulo MTA
+                                                        INNER JOIN KellerDeskTop.[dbo].MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
+                                                        INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo
+                                                        INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
+                                                        INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
+                                                        LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
+                                                WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
+                                                        MTA.NombreAlterno like @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS' AND
+                                                        IMG.item_order ='0'
+                                        )   AS AUX
+                        `,
 
 
         searchsupplier: `

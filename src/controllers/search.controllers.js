@@ -14,23 +14,34 @@ const getsearch = async (req,res) => {
                 .query(tsqlsearch.search);
         const result2 = await pool
                 .request()
+                .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
                 .input('buscar', sql.VarChar, '%' + buscar + '%')
                 .query(tsqlsearch.supplier);
 
         const result3 = await pool
                 .request()
+                .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
                 .input('buscar', sql.VarChar, '%' + buscar + '%')
                 .query(tsqlsearch.category);
+
+        const result4 = await pool
+                .request()
+                .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
+                .input('buscar', sql.VarChar, '%' + buscar + '%')
+                .query(tsqlsearch.max_min);
 
         if (result.rowsAffected[0] > 0) {
             let search = result.recordsets[0]
             search = await pagination(search, page, limit)
             const supplier = result2.recordsets[0]
             const category = result3.recordsets[0]
+            const max_min = result4.recordsets[0]
+
             res.send({
                 search,
                 supplier,
-                category
+                category,
+                max_min
             })
         } else {
             res.status(500).json({
