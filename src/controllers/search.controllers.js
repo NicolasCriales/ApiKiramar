@@ -41,7 +41,7 @@ const getsearch = async (req,res) => {
                 search,
                 supplier,
                 category,
-                max_min
+                max_min 
             })
         } else {
             res.status(500).json({
