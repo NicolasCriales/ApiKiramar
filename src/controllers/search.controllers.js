@@ -60,20 +60,31 @@ const getsearch = async (req,res) => {
 const getsearchsupplier = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { IdListaPrecios, buscar, shupplier,PrecioDesde,PrecioHasta, page, limit } = req.query
+        const {IdListaPrecios, buscar,CodProveedor,category  ,page, limit } = req.query
+        
+        if (category.length != 0) {
+            var addcategory = `and  mta.NombreSubLinea in (${category})`
+        } else {
+            var addcategory = ``
+        }
+
+        if (CodProveedor.length != 0) {
+            var addcodsumin= `and PROV.codsumin in (${CodProveedor})  ) as AUX `
+        } else {
+            var addcodsumin= `) as AUX `
+        }
+
+        var sql_searchsupplier = tsqlsearch.searchsupplier + addcategory + addcodsumin
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
                 .input('buscar', sql.VarChar, '%' + buscar + '%')
-                .input('shupplier', sql.VarChar, shupplier )
-                .input('PrecioDesde', sql.VarChar, PrecioDesde )
-                .input('PrecioHasta', sql.VarChar, PrecioHasta )
-                .query(tsqlsearch.searchsupplier);
+                .query(sql_searchsupplier);
         if (result.rowsAffected[0] > 0) {
-            let searchsupplier = result.recordsets[0]
-            searchsupplier = await pagination(searchsupplier, page, limit)
+            let search = result.recordsets[0]
+            search = await pagination(search, page, limit)
             res.send({
-                searchsupplier
+                search
             })
         } else {
             res.status(500).json({

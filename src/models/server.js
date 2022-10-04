@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import https from 'https'
+import fs from 'fs';
+
 
 import config from '../config'
 import  bodyParser from 'body-parser';
@@ -67,6 +69,10 @@ class Server {
     }
 
     listen() {
+       /* https.createServer({
+            key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
+            cert: fs.readFileSync('test/fixtures/keys/agent2-cert.pem')
+          })*/
         this.app.listen(this.port, () => {
             console.log('Server listen on port: ', this.port)
         })
