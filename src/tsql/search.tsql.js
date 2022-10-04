@@ -89,6 +89,19 @@ FROM (
                                     
                         `,
 
+                        searchautocomplete: `SELECT	AUX.NombreAlterno
+                        FROM   (
+                                select  mta.NombreAlterno
+                                from  MtArticulo MTA
+                                        INNER JOIN KellerDeskTop.[dbo].MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
+                                        INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo
+                                        INNER JOIN MtSumini PROV ON PROV.CODSUMIN = MTA.CodProveedor
+                                        INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
+                                LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
+                        WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND 
+                        MTA.NombreAlterno like  @autocomplete  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
+                        AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'  and not mta.NombreAlterno like '%gratis%'  ) AUX `
+
         
   
 }

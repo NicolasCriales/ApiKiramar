@@ -99,9 +99,35 @@ const getsearch = async (req,res) => {
     }
 }
 
+const getsearchautocomplete = async (req,res) =>{
+    try {
+        const pool = await getConnection()
+        const {autocomplete} = req.query
+        const result = await pool
+            .request()
+            .input('autocomplete', sql.VarChar, autocomplete + '%')
+            .query(tsqlsearch.searchautocomplete)
+            if(result.rowsAffected[0] > 0) {
+                const searchautocomplete = result.recordsets[0]
+                res.send({
+                    searchautocomplete
+                })
 
+            } else {
+                res.status(500).json({
+                    message: "No se encontro el producto"   
+                })
+            }
+    } catch (error) {
+        console.log('Error: No se pudo consultar el producto', error)
+        res.status(500).json({
+            message: 'Problemas al consultar el producto',
+        })  
+    }
+}
 
 module.exports = {
 	getsearch,
+    getsearchautocomplete
 }
       
