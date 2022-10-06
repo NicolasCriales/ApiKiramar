@@ -1,20 +1,20 @@
 export const tsqlorder = {
-    orderb2b: `
-                select 
-                        pedido.TIPODCTO, pedido.NRODCTO, pedido.FECHA, pedido.NIT, pedido.BRUTO, pedido.DESCUENTO, pedido.TOTALIVA, pedido.NETO, estado.Estado , pedido.NROFACTURA, pedido.FECHAFACT 
-                from    MtPedido as pedido
-                        INNER JOIN MtEstadoPedido Estado on estado.IdEstadoPedido =pedido.ESTADOPED
-                where   fecha >= DATEADD([month], DATEDIFF([month], '19000101', GETDATE()) - 3, '19000101') AND 
-                        fecha < DATEADD([month], DATEDIFF([month], '19000101', GETDATE()), '19000101') AND
-                        pedido.NIT=@Nit 
-            `,
+    orderb2b:   `
+                        select  DISTINCT(pedido.NRODCTO) as  NRODCTO, pedido.TIPODCTO,  pedido.FECHA, pedido.NIT, pedido.BRUTO, pedido.DESCUENTO,
+                                pedido.TOTALIVA, pedido.NETO, estado.Estado , pedido.NROFACTURA, CART.FechaDcto, CART.FechaVencimiento,CART.DIAS
+                        from    MtPedido as pedido
+                                INNER JOIN MtEstadoPedido Estado on estado.IdEstadoPedido =pedido.ESTADOPED
+                                INNER JOIN MtEstadoCartera CART ON CART.Nit = pedido.Nit
+                        where   fecha >= DATEADD([month], DATEDIFF([month], '19000101', GETDATE()) - 9, '19000101') AND 
+                                fecha < DATEADD([month], DATEDIFF([month], '19000101', GETDATE()), '19000101') AND 
+                                pedido.NIT=@Nit 
+                `,
 
     factureb2b: `
-                    select 
-                        TIPODCTO, NRODCTO, PRODUCTO, CANTIDAD, CANTORIG, VALORUNIT,IVA,DTOBASE,CONDCTOPROMO, DTOAUTORIZADO,
-                        CONDCTOAUTORIZADO, DTOCCIAL, CONDCTOCOMERCIAL, CONIVA,NETO
-                    from MvPedido
-                    where  TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
+                        select  TIPODCTO, NRODCTO, PRODUCTO, CANTIDAD, CANTORIG, VALORUNIT,IVA,DTOBASE,CONDCTOPROMO, DTOAUTORIZADO,
+                                CONDCTOAUTORIZADO, DTOCCIAL, CONDCTOCOMERCIAL, CONIVA,NETO
+                        from    MvPedido
+                        where  TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
 
                 `,
 
