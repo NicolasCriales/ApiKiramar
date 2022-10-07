@@ -1,8 +1,24 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqlorder } from '../tsql'
 import { express } from 'express'
+import { connection } from 'mongoose'
 
-const getorderb2b = async (req,res) => {
+const getMtPedido = async (res,req) => {
+    try {
+        const pool = await getConnection()
+        const { TIPODCTO,NRODCTO,FECHA,CODVEN,NIT,BRUTO,DESCUENTO,TOTALIVA,NETO,NOTA,ESTADOPED,TIPOFAC,NROFACTURA,
+                FECHAFACT,SYNC,LATITUD,LONGITUD,IDCOMPRA,COMENTARIO,AUTORIZADOPOR,SYNCCLOUD,FECHAING
+              } = req.body
+        const result = await pool
+    } catch (error) {
+        
+    }
+
+}
+
+
+
+const getfacture_orderb2b = async (req,res) => {
     try {
         const pool = await getConnection();
         const { Nit } = req.query
@@ -29,7 +45,7 @@ const getorderb2b = async (req,res) => {
     }   
 }
 
-const getfactureb2b = async (req,res) => {
+const getfacture_detailb2b = async (req,res) => {
     try {
         const pool = await getConnection();
         const { Tipodcto, Nrodcto }  = req.query
@@ -113,8 +129,9 @@ const getfactureb2c = async (req,res) => {
 
 
 module.exports = {
-	getorderb2b,
-    getfactureb2b,
+    getMtPedido,
+	getfacture_orderb2b,
+    getfacture_detailb2b,
     getorderb2c,
     getfactureb2c,
 }

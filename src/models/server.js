@@ -73,7 +73,7 @@ class Server {
     }
 
     listen() {
-        this.httpsServer.listen(this.port, () => {
+        this.app.listen(this.port, () => {
             console.log('Server listen on port: ', this.port)
         })
     }
