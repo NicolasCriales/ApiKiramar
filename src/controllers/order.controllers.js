@@ -1,18 +1,60 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqlorder } from '../tsql'
-import { express } from 'express'
-import { connection } from 'mongoose'
 
-const getMtPedido = async (res,req) => {
+const getMtPedido = async (req,res) => {
     try {
-        const pool = await getConnection()
-        const { TIPODCTO,NRODCTO,FECHA,CODVEN,NIT,BRUTO,DESCUENTO,TOTALIVA,NETO,NOTA,ESTADOPED,TIPOFAC,NROFACTURA,
-                FECHAFACT,SYNC,LATITUD,LONGITUD,IDCOMPRA,COMENTARIO,AUTORIZADOPOR,SYNCCLOUD,FECHAING
+        const pool = await getConnection();
+        const FechaGenerada = new Date()
+        const Fecha = new Date(FechaGenerada).toLocaleDateString('en-CA')
+        const FechaKiramar = Fecha + ' ' + '00:00:00.000'
+
+      
+
+        console.log(FechaKiramar);
+
+        const { FECHA, NIT, BRUTO, DESCUENTO, TOTALIVA, NETO,product,
+                PRODUCTO,CANTIDAD,CANTORIG,VALORUNIT,IVA,DTOBASE,DTOPROMO,CONDCTOPROMO,DTOAUTORIZADO,CONDCTOAUTORIZADO,DTOCCIAL,CONDCTOCOMERCIAL,CONIVA,MVNETO
               } = req.body
-        const result = await pool
-    } catch (error) {
+        const result = await pool 
+        .request()
+        .query(
+
+            `insert into MtPedido
+            (
+                [TIPODCTO], [NRODCTO], [FECHA], [CODVEN], [NIT], [BRUTO], [DESCUENTO], [TOTALIVA], [NETO], [NOTA], [ESTADOPED], [TIPOFAC], [NROFACTURA], [FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], [COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING]
+            )
+            values 
+            (
+                'F2','2',  cast(${FechaKiramar} as datatime2) as FECHA , '1052','${NIT}','${BRUTO}','${DESCUENTO}','${TOTALIVA}', '${NETO}', 'COMPRA Kiramar app', '1','NULL','NULL','NULL','S','0','0','NULL', 'COMPRA APK','NCRIALES','S','NULL'
+            )`
+        );
+        for (let i=0;i <  product.length; i++ ) {
+            const result2 = await pool
+                .request()
+                .query(
+                    `insert into  MvPedido
+                    (
+                        [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], [DTOBASE], [DTOPROMO], [CONDCTOPROMO], [DTOAUTORIZADO], [CONDCTOAUTORIZADO], [DTOCCIAL], [CONDCTOCOMERCIAL], [CONIVA], [NETO], [NOTA]
+                    )
+                    values
+                    (
+                        'F2', '2' , '1101', '${product[i].PRODUCTO}', '${product[i].CANTIDAD}', '${product[i].CANTORIG}', '${product[i].VALORUNIT}','${product[i].IVA}', '${product[i].DTOBASE}', '${product[i].DTOPROMO}', '${product[i].CONDCTOPROMO}', '${product[i].DTOAUTORIZADO}', '${product[i].CONDCTOAUTORIZADO}', '${product[i].DTOCCIAL}','${product[i].CONDCTOCOMERCIAL}','${product[i].CONIVA}', '${product[i].MVNETO}', 'COMPRA Kiramar app'
+                    )`      
+                );
+        }
+
+        res.send({
+            message: "se guardo los datos"
+        })
+
         
-    }
+    } catch (error) {
+        console.log('Error: no se pudo consultar las ordenes del usuario ', error);
+        res.status(500).send({
+            message: 'Problemas al consultar las ordenes del usuario'
+        })
+        
+    } 
 
 }
 

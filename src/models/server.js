@@ -30,8 +30,8 @@ class Server {
         this.routes()
 
         this.httpsServer = https.createServer({
-            key: fs.readFileSync('src/cert/dkasa.com.co.pem'),
-            cert: fs.readFileSync('src/cert/dkasa.com.co.pem'),
+            key: fs.readFileSync('src/cert/kiramar.com.co.pem'),
+            cert: fs.readFileSync('src/cert/kiramar.com.co.pem'),
           }, this.app);	
     }
 
@@ -73,7 +73,7 @@ class Server {
     }
 
     listen() {
-        this.app.listen(this.port, () => {
+        this.httpsServer.listen(this.port, () => {
             console.log('Server listen on port: ', this.port)
         })
     }
