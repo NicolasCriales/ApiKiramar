@@ -21,7 +21,7 @@ const getsearch = async (req,res) => {
         }
 
         if (orderP.length != 0) {
-            var addorderP = `ORDER BY AUX.PRECIO_CON_DESCUENTO ${orderP}`
+            var addorderP = `ORDER BY AUX.NETO_CON_DESCUENTO ${orderP}`
         } else {
             var addorderP = ``
         }
@@ -33,7 +33,7 @@ const getsearch = async (req,res) => {
         }
 
         if (preciomin.length != 0 && preciomax.length != 0) {
-            var filterprice = `WHERE AUX.PRECIO_CON_DESCUENTO >= '${preciomin}' AND AUX.PRECIO_CON_DESCUENTO <= '${preciomax}'`    
+            var filterprice = `WHERE AUX.NETO_CON_DESCUENTO >= '${preciomin}' AND AUX.NETO_CON_DESCUENTO <= '${preciomax}'`    
         } else {
             var filterprice = ``    
         }

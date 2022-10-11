@@ -1,18 +1,18 @@
 export const tsqlorder = {
-    orderb2b:   `
+  orderb2b: `
                         select  CodVendedor,Nit,TipoDcto,NroDcto,FechaDcto,FechaVencimiento,Dias,Deuda 
                         from    MtEstadoCartera 
                         where   NIT=@Nit 
                 `,
 
-    factureb2b: `
+  factureb2b: `
                         select  tipodcto,nrodcto,producto,nombre,cantidad,valorunit,descuento,zvalorunit,dctobase,dctopromo,iva 
                         from    mvtrade
                         where   TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
 
                 `,
 
-    orderb2c: `
+  orderb2c: `
                 select 
                         pedido.TIPODCTO, pedido.NRODCTO, pedido.FECHA, pedido.NIT, pedido.BRUTO, pedido.DESCUENTO, pedido.TOTALIVA, pedido.NETO, estado.Estado , pedido.NROFACTURA, pedido.FECHAFACT 
                 from    MtPedido as pedido
@@ -22,8 +22,7 @@ export const tsqlorder = {
                         pedido.NIT=@Nit
             `,
 
-
-    factureb2c: `
+  factureb2c: `
                     select 
                         TIPODCTO, NRODCTO, PRODUCTO, CANTIDAD, CANTORIG, VALORUNIT,IVA,DTOBASE,CONDCTOPROMO, DTOAUTORIZADO,
                         CONDCTOAUTORIZADO, DTOCCIAL, CONDCTOCOMERCIAL, CONIVA,NETO
@@ -31,5 +30,18 @@ export const tsqlorder = {
                     where  TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto 
             `,
 
+  facture: `
+                        select *
+                        from MtPedido 
+                        where TIPODCTO='PM' AND NIT=@Nit
+        `,
 
-}
+  facture_detail: `
+                                select [IDMVTRADE], [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], [DTOBASE], [DTOPROMO], [CONDCTOPROMO],
+                                 [DTOAUTORIZADO], [CONDCTOAUTORIZADO], [DTOCCIAL], [CONDCTOCOMERCIAL], [CONIVA], [NETO], [NOTA] 
+                                 from MvPedido 
+                                 where NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO
+
+
+        `,
+};

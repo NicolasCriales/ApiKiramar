@@ -4,12 +4,12 @@ export const tsqlsearch = {
                                         AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,
                                         AUX.Descripcion, AUX.Inventario, AUX.IdListaPrecios , AUX.VALORUNIT, AUX.Iva, aux.DctoBase, aux.DctoPromocional , aux.CONDCTOPROMO,
                                         AUX.DTOAUTORIZADO, AUX.CONDCTOAUTORIZADO, AUX.DctoCcial , AUX.CONDCTOCOMERCIAL, AUX.CONIVA, AUX.NETO_CON_DESCUENTO, AUX.NETO_SIN_DESCUENTO,
-                                        AUX.IMAGEN
+                                        AUX.IMAGEN, AUX.FecIng
 
                                 FROM (
                                         SELECT  MTA.IdArticulo, MTA.Codigo_Barras, MTA.NombreArticulo, MTA.NombreAlterno, MTA.CodProveedor, MTA.NombreProveedor, MTA.CodLinea,
                                                 MTA.NombreLinea, MTA.CodSubLinea, MTA.NombreSubLinea, MTA.CodTipoInv, MTA.TipoInventario, 
-                                                MTA.IdCategoria, MTA.Descripcion, SAL.Disponible AS Inventario, LISTAP.IdListaPrecios, IMG.small_img as IMAGEN,
+                                                MTA.IdCategoria, MTA.Descripcion, SAL.Disponible AS Inventario, LISTAP.IdListaPrecios, IMG.small_img as IMAGEN, MTA.FecIng,
                                                 CONVERT(numeric(15,0),(LISTAP.Precio)) as VALORUNIT,
                                                 CONVERT(numeric(15,0),(LISTAP.IVA)) as IVA,
                                                 CONVERT(numeric(3,0),(LISTAP.DctoBase)) as DctoBase,
@@ -67,7 +67,7 @@ export const tsqlsearch = {
                         `,
 
   max_min: `       
-                                SELECT	MAX(aux.PRECIO_SIN_DESCUENTO) AS MAX, MIN(aux.PRECIO_SIN_DESCUENTO) AS MIN 
+                                SELECT	MAX(aux.NETO_CON_DESCUENTO) AS MAX, MIN(aux.NETO_CON_DESCUENTO) AS MIN 
 
                                         FROM (
                                                 SELECT  MTA.IdArticulo, MTA.Codigo_Barras, MTA.NombreArticulo, MTA.NombreAlterno, MTA.CodProveedor, MTA.NombreProveedor, MTA.CodLinea,

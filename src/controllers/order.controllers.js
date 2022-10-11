@@ -48,7 +48,7 @@ const getMtPedido = async (req, res) => {
                     )
                     values
                     (
-                        'F2', '2' , '1101', '${product[i].PRODUCTO}', '${product[i].CANTIDAD}', '${product[i].CANTORIG}', '${product[i].VALORUNIT}','${product[i].IVA}', '${product[i].DTOBASE}', '${product[i].DTOPROMO}', '${product[i].CONDCTOPROMO}',
+                        'PM', '2' , '1101', '${product[i].PRODUCTO}', '${product[i].CANTIDAD}', '${product[i].CANTORIG}', '${product[i].VALORUNIT}','${product[i].IVA}', '${product[i].DTOBASE}', '${product[i].DTOPROMO}', '${product[i].CONDCTOPROMO}',
                         '${product[i].DTOAUTORIZADO}', '${product[i].CONDCTOAUTORIZADO}', '${product[i].DTOCCIAL}','${product[i].CONDCTOCOMERCIAL}','${product[i].CONIVA}', '${product[i].MVNETO}', 'COMPRA Kiramar app'
                     )`
       );
@@ -57,6 +57,59 @@ const getMtPedido = async (req, res) => {
     res.send({
       message: "se guardo los datos",
     });
+  } catch (error) {
+    console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+    res.status(500).send({
+      message: "Problemas al consultar las ordenes del usuario",
+    });
+  }
+};
+
+const getfacture = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const { Nit } = req.query;
+    const result = await pool
+      .request()
+      .input("Nit", sql.VarChar, Nit)
+      .query(tsqlorder.facture);
+    if (result.rowsAffected[0] > 0) {
+      const order = result.recordsets[0];
+      res.send({
+        order,
+      });
+    } else {
+      res.status(500).send({
+        message: "No se encontro ninguna orden asociado al cliente",
+      });
+    }
+  } catch (error) {
+    console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+    res.status(500).send({
+      message: "Problemas al consultar las ordenes del usuario",
+    });
+  }
+};
+
+const getfacture_detail = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const { TIPODCTO, NRODCTO } = req.query;
+    const result = await pool
+      .request()
+      .input("TIPODCTO", sql.VarChar, TIPODCTO)
+      .input("NRODCTO", sql.VarChar, NRODCTO)
+      .query(tsqlorder.facture_detail);
+    if (result.rowsAffected[0] > 0) {
+      const order = result.recordsets[0];
+      res.send({
+        order,
+      });
+    } else {
+      res.status(500).send({
+        message: "No se encontro ninguna orden asociado al cliente",
+      });
+    }
   } catch (error) {
     console.log("Error: no se pudo consultar las ordenes del usuario ", error);
     res.status(500).send({
@@ -173,6 +226,8 @@ const getfactureb2c = async (req, res) => {
 
 module.exports = {
   getMtPedido,
+  getfacture,
+  getfacture_detail,
   getfacture_orderb2b,
   getfacture_detailb2b,
   getorderb2c,
