@@ -1,14 +1,21 @@
 export const tsqlorder = {
   orderb2b: `
-                        select  CodVendedor,Nit,TipoDcto,NroDcto,FechaDcto,FechaVencimiento,Dias,Deuda 
+                        
+                        select  CodVendedor,Nit,TipoDcto,NroDcto,FechaDcto,FechaVencimiento,Dias,Deuda , 
+                        CASE 
+                                WHEN Dias > 0 THEN 'MORA'
+                                WHEN Dias < 0 THEN 'PENDIENTE'
+                        END
+                        AS Estado
                         from    MtEstadoCartera 
-                        where   NIT=@Nit 
+                        where    NIT=@Nit 
                 `,
 
   factureb2b: `
                         select  tipodcto,nrodcto,producto,nombre,cantidad,valorunit,descuento,zvalorunit,dctobase,dctopromo,iva 
                         from    mvtrade
                         where   TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
+                        
 
                 `,
 

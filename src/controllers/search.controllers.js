@@ -39,7 +39,6 @@ const getsearch = async (req,res) => {
         }
         //MOSTRAMOS TODOS LOS PRODUCTOS DE LA BUSQUEDA
         var sql_search = tsqlsearch.search + addcategory + addcodsumin + filterprice + addorderP + addorderF
-        console.log(sql_search);
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
