@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get("/MPedido", getMtPedido);
+router.post("/MPedido", getMtPedido);
 
 router.get("/b2b/facture", [validateJWT], getfacture_orderb2b);
 router.get("/b2b/facture/detail", [validateJWT], getfacture_detailb2b);
