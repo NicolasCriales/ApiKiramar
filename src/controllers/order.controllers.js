@@ -89,7 +89,7 @@ const getfacture = async (req, res) => {
       message: "Problemas al consultar las ordenes del usuario",
     });
   }
-};
+};//
 
 const getfacture_detail = async (req, res) => {
   try {
@@ -102,6 +102,7 @@ const getfacture_detail = async (req, res) => {
       .query(tsqlorder.facture_detail);
     if (result.rowsAffected[0] > 0) {
       const order = result.recordsets[0];
+      
       res.send({
         order,
       });
@@ -153,9 +154,19 @@ const getfacture_detailb2b = async (req, res) => {
       .input("Tipodcto", sql.VarChar, Tipodcto)
       .input("Nrodcto", sql.VarChar, Nrodcto)
       .query(tsqlorder.factureb2b);
+
+      const result2 = await pool
+      .request()
+      .input("Tipodcto", sql.VarChar, Tipodcto)
+      .input("Nrodcto", sql.VarChar, Nrodcto)
+      .query(tsqlorder.facture_detailfech);
+
     if (result.rowsAffected[0] > 0) {
       const facture = result.recordsets[0];
+      const date = result2.recordsets[0];
+
       res.send({
+        date,
         facture,
       });
     } else {

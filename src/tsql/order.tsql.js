@@ -48,8 +48,17 @@ export const tsqlorder = {
                                 select [IDMVTRADE], [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], [DTOBASE], [DTOPROMO], [CONDCTOPROMO],
                                  [DTOAUTORIZADO], [CONDCTOAUTORIZADO], [DTOCCIAL], [CONDCTOCOMERCIAL], [CONIVA], [NETO], [NOTA] 
                                  from MvPedido 
-                                 where NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO
-
-
+                                 where NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO    
         `,
+
+        facture_detailfech: `
+                                 select  FechaDcto,FechaVencimiento,Dias , 
+                                        CASE 
+                                                WHEN Dias > 0 THEN 'MORA'
+                                                WHEN Dias < 0 THEN 'PENDIENTE'
+                                        END
+                                AS Estado
+                                from    MtEstadoCartera 
+                                where   NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO  
+         `
 };
