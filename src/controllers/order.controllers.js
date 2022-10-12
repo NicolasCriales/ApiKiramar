@@ -170,7 +170,7 @@ const getfacture_detailb2b = async (req, res) => {
     });
   }
 };
-
+/*
 const getorderb2c = async (req, res) => {
   try {
     const pool = await getConnection();
@@ -222,7 +222,7 @@ const getfactureb2c = async (req, res) => {
       message: "Problemas al consultar la factura",
     });
   }
-};
+};*/
 
 module.exports = {
   getMtPedido,
@@ -230,6 +230,4 @@ module.exports = {
   getfacture_detail,
   getfacture_orderb2b,
   getfacture_detailb2b,
-  getorderb2c,
-  getfactureb2c,
 };

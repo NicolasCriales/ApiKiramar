@@ -7,13 +7,13 @@ const getsearch = async (req,res) => {
     try {
         const pool = await getConnection();
         const { IdListaPrecios, buscar, CodProveedor, category, orderP, orderF,preciomin, preciomax, page, limit } = req.query
-        
+         
         if (category.length != 0) {
             var addcategory = `and  mta.CodSubLinea in (${category})`
         } else {
             var addcategory = ``
-        }
-
+        } 
+        
         if (CodProveedor.length != 0) {
             var addcodsumin= `and PROV.codsumin in (${CodProveedor})  ) as AUX `
         } else {
@@ -39,6 +39,7 @@ const getsearch = async (req,res) => {
         }
         //MOSTRAMOS TODOS LOS PRODUCTOS DE LA BUSQUEDA
         var sql_search = tsqlsearch.search + addcategory + addcodsumin + filterprice + addorderP + addorderF
+        console.log(sql_search);
         const result = await pool
                 .request()
                 .input('IdListaPrecios', sql.VarChar,IdListaPrecios)

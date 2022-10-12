@@ -19,6 +19,7 @@ export const tsqlorder = {
 
                 `,
 
+                /*
   orderb2c: `
                 select 
                         pedido.TIPODCTO, pedido.NRODCTO, pedido.FECHA, pedido.NIT, pedido.BRUTO, pedido.DESCUENTO, pedido.TOTALIVA, pedido.NETO, estado.Estado , pedido.NROFACTURA, pedido.FECHAFACT 
@@ -35,7 +36,7 @@ export const tsqlorder = {
                         CONDCTOAUTORIZADO, DTOCCIAL, CONDCTOCOMERCIAL, CONIVA,NETO
                     from MvPedido
                     where  TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto 
-            `,
+            `,*/
 
   facture: `
                         select *
