@@ -2,6 +2,7 @@ import { Router } from "express";
 import { validateJWT } from "../middlewares/validate-jwt";
 import {
   getMtPedido,
+  getstatus,
   getfacture,
   getfacture_detail,
   getfacture_orderb2b,
@@ -10,7 +11,8 @@ import {
 
 const router = Router();
 
-router.post("/MPedido", getMtPedido);
+router.get("/MPedido", getMtPedido);
+router.post("/MPedido/status", getstatus);
 router.get("/MPedido/facture", getfacture);
 router.get("/MPedido/facture/detail", getfacture_detail);
 

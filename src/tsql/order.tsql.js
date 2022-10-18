@@ -60,5 +60,19 @@ export const tsqlorder = {
                                 AS Estado
                                 from    MtEstadoCartera 
                                 where   NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO  
-         `
+         `,
+
+
+         status: `
+                update MtPedido
+                        set ESTADOPED=@ESTADOPED
+                        where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`,
+
+
+        NRODCTO: `
+                select Id,ConsecutPedAPKBq, ConsecutPedAPKNq 
+                from MtConsecutivoTipoDcto
+`,
+mtprocli: `
+select * from MtCliente where nit =@NIT`
 };

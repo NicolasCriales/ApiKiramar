@@ -99,9 +99,9 @@ export const tsqlsearch = {
                                     
                         `,
 
-  searchautocomplete: `SELECT	AUX.NombreAlterno
+  searchautocomplete: `  AUX.NombreAlterno
                         FROM   (
-                                select  mta.NombreAlterno
+                                select mta.NombreAlterno
                                 from    MtArticulo MTA
                                         INNER JOIN KellerDeskTop.[dbo].MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
                                         INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo

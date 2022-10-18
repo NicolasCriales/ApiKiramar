@@ -2,184 +2,286 @@ import { getConnection, sql } from "../database/connection";
 import { tsqlorder } from "../tsql";
 
 const getMtPedido = async (req, res) => {
-  try {
-    const pool = await getConnection();
-    const FechaGenerada = new Date();
-    const Fecha = new Date(FechaGenerada).toLocaleDateString("en-CA");
-    const FechaKiramar = Fecha + " " + "00:00:00.000";
+    try {
+        const pool = await getConnection();
+        const FechaGenerada = new Date();
+        const Fecha = new Date(FechaGenerada).toLocaleDateString("en-CA");
+        const FechaKiramar = Fecha + " " + "00:00:00.000";
 
-    const {
-      NIT,
-      BRUTO,
-      DESCUENTO,
-      TOTALIVA,
-      NETO,
-      product,
-      PRODUCTO,
-      CANTIDAD,
-      CANTORIG,
-      VALORUNIT,
-      IVA,
-      DTOBASE,
-      DTOPROMO,
-      CONDCTOPROMO,
-      DTOAUTORIZADO,
-      CONDCTOAUTORIZADO,
-      DTOCCIAL,
-      CONDCTOCOMERCIAL,
-      CONIVA,
-      MVNETO,
-    } = req.body;
-    const result = await pool.request().query(
-      `insert into MtPedido
+        const {
+            NIT,
+            NOMBRE,
+            CODCIUDAD,
+            CIUDAD,
+            DIRECCION,
+            TELEFONO,
+            CELULAR,
+            EMAIL,
+            BRUTO,
+            DESCUENTO,
+            TOTALIVA,
+            NETO,
+            product,
+            BODEGA,
+            PRODUCTO,
+            CANTIDAD,
+            CANTORIG,
+            VALORUNIT,
+            IVA,
+            DTOBASE,
+            DTOPROMO,
+            CONDCTOPROMO,
+            DTOAUTORIZADO,
+            CONDCTOAUTORIZADO,
+            DTOCCIAL,
+            CONDCTOCOMERCIAL,
+            CONIVA,
+            MVNETO,
+        } = req.body;
+
+        const MtCliente = await pool.request().input("NIT", sql.VarChar, NIT).query(tsqlorder.mtprocli); 
+        const Cliente = MtCliente.recordsets[0] 
+
+        if ( MtCliente.rowsAffected[0] > 0 ===true )  {
+            console.log('si existe el cliente', Cliente);
+
+        } else {
+            console.log('No existe', Cliente);
+            const MtClienteInsert = await pool.request().query(`
+
+            
+            insert into MtCliente
+        (
+        	   [IdEmpresa], [Nit], [CodAlterno], [Nombre], [Pais], [CodCiudad], [Ciudad], [Direccion], [Telefono], [Celular], [Email],
+        	   [Contacto], [ListaPrecios], [CodVendedor], [Habilitado], [Estado], [Cupo], [DctoPiePag], [CodTipoCl], [Latitud], [Longitud],
+        	   [GeoPosCertificada], [Modificado], [CodVenModifica], [ObsCartera], [password]
+        )
+        values
+        (
+        	   '1', '${NIT}','${NIT}','${NOMBRE}', 'COLOMBIA', '${CODCIUDAD}', '${CIUDAD}', '${DIRECCION}', '${TELEFONO}', '${CELULAR}', '${EMAIL}',
+        	   '${CELULAR}', 'WEB', '1034','S', '1', '0',  '0',  '0',  '0', '0',
+               '0', '0',  '0',  '0',  '0'
+        )`
+
+) }
+
+        const result0 = await pool.request().query(tsqlorder.NRODCTO);
+        const nrodcto = result0.recordsets[0];
+
+        var updatenrodcto = nrodcto;
+        var TIPODCTO = "";
+        if (BODEGA === 2101) {
+            updatenrodcto = updatenrodcto[0].ConsecutPedAPKBq + 1;
+            TIPODCTO = "KC";
+        } else {
+            updatenrodcto = updatenrodcto[0].ConsecutPedAPKNq + 1;
+            TIPODCTO = "PM";
+        }
+
+        const result = await pool.request().query(
+            `insert into MtPedido
             (
-                [TIPODCTO], [NRODCTO], [FECHA], [CODVEN], [NIT], [BRUTO], [DESCUENTO], [TOTALIVA], [NETO], [NOTA], [ESTADOPED], [TIPOFAC], [NROFACTURA], [FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], [COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING]
+                [TIPODCTO], [NRODCTO], [FECHA], [CODVEN], [NIT], [BRUTO], [DESCUENTO], [TOTALIVA], [NETO], [NOTA], [ESTADOPED], [TIPOFAC], [NROFACTURA],
+                [FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], [COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING]
             )
             values 
             (
-                'F2','2',  '${FechaKiramar}', '1052','${NIT}','${BRUTO}','${DESCUENTO}','${TOTALIVA}', '${NETO}', 'COMPRA Kiramar app', '1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK','NCRIALES','S','${FechaKiramar}'
+                '${TIPODCTO}',${updatenrodcto},  '${FechaKiramar}', '1052','${NIT}','${BRUTO}','${DESCUENTO}','${TOTALIVA}', '${NETO}', 'COMPRA Kiramar app',
+                '1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK','NCRIALES','S','${FechaKiramar}'
             )`
-    );
-    for (let i = 0; i < product.length; i++) {
-      const result2 = await pool.request().query(
-        `insert into  MvPedido
+        );
+        for (let i = 0; i < product.length; i++) {
+            const result2 = await pool.request().query(
+                `insert into  MvPedido
                     (
-                        [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], [DTOBASE], [DTOPROMO], [CONDCTOPROMO], [DTOAUTORIZADO], [CONDCTOAUTORIZADO], [DTOCCIAL], [CONDCTOCOMERCIAL], [CONIVA], [NETO], [NOTA]
+                        [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], [DTOBASE], [DTOPROMO], [CONDCTOPROMO],
+                        [DTOAUTORIZADO], [CONDCTOAUTORIZADO], [DTOCCIAL], [CONDCTOCOMERCIAL], [CONIVA], [NETO], [NOTA]
                     )
                     values
                     (
-                        'PM', '2' , '1101', '${product[i].PRODUCTO}', '${product[i].CANTIDAD}', '${product[i].CANTORIG}', '${product[i].VALORUNIT}','${product[i].IVA}', '${product[i].DTOBASE}', '${product[i].DTOPROMO}', '${product[i].CONDCTOPROMO}',
-                        '${product[i].DTOAUTORIZADO}', '${product[i].CONDCTOAUTORIZADO}', '${product[i].DTOCCIAL}','${product[i].CONDCTOCOMERCIAL}','${product[i].CONIVA}', '${product[i].MVNETO}', 'COMPRA Kiramar app'
+                      '${TIPODCTO}', ${updatenrodcto} ,'${BODEGA}', '${product[i].PRODUCTO}', '${product[i].CANTIDAD}', '${product[i].CANTORIG}', '${product[i].VALORUNIT}',
+                      '${product[i].IVA}', '${product[i].DTOBASE}', '${product[i].DTOPROMO}', '${product[i].CONDCTOPROMO}','${product[i].DTOAUTORIZADO}', 
+                      '${product[i].CONDCTOAUTORIZADO}', '${product[i].DTOCCIAL}','${product[i].CONDCTOCOMERCIAL}','${product[i].CONIVA}', '${product[i].MVNETO}',
+                      'COMPRA Kiramar app'
                     )`
-      );
-    }
+            );
+        }
 
-    res.send({
-      message: "se guardo los datos",
-    });
-  } catch (error) {
-    console.log("Error: no se pudo consultar las ordenes del usuario ", error);
-    res.status(500).send({
-      message: "Problemas al consultar las ordenes del usuario",
-    });
-  }
+        if (BODEGA === 2101) {
+            const result3 = await pool
+                .request()
+                .query(
+                    `update MtConsecutivoTipoDcto set ConsecutPedAPKBq=${updatenrodcto} `
+                );
+        } else {
+            const result3 = await pool
+                .request()
+                .query(
+                    `update MtConsecutivoTipoDcto set ConsecutPedAPKNq=${updatenrodcto} `
+                );
+        }
+
+        res.send({
+            message: `Se guardo los dartos ,${updatenrodcto}`
+        });
+    } catch (error) {
+        console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+        res.status(500).send({
+            message: "Problemas al consultar las ordenes del usuario",
+        });
+    }
+};
+
+const getstatus = async (req, res) => {
+    try {
+        const pool = await getConnection();
+        const { NRODCTO, status,TIPODCTO } = req.body;
+        console.log(NRODCTO, status,TIPODCTO);
+        var ESTADOPED = 1;
+        if (status === 200) {
+            ESTADOPED = 2;
+        } else {
+            ESTADOPED = 3;
+        }
+        const result = await pool
+            .request()
+            .input("NRODCTO", sql.VarChar, NRODCTO)
+            .input("ESTADOPED", sql.Numeric, ESTADOPED)
+            .input("TIPODCTO", sql.VarChar, TIPODCTO)
+            .query(tsqlorder.status);
+        if (result.rowsAffected[0] > 0) {
+            const updateStatus = result.recordsets[0];
+            res.send({
+                message: `Estado ${ESTADOPED}`,
+            });
+        } else {
+            res.status(500).send({
+                message: "No se encontro ninguna orden asociado al cliente",
+            });
+        }
+    } catch (error) {
+        console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+        res.status(500).send({
+            message: "Problemas al consultar las ordenes del usuario",
+        });
+    }
 };
 
 const getfacture = async (req, res) => {
-  try {
-    const pool = await getConnection();
-    const { Nit } = req.query;
-    const result = await pool
-      .request()
-      .input("Nit", sql.VarChar, Nit)
-      .query(tsqlorder.facture);
-    if (result.rowsAffected[0] > 0) {
-      const order = result.recordsets[0];
-      res.send({
-        order,
-      });
-    } else {
-      res.status(500).send({
-        message: "No se encontro ninguna orden asociado al cliente",
-      });
+    try {
+        const pool = await getConnection();
+        const { Nit } = req.query;
+        const result = await pool
+            .request()
+            .input("Nit", sql.VarChar, Nit)
+            .query(tsqlorder.facture);
+        if (result.rowsAffected[0] > 0) {
+            const order = result.recordsets[0];
+            res.send({
+                order,
+            });
+        } else {
+            res.status(500).send({
+                message: "No se encontro ninguna orden asociado al cliente",
+            });
+        }
+    } catch (error) {
+        console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+        res.status(500).send({
+            message: "Problemas al consultar las ordenes del usuario",
+        });
     }
-  } catch (error) {
-    console.log("Error: no se pudo consultar las ordenes del usuario ", error);
-    res.status(500).send({
-      message: "Problemas al consultar las ordenes del usuario",
-    });
-  }
-};//
+}; //
 
 const getfacture_detail = async (req, res) => {
-  try {
-    const pool = await getConnection();
-    const { TIPODCTO, NRODCTO } = req.query;
-    const result = await pool
-      .request()
-      .input("TIPODCTO", sql.VarChar, TIPODCTO)
-      .input("NRODCTO", sql.VarChar, NRODCTO)
-      .query(tsqlorder.facture_detail);
-    if (result.rowsAffected[0] > 0) {
-      const order = result.recordsets[0];
-      
-      res.send({
-        order,
-      });
-    } else {
-      res.status(500).send({
-        message: "No se encontro ninguna orden asociado al cliente",
-      });
+    try {
+        const pool = await getConnection();
+        const { TIPODCTO, NRODCTO } = req.query;
+        const result = await pool
+            .request()
+            .input("TIPODCTO", sql.VarChar, TIPODCTO)
+            .input("NRODCTO", sql.VarChar, NRODCTO)
+            .query(tsqlorder.facture_detail);
+        if (result.rowsAffected[0] > 0) {
+            const order = result.recordsets[0];
+
+            res.send({
+                order,
+            });
+        } else {
+            res.status(500).send({
+                message: "No se encontro ninguna orden asociado al cliente",
+            });
+        }
+    } catch (error) {
+        console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+        res.status(500).send({
+            message: "Problemas al consultar las ordenes del usuario",
+        });
     }
-  } catch (error) {
-    console.log("Error: no se pudo consultar las ordenes del usuario ", error);
-    res.status(500).send({
-      message: "Problemas al consultar las ordenes del usuario",
-    });
-  }
 };
 
 const getfacture_orderb2b = async (req, res) => {
-  try {
-    const pool = await getConnection();
-    const { Nit } = req.query;
-    const result = await pool
-      .request()
-      .input("Nit", sql.VarChar, Nit)
-      .query(tsqlorder.orderb2b);
-    if (result.rowsAffected[0] > 0) {
-      const order = result.recordsets[0];
-      res.send({
-        order,
-      });
-    } else {
-      res.status(500).send({
-        message: "No se encontro ninguna orden asociado al cliente",
-      });
+    try {
+        const pool = await getConnection();
+        const { Nit } = req.query;
+        const result = await pool
+            .request()
+            .input("Nit", sql.VarChar, Nit)
+            .query(tsqlorder.orderb2b);
+        if (result.rowsAffected[0] > 0) {
+            const order = result.recordsets[0];
+            res.send({
+                order,
+            });
+        } else {
+            res.status(500).send({
+                message: "No se encontro ninguna orden asociado al cliente",
+            });
+        }
+    } catch (error) {
+        console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+        res.status(500).send({
+            message: "Problemas al consultar las ordenes del usuario",
+        });
     }
-  } catch (error) {
-    console.log("Error: no se pudo consultar las ordenes del usuario ", error);
-    res.status(500).send({
-      message: "Problemas al consultar las ordenes del usuario",
-    });
-  }
 };
 
 const getfacture_detailb2b = async (req, res) => {
-  try {
-    const pool = await getConnection();
-    const { Tipodcto, Nrodcto } = req.query;
-    const result = await pool
-      .request()
-      .input("Tipodcto", sql.VarChar, Tipodcto)
-      .input("Nrodcto", sql.VarChar, Nrodcto)
-      .query(tsqlorder.factureb2b);
+    try {
+        const pool = await getConnection();
+        const { Tipodcto, Nrodcto } = req.query;
+        const result = await pool
+            .request()
+            .input("Tipodcto", sql.VarChar, Tipodcto)
+            .input("Nrodcto", sql.VarChar, Nrodcto)
+            .query(tsqlorder.factureb2b);
 
-      const result2 = await pool
-      .request()
-      .input("Tipodcto", sql.VarChar, Tipodcto)
-      .input("Nrodcto", sql.VarChar, Nrodcto)
-      .query(tsqlorder.facture_detailfech);
+        const result2 = await pool
+            .request()
+            .input("Tipodcto", sql.VarChar, Tipodcto)
+            .input("Nrodcto", sql.VarChar, Nrodcto)
+            .query(tsqlorder.facture_detailfech);
 
-    if (result.rowsAffected[0] > 0) {
-      const facture = result.recordsets[0];
-      const date = result2.recordsets[0];
+        if (result.rowsAffected[0] > 0) {
+            const facture = result.recordsets[0];
+            const date = result2.recordsets[0];
 
-      res.send({
-        date,
-        facture,
-      });
-    } else {
-      res.satus(500).send({
-        message: "No se encuentra la factura seleccionada",
-      });
+            res.send({
+                date,
+                facture,
+            });
+        } else {
+            res.status(500).send({
+                message: "No se encuentra la factura seleccionada",
+            });
+        }
+    } catch (error) {
+        console.log("Error: no se encontro la factura enviada", error);
+        res.status(500).send({
+            message: "Problemas al consultar la factura",
+        });
     }
-  } catch (error) {
-    console.log("Error: no se encontro la factura enviada", error);
-    res.status(500).send({
-      message: "Problemas al consultar la factura",
-    });
-  }
 };
 /*
 const getorderb2c = async (req, res) => {
@@ -236,9 +338,10 @@ const getfactureb2c = async (req, res) => {
 };*/
 
 module.exports = {
-  getMtPedido,
-  getfacture,
-  getfacture_detail,
-  getfacture_orderb2b,
-  getfacture_detailb2b,
+    getMtPedido,
+    getfacture,
+    getfacture_detail,
+    getfacture_orderb2b,
+    getfacture_detailb2b,
+    getstatus,
 };
