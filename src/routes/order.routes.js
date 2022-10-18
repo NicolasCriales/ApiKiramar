@@ -11,7 +11,7 @@ import {
 
 const router = Router();
 
-router.get("/MPedido", getMtPedido);
+router.post("/MPedido", getMtPedido);
 router.post("/MPedido/status", getstatus);
 router.get("/MPedido/facture", getfacture);
 router.get("/MPedido/facture/detail", getfacture_detail);
