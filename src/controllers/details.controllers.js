@@ -77,7 +77,7 @@ const getregisterPQRS = async (req,res) => {
     }
 }
 
-const getPQRS= async (req,res) => {
+const getPQRS = async (req,res) => {
     try {
         const pool = await getConnection();
         const { Nit } = req.query
@@ -101,11 +101,40 @@ const getPQRS= async (req,res) => {
             message: 'Problemas',
         })  
     }
+
+}
+
+const getidPQRS= async (req,res) => {
+    try {
+        const pool = await getConnection();
+        const { Nit,id } = req.query
+        const result = await pool
+            .request()
+            .input("Nit", sql.VarChar, Nit)
+            .input("id", sql.VarChar, id)
+            .query(tsqldetails.idPQRS)
+        if(result.rowsAffected[0] > 0){
+            const idPQRS = result.recordsets[0]
+            res.send({
+                idPQRS
+            })
+        } else {
+            res.status(500).query({
+                message: "Este cliente no tiene PQRS"
+            })
+        }
+    } catch (error) {
+        console.log('Error: No se pudo consultar la ficha tecnica ', error)
+        res.status(500).json({
+            message: 'Problemas',
+        })  
+    }
 }
 
 module.exports = {
 	getdatasheet,
     gettypePQRS,
     getregisterPQRS,
-    getPQRS
+    getPQRS,
+    getidPQRS
 }

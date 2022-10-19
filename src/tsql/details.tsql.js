@@ -22,14 +22,20 @@ export const tsqldetails = {
        @FechaKiramar, @motivo, @Codigo, 1, @FechaKiramar, @Nit, '' 
 	)
                     `,
-
                     PQRS: `
+                    select	mvPqrs.id, mvPqrs.fechaing, mvPqrs.motivo, mvPqrs.idtipopqrs, tipo.Nombre as tipopqrs  , mvPqrs.idestadopqrs,  estado.Nombre as estadopqrs 
+                   from mvMotivoPqrs mvPqrs
+                        inner join MtTipoPQRS tipo on tipo.Codigo = mvPqrs.idtipopqrs
+                        inner join MtEstadoPQRS estado on estado.Codigo = mvPqrs.idestadopqrs
+            where mvPqrs.nit=@Nit`,
+
+                    idPQRS: `
                     select	mvPqrs.id, mvPqrs.fechaing, mvPqrs.motivo, mvPqrs.idtipopqrs, tipo.Nombre as tipopqrs  , mvPqrs.idestadopqrs,  estado.Nombre as estadopqrs, 
                     mvPqrs.fechaestadopqrs, mvPqrs.nit, mvPqrs.respuesta
             from mvMotivoPqrs mvPqrs
                  inner join MtTipoPQRS tipo on tipo.Codigo = mvPqrs.idtipopqrs
                  inner join MtEstadoPQRS estado on estado.Codigo = mvPqrs.idestadopqrs
-	 where mvPqrs.nit=@Nit
+	 where mvPqrs.nit=@Nit and mvPqrs.id=@id
 
                         `
 }
