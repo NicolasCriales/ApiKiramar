@@ -9,7 +9,7 @@ import auth from './auth.controllers'
 import createuser from './createuser.controllers.js'
 import city from './city.controllers.js'
 import order from './order.controllers.js'
-import getdatasheet from './getdatasheet.controllers.js'
+import details from './details.controllers.js'
 import banners from './banners.controllers.js'
 
 module.exports = {
@@ -24,6 +24,6 @@ module.exports = {
     ...createuser,
     ...city,
     ...order,
-    ...getdatasheet,
+    ...details,
     ...banners,
 }
