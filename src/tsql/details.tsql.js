@@ -37,5 +37,23 @@ export const tsqldetails = {
                  inner join MtEstadoPQRS estado on estado.Codigo = mvPqrs.idestadopqrs
 	 where mvPqrs.nit=@Nit and mvPqrs.id=@id
 
-                        `
+                        `,
+
+    registerReview: `
+    insert into mvResena
+    (
+     [idproducto], [calificacion], [opinion], [nombre]
+    )
+    values 
+    (
+     @idproducto, @calificacion, @opinion, @nombre
+    )                
+    `,
+
+    review: `
+            select idproducto,calificacion,opinion,nombre 
+            from mvResena 
+            where idproducto=@idproducto
+
+    `
 }

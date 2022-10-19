@@ -131,10 +131,61 @@ const getidPQRS= async (req,res) => {
     }
 }
 
+const getregisterReview = async (req,res) => {
+    try {
+        const pool = await getConnection();
+        const { idproducto,calificacion,opinion,nombre } = req.body
+        const result = await pool 
+            .request()
+            .input("idproducto", sql.VarChar,idproducto)
+            .input("calificacion",calificacion)
+            .input("opinion",sql.VarChar,opinion)
+            .input("nombre",sql.VarChar,nombre)
+            .query(tsqldetails.registerReview)
+        res.send({
+            registerReview: "la review se guardo"
+        })
+    } catch (error) {
+        console.log('Error: No se pudo consultar la ficha tecnica ', error)
+        res.status(500).json({
+            message: 'Problemas',
+        })  
+    }
+}
+
+const getreview = async (req,res) => {
+    try {
+        const pool = await getConnection();
+        const { idproducto } = req.query
+        const result = await pool
+            .request()
+            .input("idproducto", sql.VarChar, idproducto)
+            .query(tsqldetails.review)
+        if(result.rowsAffected[0] > 0) {
+            const review = result.recordsets[0]
+            res.send({
+                review
+            })
+        } else {
+            res.status(500).json({
+                message: "No hay reseñas"
+            })
+        }
+        
+    } catch (error) {
+        console.log('Error: No se pudo consultar la ficha tecnica ', error)
+        res.status(500).json({
+            message: 'Problemas',
+        })  
+    }
+}
+
 module.exports = {
 	getdatasheet,
     gettypePQRS,
     getregisterPQRS,
     getPQRS,
-    getidPQRS
+    getidPQRS,
+    getregisterReview,
+    getreview
 }
