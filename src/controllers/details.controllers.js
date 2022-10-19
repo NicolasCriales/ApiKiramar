@@ -59,7 +59,6 @@ const getregisterPQRS = async (req,res) => {
         const Fecha = new Date(FechaGenerada).toLocaleDateString("en-CA");
         const FechaKiramar = Fecha + " " + "00:00:00.000";
         const { Codigo,motivo,Nit } = req.body  
-        console.log(FechaKiramar,Codigo,motivo,Nit );  
         const result = await pool 
             .request()
             .input("Codigo", sql.Int, Codigo)
