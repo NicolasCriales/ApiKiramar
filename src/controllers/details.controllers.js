@@ -1,5 +1,7 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqldetails } from '../tsql'
+import { pagination } from '../helpers/pagination'
+
 
 
 const getdatasheet = async (req,res) => {
@@ -156,13 +158,14 @@ const getregisterReview = async (req,res) => {
 const getreview = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { idproducto } = req.query
+        const { idproducto,page,limit } = req.query
         const result = await pool
             .request()
             .input("idproducto", sql.VarChar, idproducto)
             .query(tsqldetails.review)
         if(result.rowsAffected[0] > 0) {
-            const review = result.recordsets[0]
+            let review = result.recordsets[0]
+            review = await pagination(review, page, limit)
             res.send({
                 review
             })
