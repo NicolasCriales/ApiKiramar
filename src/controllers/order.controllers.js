@@ -1,5 +1,7 @@
 import { getConnection, sql } from "../database/connection";
 import { tsqlorder } from "../tsql";
+import { pagination } from '../helpers/pagination'
+
 
 const getMtPedido = async (req, res) => {
     try {
@@ -224,13 +226,14 @@ const getfacture_detail = async (req, res) => {
 const getfacture_orderb2b = async (req, res) => {
     try {
         const pool = await getConnection();
-        const { Nit } = req.query;
+        const { Nit,page,limit } = req.query;
         const result = await pool
             .request()
             .input("Nit", sql.VarChar, Nit)
             .query(tsqlorder.orderb2b);
         if (result.rowsAffected[0] > 0) {
-            const order = result.recordsets[0];
+            let order = result.recordsets[0]
+            order = await pagination(order, page, limit)
             res.send({
                 order,
             });

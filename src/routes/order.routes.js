@@ -11,10 +11,10 @@ import {
 
 const router = Router();
 
-router.post("/MPedido", getMtPedido);
-router.post("/MPedido/status", getstatus);
-router.get("/MPedido/facture", getfacture);
-router.get("/MPedido/facture/detail", getfacture_detail);
+router.post("/MPedido",[validateJWT], getMtPedido);
+router.post("/MPedido/status",[validateJWT], getstatus);
+router.get("/MPedido/facture",[validateJWT], getfacture);
+router.get("/MPedido/facture/detail",[validateJWT], getfacture_detail);
 
 router.get("/b2b/facture", [validateJWT], getfacture_orderb2b);
 router.get("/b2b/facture/detail", [validateJWT], getfacture_detailb2b);

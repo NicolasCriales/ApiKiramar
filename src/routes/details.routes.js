@@ -5,13 +5,13 @@ import { validateJWT } from '../middlewares/validate-jwt'
 const router = Router()
 
 router.get('/', [validateJWT],getdatasheet)
-router.get('/typePQRS', gettypePQRS)  
-router.post('/registerPQRS', getregisterPQRS) 
-router.get('/PQRS', getPQRS) 
-router.get('/idPQRS', getidPQRS) 
+router.get('/typePQRS',[validateJWT], gettypePQRS)  
+router.post('/registerPQRS',[validateJWT], getregisterPQRS) 
+router.get('/PQRS',[validateJWT], getPQRS) 
+router.get('/idPQRS',[validateJWT], getidPQRS) 
 
-router.post('/registerReview', getregisterReview) 
-router.get('/review', getreview) 
+router.post('/registerReview',[validateJWT], getregisterReview) 
+router.get('/review',[validateJWT], getreview) 
 
 
 

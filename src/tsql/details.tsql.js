@@ -42,11 +42,11 @@ export const tsqldetails = {
     registerReview: `
     insert into mvResena
     (
-     [idproducto], [calificacion], [opinion], [nombre]
+        [Nit], [idproducto], [calificacion], [opinion], [nombre]
     )
     values 
     (
-     @idproducto, @calificacion, @opinion, @nombre
+      @Nit, @idproducto, @calificacion, @opinion, @nombre
     )                
     `,
 

@@ -99,7 +99,7 @@ export const tsqlsearch = {
                                     
                         `,
 
-  searchautocomplete: `  AUX.NombreAlterno
+  searchautocomplete: `  select top(10)AUX.NombreAlterno
                         FROM   (
                                 select mta.NombreAlterno
                                 from    MtArticulo MTA

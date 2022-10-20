@@ -82,13 +82,14 @@ const getregisterPQRS = async (req,res) => {
 const getPQRS = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { Nit } = req.query
+        const { Nit, page, limit } = req.query
         const result = await pool
             .request()
             .input("Nit", sql.VarChar, Nit)
             .query(tsqldetails.PQRS)
         if(result.rowsAffected[0] > 0){
-            const PQRS = result.recordsets[0]
+            let PQRS = result.recordsets[0]
+            PQRS = await pagination(PQRS, page, limit)
             res.send({
                 PQRS
             })
@@ -136,9 +137,10 @@ const getidPQRS= async (req,res) => {
 const getregisterReview = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { idproducto,calificacion,opinion,nombre } = req.body
-        const result = await pool 
+        const { Nit,idproducto,calificacion,opinion,nombre } = req.body
+        const result = await pool  
             .request()
+            .input("Nit", sql.VarChar,Nit)
             .input("idproducto", sql.VarChar,idproducto)
             .input("calificacion",calificacion)
             .input("opinion",sql.VarChar,opinion)
