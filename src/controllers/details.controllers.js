@@ -195,10 +195,6 @@ const getregisterReview = async (req,res) => {
             })
             
         }
-
-
-           
-       
     } catch (error) {
         console.log('Error: No se pudo consultar la ficha tecnica ', error)
         res.status(500).json({
