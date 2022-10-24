@@ -24,7 +24,7 @@ const getMtPedido = async (req, res) => {
             TOTALIVA,
             NETO,
             product,
-            BODEGA,
+            ListaPrecios,
             PRODUCTO,
             CANTIDAD,
             CANTORIG,
@@ -72,24 +72,28 @@ const getMtPedido = async (req, res) => {
 
         var updatenrodcto = nrodcto;
         var TIPODCTO = "";
-        if (BODEGA === 2101) {
+        var BODEGA = ''
+        if (ListaPrecios === 'PB005') {
             updatenrodcto = updatenrodcto[0].ConsecutPedAPKBq + 1;
-            TIPODCTO = "KC";
+            TIPODCTO = "PB";
+            var BODEGA = '2101'
+
         } else {
             updatenrodcto = updatenrodcto[0].ConsecutPedAPKNq + 1;
             TIPODCTO = "PM";
+            var BODEGA = '1101'
         }
 
         const result = await pool.request().query(
             `insert into MtPedido
             (
                 [TIPODCTO], [NRODCTO], [FECHA], [CODVEN], [NIT], [BRUTO], [DESCUENTO], [TOTALIVA], [NETO], [NOTA], [ESTADOPED], [TIPOFAC], [NROFACTURA],
-                [FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], [COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING]
+                [FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], [COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING],[Direccion],[Ciudad], [CodCiudad]
             )
             values 
             (
                 '${TIPODCTO}',${updatenrodcto},  '${FechaKiramar}', '1052','${NIT}','${BRUTO}','${DESCUENTO}','${TOTALIVA}', '${NETO}', 'COMPRA Kiramar app',
-                '1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK','NCRIALES','S','${FechaKiramar}'
+                '1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK','NCRIALES','S','${FechaKiramar}', '${DIRECCION}','${CIUDAD}','${CODCIUDAD}'
             )`
         );
         for (let i = 0; i < product.length; i++) {
@@ -109,7 +113,7 @@ const getMtPedido = async (req, res) => {
             );
         }
 
-        if (BODEGA === 2101) {
+        if (ListaPrecios === 'PB005') {
             const result3 = await pool
                 .request()
                 .query(
@@ -124,7 +128,8 @@ const getMtPedido = async (req, res) => {
         }
 
         res.send({
-            message: `Se guardo los dartos ,${updatenrodcto}`
+            Nrodcto: updatenrodcto,
+            TIPODCTO: TIPODCTO
         });
     } catch (error) {
         console.log("Error: no se pudo consultar las ordenes del usuario ", error);
@@ -169,14 +174,56 @@ const getstatus = async (req, res) => {
     }
 };
 
-const getfacture = async (req, res) => {
+
+const getpayment = async (req,res) =>{
+    try {
+        const pool = await getConnection();
+        const { nrodcto, Tipodcto, Nit } = req.query
+        const result = await pool 
+            .request()
+            .input("nrodcto", nrodcto)
+            .input("Tipodcto", Tipodcto)
+            .query(tsqlorder.DatosEnvio)
+        
+        const result2 = await pool 
+            .request()
+            .input("Nit", Nit)
+            .query(tsqlorder.DatosCliente)
+
+        const result3 = await pool 
+            .request()
+            .input("nrodcto", nrodcto)
+            .input("Tipodcto", Tipodcto)
+            .query(tsqlorder.TotalArticulos)
+
+        const DatosEnvio = result.recordsets[0]
+        const DatosCliente = result2.recordsets[0]
+        const TotalArticulos = result3.rowsAffected[0]
+
+
+            res.send({
+                DatosEnvio,
+                DatosCliente,
+                TotalArticulos
+            })
+
+        
+    } catch (error) {
+        console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+        res.status(500).send({
+            message: "Problemas al consultar las ordenes del usuario",
+        });
+    }
+
+}
+const getPedido = async (req, res) => {
     try {
         const pool = await getConnection();
         const { Nit } = req.query;
         const result = await pool
             .request()
             .input("Nit", sql.VarChar, Nit)
-            .query(tsqlorder.facture);
+            .query(tsqlorder.pedido);
         if (result.rowsAffected[0] > 0) {
             const order = result.recordsets[0];
             res.send({
@@ -195,20 +242,33 @@ const getfacture = async (req, res) => {
     }
 }; //
 
-const getfacture_detail = async (req, res) => {
+const getPedido_detail = async (req, res) => {
     try {
         const pool = await getConnection();
-        const { TIPODCTO, NRODCTO } = req.query;
+        const { TIPODCTO, NRODCTO, Nit } = req.query;
+
         const result = await pool
+        .request()
+        .input("Nit", sql.VarChar, Nit)
+        .input("TIPODCTO", sql.VarChar, TIPODCTO)
+        .input("NRODCTO", sql.VarChar, NRODCTO)
+        .query(tsqlorder.pedido_detail);
+
+        const result2 = await pool
             .request()
             .input("TIPODCTO", sql.VarChar, TIPODCTO)
             .input("NRODCTO", sql.VarChar, NRODCTO)
-            .query(tsqlorder.facture_detail);
+            .query(tsqlorder.pedido_detail1);
         if (result.rowsAffected[0] > 0) {
-            const order = result.recordsets[0];
+            const orders = result.recordsets[0];
+            const order = result2.recordsets[0];
+            const Articulos = result2.rowsAffected[0]
+
 
             res.send({
+                orders,
                 order,
+                Articulos
             });
         } else {
             res.status(500).send({
@@ -267,12 +327,14 @@ const getfacture_detailb2b = async (req, res) => {
             .query(tsqlorder.facture_detailfech);
 
         if (result.rowsAffected[0] > 0) {
-            const facture = result.recordsets[0];
+            const ContadorArt =  result.rowsAffected[0];
+            const Articulos = result.recordsets[0];
             const date = result2.recordsets[0];
 
             res.send({
                 date,
-                facture,
+                ContadorArt,
+                Articulos,
             });
         } else {
             res.status(500).send({
@@ -342,9 +404,10 @@ const getfactureb2c = async (req, res) => {
 
 module.exports = {
     getMtPedido,
-    getfacture,
-    getfacture_detail,
+    getPedido,
+    getPedido_detail,
     getfacture_orderb2b,
     getfacture_detailb2b,
     getstatus,
+    getpayment
 };

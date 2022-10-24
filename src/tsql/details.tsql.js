@@ -19,11 +19,24 @@ export const tsqldetails = {
 	)
 	values 
 	(
-       @FechaKiramar, @motivo, @Codigo, 1, @FechaKiramar, @Nit, '' 
+       @FechaKiramar, @motivo, @tipoPqrs, 1, @FechaKiramar, @Nit, '' 
 	)
                     `,
+
+
+
+                    responsePQRS: `
+insert into mvRespuestaPqrs
+(
+[id], [fechaing], [nit], [respuesta], [responsable]
+)
+values
+(
+@id,@FechaKiramar, @Nit,@respuesta, @responsable
+)
+                    `,
                     PQRS: `
-                    select	mvPqrs.id, mvPqrs.fechaing, mvPqrs.motivo, mvPqrs.idtipopqrs, tipo.Nombre as tipopqrs  , mvPqrs.idestadopqrs,  estado.Nombre as estadopqrs 
+                    select	mvPqrs.nit,mvPqrs.id, mvPqrs.fechaing, mvPqrs.motivo, mvPqrs.idtipopqrs, tipo.Nombre as tipopqrs  , mvPqrs.idestadopqrs,  estado.Nombre as estadopqrs 
                    from mvMotivoPqrs mvPqrs
                         inner join MtTipoPQRS tipo on tipo.Codigo = mvPqrs.idtipopqrs
                         inner join MtEstadoPQRS estado on estado.Codigo = mvPqrs.idestadopqrs
@@ -37,6 +50,11 @@ export const tsqldetails = {
                  inner join MtEstadoPQRS estado on estado.Codigo = mvPqrs.idestadopqrs
 	 where mvPqrs.nit=@Nit and mvPqrs.id=@id
 
+                        `,
+                        idresponse: `
+                        select id,fechaing,nit,respuesta,responsable 
+from [mvRespuestaPqrs]
+where id =@id and nit=@Nit
                         `,
 
     registerReview: `

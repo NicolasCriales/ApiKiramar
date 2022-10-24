@@ -12,7 +12,8 @@ export const tsqlorder = {
                 `,
 
   factureb2b: `
-                        select  tipodcto,nrodcto,producto,nombre,cantidad,valorunit,descuento,zvalorunit,dctobase,dctopromo,iva 
+                        select  nombre,cantidad,producto,
+                                CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100) ))  AS Total
                         from    mvtrade
                         where   TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
                         
@@ -38,24 +39,33 @@ export const tsqlorder = {
                     where  TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto 
             `,*/
 
-  facture: `
-                        select *
-                        from MtPedido 
-                        where TIPODCTO='PM' AND NIT=@Nit
+  pedido: `
+  select pedido.FECHA,pedido.TOTALIVA + pedido.NETO as Total,pedido.ESTADOPED, estado.Estado, pedido.direccion
+  from MtPedido pedido
+  inner join MtEstadoPedido estado on estado.idestadopedido = pedido.ESTADOPED
+                where pedido.TIPODCTO='PM' AND pedido.NIT=@Nit
         `,
 
-  facture_detail: `
-                                select [IDMVTRADE], [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], [DTOBASE], [DTOPROMO], [CONDCTOPROMO],
-                                 [DTOAUTORIZADO], [CONDCTOAUTORIZADO], [DTOCCIAL], [CONDCTOCOMERCIAL], [CONIVA], [NETO], [NOTA] 
-                                 from MvPedido 
-                                 where NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO    
+        pedido_detail: `
+        select pedido.TIPODCTO + '-' + pedido.NRODCTO as Npedido,pedido.FECHA,pedido.TOTALIVA + pedido.NETO as Total,pedido.ESTADOPED, estado.Estado, pedido.direccion, pedido.nit
+       
+        from MtPedido pedido
+        inner join MtEstadoPedido estado on estado.idestadopedido = pedido.ESTADOPED
+                      where pedido.TIPODCTO='PM' AND pedido.NIT=@Nit and NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO `,
+
+                      pedido_detail1: `
+                      select  articulo.NombreAlterno, pedido.CANTIDAD, pedido.PRODUCTO, pedido.NETO
+                      from MvPedido  pedido     
+                                                      inner join  MtArticulo articulo on articulo.IdArticulo = pedido.PRODUCTO
+                                 where pedido.NRODCTO=@NRODCTO and pedido.TIPODCTO=@TIPODCTO    
+
         `,
 
         facture_detailfech: `
-                                 select  FechaDcto,FechaVencimiento,Dias , 
+                                 select  FechaDcto,FechaVencimiento,Dias ,  deuda,
                                         CASE 
                                                 WHEN Dias > 0 THEN 'MORA'
-                                                WHEN Dias < 0 THEN 'PENDIENTE'
+                                                  WHEN Dias < 0 THEN 'PENDIENTE'
                                         END
                                 AS Estado
                                 from    MtEstadoCartera 
@@ -74,5 +84,16 @@ export const tsqlorder = {
                 from MtConsecutivoTipoDcto
 `,
 mtprocli: `
-select * from MtCliente where nit =@NIT`
+                select * from MtCliente where nit =@NIT`,
+
+
+        DatosEnvio: `select pedido.direccion, pedido.ciudad, pedido.codciudad, pedido.NETO + pedido.TOTALIVA as Total, pedido.ESTADOPED,estado.Estado, TIPODCTO + '-' + NRODCTO AS ReferenciaPedido
+        from MtPedido pedido
+        inner join MtEstadoPedido estado on estado.IdEstadoPedido = pedido.ESTADOPED
+        where pedido.TIPODCTO=@Tipodcto and pedido.nrodcto=@nrodcto
+                `,
+        DatosCliente: `select Nombre,Nit, Celular, Email from MtCliente where Nit =@Nit`,
+
+        TotalArticulos: `select PRODUCTO,Tipodcto,nrodcto from MvPedido  where TIPODCTO=@Tipodcto and nrodcto=@nrodcto`
 };
+

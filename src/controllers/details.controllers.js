@@ -60,10 +60,10 @@ const getregisterPQRS = async (req,res) => {
         const FechaGenerada = new Date();
         const Fecha = new Date(FechaGenerada).toLocaleDateString("en-CA");
         const FechaKiramar = Fecha + " " + "00:00:00.000";
-        const { Codigo,motivo,Nit } = req.body  
+        const { tipoPqrs,motivo,Nit } = req.body  
         const result = await pool 
             .request()
-            .input("Codigo", sql.Int, Codigo)
+            .input("tipoPqrs", sql.Int, tipoPqrs)
             .input("motivo", sql.NVarChar, motivo)
             .input("Nit", sql.NVarChar, Nit)
             .input("FechaKiramar", FechaKiramar)
@@ -73,6 +73,33 @@ const getregisterPQRS = async (req,res) => {
         })
     } catch (error) {
         console.log('Error: No se pudo consultar la ficha tecnica ', error)
+        res.status(500).json({
+            message: 'Problemas',
+        })  
+    }
+}
+
+const getresponsePQRS = async (req,res) => {
+    try {
+        const pool = await getConnection()
+        const FechaGenerada = new Date();
+        const Fecha = new Date(FechaGenerada).toLocaleDateString("en-CA");
+        const FechaKiramar = Fecha + " " + "00:00:00.000";
+
+        const {id, Nit,respuesta, responsable} = req.body
+        const result = await pool    
+            .request()
+            .input("id",sql.Int ,id )
+            .input("Nit", sql.VarChar,Nit)
+            .input("respuesta", sql.VarChar,respuesta)
+            .input("responsable", responsable)
+            .input("FechaKiramar", FechaKiramar)
+            .query(tsqldetails.responsePQRS)
+        res.send({
+            responsePQRS: "Se guardo su respuesta"
+        })
+    } catch (error) {
+        console.log('Error: en la respuesta', error)
         res.status(500).json({
             message: 'Problemas',
         })  
@@ -116,10 +143,17 @@ const getidPQRS= async (req,res) => {
             .input("Nit", sql.VarChar, Nit)
             .input("id", sql.VarChar, id)
             .query(tsqldetails.idPQRS)
+        const result2 = await pool 
+            .request()
+            .input("Nit", sql.VarChar, Nit)
+            .input("id", sql.VarChar, id)
+            .query(tsqldetails.idresponse)
         if(result.rowsAffected[0] > 0){
             const idPQRS = result.recordsets[0]
+            const idresponse = result2.recordsets[0]
             res.send({
-                idPQRS
+                idPQRS,
+                idresponse
             })
         } else {
             res.status(500).query({
@@ -189,6 +223,7 @@ module.exports = {
 	getdatasheet,
     gettypePQRS,
     getregisterPQRS,
+    getresponsePQRS,
     getPQRS,
     getidPQRS,
     getregisterReview,
