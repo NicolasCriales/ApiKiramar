@@ -13,7 +13,6 @@ const getverifydata = async (req,res) =>{
                 .query(tsqllogin.verify)
         const data_client = result.recordsets[0][0]
         const validPassword = bcryptjs.compareSync( password, data_client.password)
-        console.log( validPassword);
         if (validPassword) {
             res.send({
                 client: data_client

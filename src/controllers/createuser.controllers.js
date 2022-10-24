@@ -29,7 +29,7 @@ const createuser = async (req, res) => {
     } else {
       const salt = bcryptjs.genSaltSync(10);
       const encryptpassword = bcryptjs.hashSync(password, salt);
-      console.log(encryptpassword);
+      
       const result2 = await pool
         .request()
         .input("Nit", sql.VarChar, Nit)

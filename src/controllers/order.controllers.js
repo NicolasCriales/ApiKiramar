@@ -143,7 +143,6 @@ const getstatus = async (req, res) => {
     try {
         const pool = await getConnection();
         const { NRODCTO, status,TIPODCTO } = req.body;
-        console.log(NRODCTO, status,TIPODCTO);
         var ESTADOPED = 1;
         if (status === 200) {
             ESTADOPED = 2;
@@ -189,7 +188,7 @@ const getpayment = async (req,res) =>{
         const result2 = await pool 
             .request()
             .input("Nit", Nit)
-            .query(tsqlorder.DatosCliente)
+            .query(tsqlorder.DatosCliente)   
 
         const result3 = await pool 
             .request()
@@ -197,15 +196,23 @@ const getpayment = async (req,res) =>{
             .input("Tipodcto", Tipodcto)
             .query(tsqlorder.TotalArticulos)
 
+        const result4 = await pool 
+            .request()
+            .input("Nit", Nit)
+            .query(tsqlorder.DetalleTransacción)
+
         const DatosEnvio = result.recordsets[0]
         const DatosCliente = result2.recordsets[0]
         const TotalArticulos = result3.rowsAffected[0]
+        const DetalleTransacción = result4.recordsets[0]
+
 
 
             res.send({
                 DatosEnvio,
                 DatosCliente,
-                TotalArticulos
+                TotalArticulos,
+                DetalleTransacción
             })
 
         

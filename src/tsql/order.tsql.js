@@ -94,6 +94,10 @@ mtprocli: `
                 `,
         DatosCliente: `select Nombre,Nit, Celular, Email from MtCliente where Nit =@Nit`,
 
-        TotalArticulos: `select PRODUCTO,Tipodcto,nrodcto from MvPedido  where TIPODCTO=@Tipodcto and nrodcto=@nrodcto`
+        TotalArticulos: `select PRODUCTO,Tipodcto,nrodcto from MvPedido  where TIPODCTO=@Tipodcto and nrodcto=@nrodcto`,
+
+
+        DetalleTransacción: `select '' as MetodoPago, '' as Motivo, '' as ReferenciaTransaccion from MtCliente where nit =@NIT `
+
 };
 
