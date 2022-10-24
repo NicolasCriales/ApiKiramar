@@ -158,8 +158,9 @@ const getstatus = async (req, res) => {
             .query(tsqlorder.status);
         if (result.rowsAffected[0] > 0) {
             const updateStatus = result.recordsets[0];
+            const urlpago = 'www.google.com.co'
             res.send({
-                message: `Estado ${ESTADOPED}`,
+                urlpago: urlpago,
             });
         } else {
             res.status(500).send({
