@@ -332,7 +332,7 @@ const getfacture_detailb2b = async (req, res) => {
             .request()
             .input("Tipodcto", sql.VarChar, Tipodcto)
             .input("Nrodcto", sql.VarChar, Nrodcto)
-            .query(tsqlorder.factureb2b);
+            .query(tsqlorder.factureb2b);    
 
         const result2 = await pool
             .request()
@@ -340,10 +340,17 @@ const getfacture_detailb2b = async (req, res) => {
             .input("Nrodcto", sql.VarChar, Nrodcto)
             .query(tsqlorder.facture_detailfech);
 
+            const result3 = await pool
+            .request()
+            .input("Tipodcto", sql.VarChar, Tipodcto)
+            .input("Nrodcto", sql.VarChar, Nrodcto)
+            .query(tsqlorder.ArticulosTotalb2b);
+
         if (result.rowsAffected[0] > 0) {
-            const ContadorArt =  result.rowsAffected[0];
             const Articulos = result.recordsets[0];
             const date = result2.recordsets[0];
+            const ContadorArt = result3.recordsets[0];
+
 
             res.send({
                 date,

@@ -8,7 +8,7 @@ export const tsqlorder = {
                         END
                         AS Estado
                         from    MtEstadoCartera 
-                        where    NIT=@Nit 
+                        where    NIT=@Nit  and TIPODCTO='KC'
                 `,
 
   factureb2b: `
@@ -19,6 +19,14 @@ export const tsqlorder = {
                         
 
                 `,
+
+                ArticulosTotalb2b: `
+                select  sum(cantidad) as Total
+                from    mvtrade
+                where   TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
+                
+
+        `,
 
                 /*
   orderb2c: `
