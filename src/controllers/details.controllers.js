@@ -172,17 +172,33 @@ const getregisterReview = async (req,res) => {
     try {
         const pool = await getConnection();
         const { Nit,idproducto,calificacion,opinion,nombre } = req.body
-        const result = await pool  
+        const result = await pool
             .request()
             .input("Nit", sql.VarChar,Nit)
             .input("idproducto", sql.VarChar,idproducto)
-            .input("calificacion",calificacion)
-            .input("opinion",sql.VarChar,opinion)
-            .input("nombre",sql.VarChar,nombre)
-            .query(tsqldetails.registerReview)
-        res.send({
-            registerReview: "la review se guardo"
-        })
+            .query(tsqldetails.existreview)
+        if ( result.rowsAffected[0] > 0 ) {
+            res.status(500).json({
+                message: "Ya tiene una reseña registrada"
+            })
+        } else {
+            const result2 = await pool  
+                .request()
+                .input("Nit", sql.VarChar,Nit)
+                .input("idproducto", sql.VarChar,idproducto)
+                .input("calificacion",calificacion)
+                .input("opinion",sql.VarChar,opinion)
+                .input("nombre",sql.VarChar,nombre)
+                .query(tsqldetails.registerReview)
+            res.send({
+                registerReview: "la review se guardo"
+            })
+            
+        }
+
+
+           
+       
     } catch (error) {
         console.log('Error: No se pudo consultar la ficha tecnica ', error)
         res.status(500).json({

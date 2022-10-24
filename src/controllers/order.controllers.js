@@ -194,8 +194,8 @@ const getpayment = async (req,res) =>{
             .request()
             .input("nrodcto", nrodcto)
             .input("Tipodcto", Tipodcto)
-            .query(tsqlorder.TotalArticulos)
-
+            .query(tsqlorder.ArticulosTotal)   
+            
         const result4 = await pool 
             .request()
             .input("Nit", Nit)
@@ -203,7 +203,7 @@ const getpayment = async (req,res) =>{
 
         const DatosEnvio = result.recordsets[0]
         const DatosCliente = result2.recordsets[0]
-        const TotalArticulos = result3.rowsAffected[0]
+        const TotalArticulos = result3.recordsets[0]
         const DetalleTransacción = result4.recordsets[0]
 
 
@@ -253,7 +253,7 @@ const getPedido = async (req, res) => {
 const getPedido_detail = async (req, res) => {
     try {
         const pool = await getConnection();
-        const { TIPODCTO, NRODCTO, Nit } = req.query;
+        const { TIPODCTO, NRODCTO, Nit } = req.query;   
 
         const result = await pool
         .request()
@@ -267,11 +267,17 @@ const getPedido_detail = async (req, res) => {
             .input("TIPODCTO", sql.VarChar, TIPODCTO)
             .input("NRODCTO", sql.VarChar, NRODCTO)
             .query(tsqlorder.pedido_detail1);
+
+        const result3 = await pool
+            .request()
+            .input("TIPODCTO", sql.VarChar, TIPODCTO)
+            .input("NRODCTO", sql.VarChar, NRODCTO)
+            .query(tsqlorder.ArticulosTotal);
+
         if (result.rowsAffected[0] > 0) {
             const orders = result.recordsets[0];
             const order = result2.recordsets[0];
-            const Articulos = result2.rowsAffected[0]
-
+            const Articulos = result3.recordsets[0];
 
             res.send({
                 orders,

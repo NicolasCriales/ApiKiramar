@@ -40,18 +40,18 @@ export const tsqlorder = {
             `,*/
 
   pedido: `
-  select pedido.FECHA,pedido.TOTALIVA + pedido.NETO as Total,pedido.ESTADOPED, estado.Estado, pedido.direccion
+  select pedido.FECHA,pedido.TOTALIVA + pedido.NETO as Total,pedido.ESTADOPED, estado.Estado, pedido.direccion, pedido.Nit, pedido.NRODCTO, pedido.TIPODCTO,  pedido.TIPODCTO + '-' + pedido.NRODCTO as Pedido
   from MtPedido pedido
   inner join MtEstadoPedido estado on estado.idestadopedido = pedido.ESTADOPED
-                where pedido.TIPODCTO='PM' AND pedido.NIT=@Nit
+                where pedido.TIPODCTO in ('PM', 'PB') AND pedido.NIT=@Nit
         `,
 
         pedido_detail: `
-        select pedido.TIPODCTO + '-' + pedido.NRODCTO as Npedido,pedido.FECHA,pedido.TOTALIVA + pedido.NETO as Total,pedido.ESTADOPED, estado.Estado, pedido.direccion, pedido.nit
+        select pedido.TIPODCTO + '-' + pedido.NRODCTO as Npedido,pedido.FECHA,pedido.TOTALIVA + pedido.NETO as Total,pedido.ESTADOPED, estado.Estado, pedido.direccion, pedido.nit, '' as Descuento
        
         from MtPedido pedido
         inner join MtEstadoPedido estado on estado.idestadopedido = pedido.ESTADOPED
-                      where pedido.TIPODCTO='PM' AND pedido.NIT=@Nit and NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO `,
+                      where pedido.NIT=@Nit and NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO `,
 
                       pedido_detail1: `
                       select  articulo.NombreAlterno, pedido.CANTIDAD, pedido.PRODUCTO, pedido.NETO
@@ -87,7 +87,7 @@ mtprocli: `
                 select * from MtCliente where nit =@NIT`,
 
 
-        DatosEnvio: `select pedido.direccion, pedido.ciudad, pedido.codciudad, pedido.NETO + pedido.TOTALIVA as Total, pedido.ESTADOPED,estado.Estado, TIPODCTO + '-' + NRODCTO AS ReferenciaPedido
+        DatosEnvio: `select pedido.direccion, pedido.ciudad, pedido.codciudad, pedido.NETO + pedido.TOTALIVA as Total, pedido.ESTADOPED,estado.Estado, TIPODCTO + '-' + NRODCTO AS ReferenciaPedido, '' as Descuento
         from MtPedido pedido
         inner join MtEstadoPedido estado on estado.IdEstadoPedido = pedido.ESTADOPED
         where pedido.TIPODCTO=@Tipodcto and pedido.nrodcto=@nrodcto
@@ -97,7 +97,9 @@ mtprocli: `
         TotalArticulos: `select PRODUCTO,Tipodcto,nrodcto from MvPedido  where TIPODCTO=@Tipodcto and nrodcto=@nrodcto`,
 
 
-        DetalleTransacción: `select '' as MetodoPago, '' as Motivo, '' as ReferenciaTransaccion from MtCliente where nit =@NIT `
+        DetalleTransacción: `select '' as MetodoPago, '' as Motivo, '' as ReferenciaTransaccion from MtCliente where nit =@NIT `,
+
+        ArticulosTotal :`select sum(CANTIDAD) as Articulos from MvPedido  where TIPODCTO=@Tipodcto and nrodcto=@nrodcto`
 
 };
 
