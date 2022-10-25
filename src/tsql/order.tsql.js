@@ -8,20 +8,26 @@ export const tsqlorder = {
                         END
                         AS Estado
                         from    MtEstadoCartera 
-                        where    NIT=@Nit  and TIPODCTO='KC'
+                        where    NIT=@Nit  and TIPODCTO='KC' and Deuda > 0
                 `,
 
   factureb2b: `
                         select  nombre,cantidad,producto,
-                                CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100) ))  AS Total
-                        from    mvtrade
+                        CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)))  AS ValorUnitario,
+			CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)* cantidad  ))  AS Neto,
+                        (
+                                Select top 1 b.small_img
+                                        from MtArticuloImagen b
+                                where mvtrade.producto = b.IdArticulo and b.is_default = 1
+                           ) Imagen                     
+                           from    mvtrade
                         where   TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
                         
 
                 `,
 
                 ArticulosTotalb2b: `
-                select  sum(cantidad) as Total
+                select  sum(cantidad) as TotalArticulos,sum(CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)* cantidad  )))  AS Neto
                 from    mvtrade
                 where   TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
                 
@@ -136,7 +142,11 @@ mtprocli: `
         from MtPedido MtPedido
 		inner join MvPedido MvPedido on MvPedido.NRODCTO = MtPedido.NRODCTO
 		where MvPedido.NRODCTO = MtPedido.NRODCTO and MvPedido.TIPODCTO = MtPedido.TIPODCTO
-			 and MtPedido.idtransaccion =@idtransaccion`
+			 and MtPedido.idtransaccion =@idtransaccion`,
+
+        ArticulosTotal2: `select sum(CANTIDAD) as Articulos
+        from MvPedido 
+        where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`
 
 };
 

@@ -109,10 +109,22 @@ const getproducts_releases = async (req,res) => {
     }
 }
 
+const getspecialized_store = async (req,res) => {
+    try {
+        const pool = await getConnection();
+    } catch (error) {
+        console.log('Error: No se pudo consultar los banners de la tienda oficial ', error)
+        res.status(500).json({
+            message: 'Problemas al  consultar los banners de la tienda oficial',
+        })  
+    }
+} 
+
 module.exports = {
 	getbanners,
     getproducts_banners,
     getbanners_releases,
     getproducts_releases,
+    getspecialized_store
 }
       

@@ -276,7 +276,7 @@ const getPedido_detail = async (req, res) => {
             .request()
             .input("TIPODCTO", sql.VarChar, TIPODCTO)
             .input("NRODCTO", sql.VarChar, NRODCTO)
-            .query(tsqlorder.ArticulosTotal);
+            .query(tsqlorder.ArticulosTotal2);
 
         if (result.rowsAffected[0] > 0) {
             const orders = result.recordsets[0];
