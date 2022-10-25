@@ -9,14 +9,16 @@ const getdatasheet = async (req,res) => {
         const pool = await getConnection();
         const { IdArticulo } = req.query
         const result = await pool
-                .request()
-                .input("IdArticulo", sql.VarChar, IdArticulo)
-                .query(tsqldetails.datasheet)
+            .request()
+            .input("IdArticulo", sql.VarChar, IdArticulo)
+            .query(tsqldetails.datasheet)
+
         if (result.rowsAffected[0] > 0) {
             const datasheet = result.recordsets[0]
             res.send({
                 datasheet
             })
+
         } else {
             res.status(500).json({
                 message: "No se encontro ficha tecnica"
@@ -36,11 +38,13 @@ const gettypePQRS = async (req,res) => {
         const result = await pool
             .request()
             .query(tsqldetails.typePQRS)
+
         if (result.rowsAffected[0] > 0) {
             const typePQRS = result.recordsets[0]
             res.send({
                 typePQRS
             })
+
         } else {
             res.status(500).json({
                 Message: "No hay datos"
@@ -143,11 +147,13 @@ const getidPQRS= async (req,res) => {
             .input("Nit", sql.VarChar, Nit)
             .input("id", sql.VarChar, id)
             .query(tsqldetails.idPQRS)
+
         const result2 = await pool 
             .request()
             .input("Nit", sql.VarChar, Nit)
             .input("id", sql.VarChar, id)
             .query(tsqldetails.idresponse)
+
         if(result.rowsAffected[0] > 0){
             const idPQRS = result.recordsets[0]
             const idresponse = result2.recordsets[0]
@@ -155,6 +161,7 @@ const getidPQRS= async (req,res) => {
                 idPQRS,
                 idresponse
             })
+
         } else {
             res.status(500).query({
                 message: "Este cliente no tiene PQRS"
@@ -168,6 +175,41 @@ const getidPQRS= async (req,res) => {
     }
 }
 
+
+const getVericationReview = async (req,res) => {
+    try {
+        const pool = await getConnection();
+        const { Nit,idproducto} = req.query
+        const result = await pool
+            .request()
+            .input("Nit", sql.VarChar,Nit)
+            .input("idproducto", sql.VarChar,idproducto)
+            .query(tsqldetails.existreview)
+        if(result.rowsAffected[0] > 0) {
+
+            const result2 = await pool
+            .request()
+            .input("idproducto", sql.VarChar, idproducto)
+            .query(tsqldetails.review)
+        const review = result2.recordsets[0]
+        res.send({
+            review: review
+        })
+            
+        } else {
+            res.status(500).json({
+                message: "no tiene reseña"
+            })
+        }
+        
+    } catch (error) {
+        console.log('Error: No se pudo consultar la ficha tecnica ', error)
+        res.status(500).json({
+            message: 'Problemas',
+        })  
+    }
+
+}
 const getregisterReview = async (req,res) => {
     try {
         const pool = await getConnection();
@@ -177,10 +219,12 @@ const getregisterReview = async (req,res) => {
             .input("Nit", sql.VarChar,Nit)
             .input("idproducto", sql.VarChar,idproducto)
             .query(tsqldetails.existreview)
+
         if ( result.rowsAffected[0] > 0 ) {
             res.status(500).json({
                 message: "Ya tiene una reseña registrada"
             })
+
         } else {
             const result2 = await pool  
                 .request()
@@ -192,8 +236,7 @@ const getregisterReview = async (req,res) => {
                 .query(tsqldetails.registerReview)
             res.send({
                 registerReview: "la review se guardo"
-            })
-            
+            }) 
         }
     } catch (error) {
         console.log('Error: No se pudo consultar la ficha tecnica ', error)
@@ -211,12 +254,14 @@ const getreview = async (req,res) => {
             .request()
             .input("idproducto", sql.VarChar, idproducto)
             .query(tsqldetails.review)
+
         if(result.rowsAffected[0] > 0) {
             let review = result.recordsets[0]
             review = await pagination(review, page, limit)
             res.send({
                 review
             })
+
         } else {
             res.status(500).json({
                 message: "No hay reseñas"
@@ -238,6 +283,7 @@ module.exports = {
     getresponsePQRS,
     getPQRS,
     getidPQRS,
+    getVericationReview,
     getregisterReview,
     getreview
 }

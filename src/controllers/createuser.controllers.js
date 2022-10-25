@@ -7,29 +7,30 @@ const createuser = async (req, res) => {
   try {
     const pool = await getConnection();
     const {
-      Nit,
-      Nombre,
-      CodCiudad,
-      Ciudad,
-      Direccion,
-      Telefono,
-      Celular,
-      Email,
-      password,
+        Nit,
+        Nombre,
+        CodCiudad,
+        Ciudad,
+        Direccion,
+        Telefono,
+        Celular,
+        Email,
+        password,
     } = req.body;
     const result = await pool
-      .request()
-      .input("Email", sql.VarChar, Email)
-      .input("Nit", sql.VarChar, Nit)
-      .query(tsqlcreateuser.verify_existence);
+        .request()
+        .input("Email", sql.VarChar, Email)
+        .input("Nit", sql.VarChar, Nit)
+        .query(tsqlcreateuser.verify_existence);
+
     if (result.rowsAffected[0] > 0) {
       res.send({
         productcategory: "El usuario ya existe",
       });
+
     } else {
       const salt = bcryptjs.genSaltSync(10);
       const encryptpassword = bcryptjs.hashSync(password, salt);
-      
       const result2 = await pool
         .request()
         .input("Nit", sql.VarChar, Nit)

@@ -1,6 +1,8 @@
 import { getConnection, sql } from "../database/connection";
 import { tsqlorder } from "../tsql";
 import { pagination } from '../helpers/pagination'
+import bcryptjs from "bcryptjs";
+
 
 
 const getMtPedido = async (req, res) => {
@@ -143,14 +145,17 @@ const getstatus = async (req, res) => {
     try {
         const pool = await getConnection();
         const { NRODCTO, status,TIPODCTO } = req.body;
+        const salt = bcryptjs.genSaltSync(10);
+        const IdTransaccion = bcryptjs.hashSync(NRODCTO, salt);
         var ESTADOPED = 1;
         if (status === 200) {
             ESTADOPED = 2;
         } else {
             ESTADOPED = 3;
-        }
+        }   
         const result = await pool
             .request()
+            .input("IdTransaccion", sql.VarChar, IdTransaccion)
             .input("NRODCTO", sql.VarChar, NRODCTO)
             .input("ESTADOPED", sql.Numeric, ESTADOPED)
             .input("TIPODCTO", sql.VarChar, TIPODCTO)
@@ -160,6 +165,7 @@ const getstatus = async (req, res) => {
             const urlpago = 'www.google.com.co'
             res.send({
                 urlpago: urlpago,
+                IdTransaccion: IdTransaccion
             });
         } else {
             res.status(500).send({
@@ -178,27 +184,25 @@ const getstatus = async (req, res) => {
 const getpayment = async (req,res) =>{
     try {
         const pool = await getConnection();
-        const { nrodcto, Tipodcto, Nit } = req.query
+        const { idtransaccion } = req.query
         const result = await pool 
             .request()
-            .input("nrodcto", nrodcto)
-            .input("Tipodcto", Tipodcto)
+            .input("idtransaccion", idtransaccion)
             .query(tsqlorder.DatosEnvio)
         
         const result2 = await pool 
             .request()
-            .input("Nit", Nit)
+            .input("idtransaccion", idtransaccion)
             .query(tsqlorder.DatosCliente)   
 
         const result3 = await pool 
             .request()
-            .input("nrodcto", nrodcto)
-            .input("Tipodcto", Tipodcto)
+            .input("idtransaccion", idtransaccion)
             .query(tsqlorder.ArticulosTotal)   
             
         const result4 = await pool 
             .request()
-            .input("Nit", Nit)
+            .input("idtransaccion", idtransaccion)
             .query(tsqlorder.DetalleTransacción)
 
         const DatosEnvio = result.recordsets[0]

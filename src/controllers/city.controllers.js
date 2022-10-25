@@ -8,10 +8,12 @@ const getcity = async (req,res) => {
         const result = await pool
                 .request()
                 .query(tsqlcity.city)
+
         if (result.rowsAffected[0] > 0) {
             res.send({
                 city: result.recordsets
             })
+
         } else {
             res.status(500).json({
                 message: "No se encontro resultado de ciudades"
@@ -32,10 +34,12 @@ const getdepartment = async (req,res) => {
         const result = await pool
                 .request()
                 .query(tsqlcity.department)
+
         if (result.rowsAffected[0] > 0) {
             res.send({
                 department: result.recordsets
             })
+            
         } else {
             res.status(500).json({
                 message: "No se encontro resultado de los departamentos"

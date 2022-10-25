@@ -57,7 +57,9 @@ from [mvRespuestaPqrs]
 where id =@id and nit=@Nit
                         `,
 
-                        existreview: `select nit,idproducto from mvResena where nit=@Nit and idproducto=@idproducto`,
+                        existreview: `select nit,idproducto,calificacion, opinion, nombre  
+                        from mvResena 
+                        where nit=@Nit and idproducto=@idproducto`,
     registerReview: `
     insert into mvResena
     (

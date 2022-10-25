@@ -11,12 +11,14 @@ const getcategory = async (req,res) =>{
         const result = await pool
                 .request()
                 .query(tsqlcategory.category)
+
         if (result.rowsAffected[0] > 0) {
             let category = result.recordsets[0]
             category = await pagination(category, page, limit)
             res.send({
                 category
             })
+
         } else {
             res.status(500).json({
                 message: "No se encontro categoria"
@@ -39,11 +41,13 @@ const getproductcategory = async(req,res) =>{
                 .input('IdListaPrecios', sql.VarChar,IdListaPrecios)
                 .input('CODSUBLINEA',sql.VarChar,CODSUBLINEA)
                 .query(tsqlcategory.productcategory)
+
         if (result.rowsAffected[0] > 0) {
             let productcategory = result.recordsets[0]
             res.send({
                 productcategory
             })
+            
         } else {
             res.status(500).json({
                 message: "No se encontraron productos de la categoria"

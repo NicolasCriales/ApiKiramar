@@ -7,8 +7,8 @@ const getbanners = async (req,res) => {
     try {
         const pool = await getConnection();
         const result = await pool
-                .request()
-                .query(tsqlbanners.banners)
+            .request()
+            .query(tsqlbanners.banners)
         if (result.rowsAffected[0] > 0) {
             const Banners = result.recordsets[0]
             res.send({
