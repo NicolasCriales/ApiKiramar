@@ -8,7 +8,7 @@ router.get('/', [validateJWT],getbanners)
 router.get('/products',[validateJWT], getproducts_banners)
 router.get('/banners_releases',[validateJWT], getbanners_releases)
 router.get('/banners_releases/products',[validateJWT], getproducts_releases)
-router.get('/specialized_store',[validateJWT], getspecialized_store)
+//router.get('/specialized_store',[validateJWT], getspecialized_store)
 
 
 
