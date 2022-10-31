@@ -2,7 +2,6 @@ import { getConnection, sql } from '../database/connection'
 import { tsqllogin } from '../tsql'
 import bcryptjs from 'bcryptjs'
 import { express } from 'express'
-import { Buffer } from 'node:buffer';
 import nodemailer from 'nodemailer';
 
 
