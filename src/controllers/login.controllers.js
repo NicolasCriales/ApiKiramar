@@ -46,28 +46,25 @@ const GetUpdatePassword = async (req,res) => {
         const encryptpassword = bcryptjs.hashSync(newpassword, salt);
 
         const result = await pool
-        .request()
-        .input('Nit', sql.VarChar, Nit)
-        .query(tsqllogin.verify)
-    const data_client = result.recordsets[0][0]
-    const validPassword = bcryptjs.compareSync( oldpassword, data_client.password)
-
-    console.log(bcryptjs.compareSync( oldpassword, data_client.password));
-
-    if (validPassword) {
-        result2 = await pool
             .request()
             .input('Nit', sql.VarChar, Nit)
-            .input('encryptpassword', sql.VarChar, encryptpassword)
-            .query(tsqllogin.changePassword)
-        res.send({
-            result: "SE cambio la contraseña exitosamente"
-        })
-    }else {
-        res.status(500).json({
-            message: "Contraseña no coincide"
-        })  
-    }
+            .query(tsqllogin.verify)
+        const data_client = result.recordsets[0][0]
+        const validPassword = bcryptjs.compareSync( oldpassword, data_client.password)
+        if (validPassword) {
+            result2 = await pool
+                .request()
+                .input('Nit', sql.VarChar, Nit)
+                .input('encryptpassword', sql.VarChar, encryptpassword)
+                .query(tsqllogin.changePassword)
+            res.send({
+                result: "SE cambio la contraseña exitosamente"
+            })
+        }else {
+            res.status(500).json({
+                message: "Contraseña no coincide"
+            })  
+        }
 
     } catch (error) {
         console.log('Error: No se pudo consultar los clientes ', error)

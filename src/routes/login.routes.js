@@ -6,7 +6,7 @@ const router = Router()
 
 router.post('/',[validateJWT],getverifydata )
 //router.get('/update_data',[validateJWT],update_data)
-router.get('/UpdatePassword',GetUpdatePassword)
+router.get('/UpdatePassword',[validateJWT],GetUpdatePassword)
 
 
 

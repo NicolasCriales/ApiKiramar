@@ -1,9 +1,10 @@
 export const tsqlbanners = {
   banners: `
-                    select imagen,ruta,orden,swInactivo,swDkasa,swKiramar,codproveedor
+                    select imagen,ruta,orden,swInactivo,swDkasa,swKiramar,codproveedor, idzonas
                     from MtBanners 
-                    where swInactivo='0' AND swKiramar='1' AND swDkasa='0' AND orden >= 1
+                    where swInactivo='0' AND swKiramar='1' AND swDkasa='0' AND orden >= 1 AND idzonas=@id
                 `,
+                idbanners: `select id, descripcion from MTBannerZonas`,
 
   products_banners: `
                                 SELECT  AUX.IdArticulo, AUX.Codigo_Barras, AUX.NombreArticulo, AUX.NombreAlterno, AUX.CodProveedor, AUX.NombreProveedor,

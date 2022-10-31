@@ -6,9 +6,23 @@ import { pagination } from '../helpers/pagination'
 const getbanners = async (req,res) => {
     try {
         const pool = await getConnection();
+        const {id,CodProveedor} = req.query
+
+
+        if (CodProveedor.length != 0) {
+            var addCodProveedor = `and codProveedor='${CodProveedor}'  `
+        } else {
+            var addCodProveedor = ``
+        } 
+
+        var products_banners = tsqlbanners.banners  + addCodProveedor
+
+
+
         const result = await pool
             .request()
-            .query(tsqlbanners.banners)
+            .input("id", id)
+            .query(products_banners)
         if (result.rowsAffected[0] > 0) {
             const Banners = result.recordsets[0]
             res.send({
@@ -28,10 +42,29 @@ const getbanners = async (req,res) => {
 
 }
 
+const getidbanners = async (req,res) => {
+    try {
+        const pool = await getConnection()
+        const result = await pool
+            .request()
+            .query(tsqlbanners.idbanners)
+            const idBanners = result.recordsets[0]
+
+            res.send({
+                idBanners
+            })
+    } catch (error) {
+        console.log('Error: No se pudo consultar los banners ', error)
+        res.status(500).json({
+            message: 'Problemas al consultar los banners',
+        })  
+    }
+}
+
 const getproducts_banners = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { IdListaPrecios, LikeNombreAlterno, LikeCodProveedor,category,preciomin,preciomax,orderP, orderF, page, limit } = req.query
+        const {IdListaPrecios, LikeNombreAlterno, LikeCodProveedor,category,preciomin,preciomax,orderP, orderF, page, limit } = req.query
 
         if (category.length != 0) {
             var addcategory = `and  mta.CodSubLinea in (${category})`
@@ -171,28 +204,12 @@ const getproducts_releases = async (req,res) => {
         })  
     }
 }
-/*
-const getspecialized_store = async (req,res) => {
-    try {
-        const pool = await getConnection();
-        const { CODSUMIN } = req.query
-        result = await pool
-            .request()
-            .input("CODSUMIN", sql.Int, CODSUMIN)
-            .query(tsqlbanners.specialized_store)
-    } catch (error) {
-        console.log('Error: No se pudo consultar los banners de la tienda oficial ', error)
-        res.status(500).json({
-            message: 'Problemas al  consultar los banners de la tienda oficial',
-        })  
-    }
-} 
-*/
+
 module.exports = {
 	getbanners,
     getproducts_banners,
     getbanners_releases,
     getproducts_releases,
-    //getspecialized_store
+    getidbanners
 }
       
