@@ -8,7 +8,7 @@ router.post('/',[validateJWT],getverifydata )
 router.post('/UpdatePassword',[validateJWT],GetUpdatePassword)
 router.post('/sendmail',[validateJWT],getsendmail)
 router.post('/recoverpassword',getrecoverpassword)
-router.get('/newpassword',getnewpassword)
+router.post('/newpassword',getnewpassword)
 
 
 
