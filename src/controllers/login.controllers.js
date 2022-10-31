@@ -55,7 +55,7 @@ const GetUpdatePassword = async (req,res) => {
         const data_client = result.recordsets[0][0]
         const validPassword = bcryptjs.compareSync( oldpassword, data_client.password)
         if (validPassword) {
-            result2 = await pool
+            const result2 = await pool
                 .request()
                 .input('Nit', sql.VarChar, Nit)
                 .input('encryptpassword', sql.VarChar, encryptpassword)
