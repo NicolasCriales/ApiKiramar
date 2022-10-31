@@ -40,13 +40,13 @@ const GetUpdatePassword = async (req,res) => {
         const pool = await getConnection()
         const { UpdatePassword,Nit } = req.body
         const  PasswordCode = UpdatePassword;
-        const DecryptPassword = new Buffer(PasswordCode, 'base64');
+        const DecryptPassword = new Buffer.from(PasswordCode, 'base64');
         const Password = DecryptPassword.toString('ascii');
         const separatepassword = Password.split("&")
         const oldpassword = separatepassword[0]
         const newpassword =  separatepassword[1]
         const salt = bcryptjs.genSaltSync(10);
-        const encryptpassword = bcryptjs.hashSync(newpassword, salt);
+        const encryptpassword =  bcryptjs.hashSync(newpassword, salt);
 
         const result = await pool
             .request()
