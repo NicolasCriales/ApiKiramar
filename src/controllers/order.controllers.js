@@ -14,10 +14,12 @@ const getMtPedido = async (req, res) => {
 
         const {
             NIT,
+            PERSONANJ,
             NOMBRE,
             CODCIUDAD,
             CIUDAD,
             DIRECCION,
+            Complemento,
             TELEFONO,
             CELULAR,
             EMAIL,
@@ -44,7 +46,15 @@ const getMtPedido = async (req, res) => {
         } = req.body;
 
         const MtCliente = await pool.request().input("NIT", sql.VarChar, NIT).query(tsqlorder.mtprocli); 
-        const Cliente = MtCliente.recordsets[0] 
+        const Cliente = MtCliente.recordsets[0]
+        
+
+        var TipoDocumento = ''
+        if(PERSONANJ == 'CC') {
+            var TipoDocumento = 1
+        } else {
+            var TipoDocumento = 2
+        }
 
         if ( MtCliente.rowsAffected[0] > 0 ===true )  {
             console.log('si existe el cliente', Cliente);
@@ -58,13 +68,13 @@ const getMtPedido = async (req, res) => {
         (
         	   [IdEmpresa], [Nit], [CodAlterno], [Nombre], [Pais], [CodCiudad], [Ciudad], [Direccion], [Telefono], [Celular], [Email],
         	   [Contacto], [ListaPrecios], [CodVendedor], [Habilitado], [Estado], [Cupo], [DctoPiePag], [CodTipoCl], [Latitud], [Longitud],
-        	   [GeoPosCertificada], [Modificado], [CodVenModifica], [ObsCartera], [password]
+        	   [GeoPosCertificada], [Modificado], [CodVenModifica], [ObsCartera], [password], [PERSONANJ]
         )
         values
         (
         	   '1', '${NIT}','${NIT}','${NOMBRE}', 'COLOMBIA', '${CODCIUDAD}', '${CIUDAD}', '${DIRECCION}', '${TELEFONO}', '${CELULAR}', '${EMAIL}',
         	   '${CELULAR}', 'WEB', '1034','S', '1', '0',  '0',  '0',  '0', '0',
-               '0', '0',  '0',  '0',  '0'
+               '0', '0',  '0',  '0',  '0', ${TipoDocumento}
         )`
 
 ) }
@@ -90,16 +100,24 @@ const getMtPedido = async (req, res) => {
             `insert into MtPedido
             (
                 [TIPODCTO], [NRODCTO], [FECHA], [CODVEN], [NIT], [BRUTO], [DESCUENTO], [TOTALIVA], [NETO], [NOTA], [ESTADOPED], [TIPOFAC], [NROFACTURA],
-                [FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], [COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING],[Direccion],[Ciudad], [CodCiudad]
+                [FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], [COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING],[Direccion],[Complemento],[Ciudad], [CodCiudad]
             )
             values 
             (
                 '${TIPODCTO}',${updatenrodcto},  '${FechaKiramar}', '1052','${NIT}','${BRUTO}','${DESCUENTO}','${TOTALIVA}', '${NETO}', 'COMPRA Kiramar app',
-                '1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK','NCRIALES','S','${FechaKiramar}', '${DIRECCION}','${CIUDAD}','${CODCIUDAD}'
+                '1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK','NCRIALES','S','${FechaKiramar}', '${DIRECCION}', '${Complemento}' ,'${CIUDAD}','${CODCIUDAD}'
             )`
         );
         for (let i = 0; i < product.length; i++) {
-            const result2 = await pool.request().query(
+
+            /*const result2 = await pool
+                .request()
+                .input("PRODUCTO",product[i].PRODUCTO)
+                .query()*/
+            
+
+                
+            const result3 = await pool.request().query(
                 `insert into  MvPedido
                     (
                         [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], [DTOBASE], [DTOPROMO], [CONDCTOPROMO],
@@ -116,13 +134,13 @@ const getMtPedido = async (req, res) => {
         }
 
         if (ListaPrecios === 'PB005') {
-            const result3 = await pool
+            const result4 = await pool
                 .request()
                 .query(
                     `update MtConsecutivoTipoDcto set ConsecutPedAPKBq=${updatenrodcto} `
                 );
         } else {
-            const result3 = await pool
+            const result4 = await pool
                 .request()
                 .query(
                     `update MtConsecutivoTipoDcto set ConsecutPedAPKNq=${updatenrodcto} `
@@ -254,6 +272,36 @@ const getPedido = async (req, res) => {
     }
 }; //
 
+
+const getPedidoWEb = async (req, res) => {
+    try {
+        const pool = await getConnection();
+        const { Nit } = req.query;
+        const CLienteWeb = `and cliente.ListaPrecios='web' `
+        const PedidoWeb = tsqlorder.pedido + CLienteWeb
+        console.log(PedidoWeb);
+        const result = await pool
+            .request()
+            .input("Nit", sql.VarChar, Nit)
+            .query(PedidoWeb);
+        if (result.rowsAffected[0] > 0) {
+            const order = result.recordsets[0];
+            res.send({
+                order,
+            });
+        } else {
+            res.status(500).send({
+                message: "No se encontro ninguna orden asociado al cliente",
+            });
+        }
+    } catch (error) {
+        console.log("Error: no se pudo consultar las ordenes del usuario ", error);
+        res.status(500).send({
+            message: "Problemas al consultar las ordenes del usuario",
+        });
+    }
+}; //
+
 const getPedido_detail = async (req, res) => {
     try {
         const pool = await getConnection();
@@ -354,11 +402,14 @@ const getfacture_detailb2b = async (req, res) => {
             const Articulos = result.recordsets[0];
             const date = result2.recordsets[0];
             const ContadorArt = result3.recordsets[0];
+            const TotalAbonado = result3.recordsets[0][0].Neto - result2.recordsets[0][0].deuda
+
 
 
             res.send({
                 date,
                 ContadorArt,
+                TotalAbonado,
                 Articulos,
             });
         } else {
@@ -373,6 +424,7 @@ const getfacture_detailb2b = async (req, res) => {
         });
     }
 };
+
 /*
 const getorderb2c = async (req, res) => {
   try {
@@ -430,6 +482,7 @@ const getfactureb2c = async (req, res) => {
 module.exports = {
     getMtPedido,
     getPedido,
+    getPedidoWEb,
     getPedido_detail,
     getfacture_orderb2b,
     getfacture_detailb2b,

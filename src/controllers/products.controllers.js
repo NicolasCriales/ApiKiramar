@@ -34,10 +34,17 @@ const getproducts_individually = async (req, res) => {
             .input('IdArticulo', sql.VarChar, IdArticulo)
             .input('IdListaPrecios', sql.VarChar, IdListaPrecios)
             .query(tsqlproducts.getproducts_individually)
+
+        const result2 = await pool 
+            .request()
+            .input('IdArticulo', sql.VarChar, IdArticulo)
+            .query(tsqlproducts.calificacion)
         if (result.rowsAffected[0] > 0) {
             const products_individually =  result.recordsets[0]
+            const Calificacion =  result2.recordsets[0]
             res.send({
-                products_individually
+                products_individually,
+                Calificacion
             })
         } else {
             res.status(500).json({

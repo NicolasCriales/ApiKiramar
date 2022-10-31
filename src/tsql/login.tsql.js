@@ -13,4 +13,7 @@ export const tsqllogin = {
                         inner join KellerDeskTop_Pruebas.dbo.MtDepartamento MTDEP  on  left (MTCLI.CodCiudad,2)  = MTDEP.coddpto    
                     where MTCLI.Habilitado='s' and  MTCLI.Nit=@Nit and MTCLI.password=@password
                 `,   
+                changePassword: ` update MtCliente
+                    set password=@encryptpassword
+                        where  Nit=@Nit  `,
 }

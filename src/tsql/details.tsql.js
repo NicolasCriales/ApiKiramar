@@ -67,7 +67,7 @@ where id =@id and nit=@Nit
     )
     values 
     (
-      @Nit, @idproducto, @calificacion, @opinion, @nombre
+      @Nit, @idproducto, @calificacion, @opinion, @NombreCli
     )                
     `,
 

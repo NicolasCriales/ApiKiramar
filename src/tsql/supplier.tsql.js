@@ -6,9 +6,13 @@ export const tsqlsupplier = {
     `,
 
   categorysupplier: `
-                        select DISTINCT NombreSubLinea,CodSubLinea, '' as URL_Image, '' as Banners
-                        from MtArticulo 
-                        where CodProveedor=@CodProveedor and not CodSubLinea='1070' and not NombreSubLinea='repuestos'
+                        
+
+	select DISTINCT subl.NOMBRE,subl.CODSUBLINEA
+        from MtArticulo  art
+                                        inner join MtSubLinea subl on subl.CODSUBLINEA = art.CodSubLinea
+        where art.CodProveedor=@CodProveedor and not subl.CodSubLinea in ('1070', '1052', '1049')
+
                     `,
 
   codcategorysupplier: `

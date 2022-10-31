@@ -14,7 +14,7 @@ export const tsqlorder = {
   factureb2b: `
                         select  nombre,cantidad,producto,
                         CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)))  AS ValorUnitario,
-			CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)* cantidad  ))  AS Neto,
+			CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)* cantidad  ) *  (1+(IVA / 100 )))  AS Neto,
                         (
                                 Select top 1 b.small_img
                                         from MtArticuloImagen b
@@ -27,7 +27,9 @@ export const tsqlorder = {
                 `,
 
                 ArticulosTotalb2b: `
-                select  sum(cantidad) as TotalArticulos,sum(CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)* cantidad  )))  AS Neto
+                select  sum(cantidad) as TotalArticulos,
+                
+                sum(CONVERT(numeric(10,0),  (((valorunit * ((100-descuento))/100)* cantidad  ))*  (1+(IVA / 100 ))))  AS Neto
                 from    mvtrade
                 where   TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto
                 
@@ -54,9 +56,9 @@ export const tsqlorder = {
             `,*/
 
   pedido: `
-  select pedido.FECHAING,pedido.ESTADOPED, estado.Estado, pedido.direccion,
+  select pedido.FECHAING,pedido.ESTADOPED, estado.Estado, pedido.direccion, pedido.Complemento,
    pedido.Nit, pedido.NRODCTO, pedido.TIPODCTO,  pedido.TIPODCTO + '-' + pedido.NRODCTO as Pedido,
-   CONVERT(numeric(10,0),  pedido.NETO)  AS NETO,
+   CONVERT(numeric(10,0),  pedido.NETO)  AS NETO, cliente.ListaPrecios,
 	   (
 		Select top 1 c.small_img
 			from MvPedido b
@@ -65,12 +67,14 @@ export const tsqlorder = {
 	   ) Imagen
   from MtPedido pedido
   inner join MtEstadoPedido estado on estado.idestadopedido = pedido.ESTADOPED
+  inner join MtCliente cliente on cliente.Nit  = pedido.NIT
+
                 where pedido.TIPODCTO in ('PM', 'PB') AND pedido.NIT=@Nit
         `,
 
         pedido_detail: `
         select pedido.TIPODCTO + '-' + pedido.NRODCTO as Npedido,pedido.FECHAING,pedido.FECHAING as FECHAFAC,
-        pedido.ESTADOPED, estado.Estado, pedido.direccion, pedido.nit, '' as Descuento,
+        pedido.ESTADOPED, estado.Estado, pedido.direccion,pedido.Complemento, pedido.nit, '' as Descuento,
         CONVERT(numeric(10,0),  pedido.NETO)  AS NETO
 
        
@@ -98,7 +102,7 @@ export const tsqlorder = {
                                         END
                                 AS Estado
                                 from    MtEstadoCartera 
-                                where   NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO  
+                                where   NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO  and deuda > 0
          `,
 
 
@@ -118,7 +122,7 @@ mtprocli: `
                 select * from MtCliente where nit =@NIT`,
 
 
-        DatosEnvio: `select pedido.direccion, pedido.ciudad, pedido.codciudad, pedido.NETO + pedido.TOTALIVA as Total, pedido.ESTADOPED,estado.Estado, TIPODCTO + '-' + NRODCTO AS ReferenciaPedido, '' as Descuento
+        DatosEnvio: `select pedido.direccion,pedido.Complemento, pedido.ciudad, pedido.codciudad, pedido.NETO + pedido.TOTALIVA as Total, pedido.ESTADOPED,estado.Estado, TIPODCTO + '-' + NRODCTO AS ReferenciaPedido, '' as Descuento
         from MtPedido pedido
         inner join MtEstadoPedido estado on estado.IdEstadoPedido = pedido.ESTADOPED
         where pedido.idtransaccion=@idtransaccion

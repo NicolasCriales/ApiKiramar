@@ -1,6 +1,7 @@
 import { getConnection, sql } from '../database/connection'
 import { tsqldetails } from '../tsql'
 import { pagination } from '../helpers/pagination'
+import { tsqllogin } from './../tsql/login.tsql';
 
 
 
@@ -213,12 +214,18 @@ const getVericationReview = async (req,res) => {
 const getregisterReview = async (req,res) => {
     try {
         const pool = await getConnection();
-        const { Nit,idproducto,calificacion,opinion,nombre } = req.body
+        const { Nit,idproducto,calificacion,opinion } = req.body
         const result = await pool
             .request()
             .input("Nit", sql.VarChar,Nit)
             .input("idproducto", sql.VarChar,idproducto)
             .query(tsqldetails.existreview)
+
+        const result1 = await pool
+            .request()
+            .input("Nit", sql.VarChar,Nit)
+            .query(tsqllogin.verify)
+        const NombreCli = result1.recordsets[0][0].Nombre
 
         if ( result.rowsAffected[0] > 0 ) {
             res.status(500).json({
@@ -232,7 +239,7 @@ const getregisterReview = async (req,res) => {
                 .input("idproducto", sql.VarChar,idproducto)
                 .input("calificacion",calificacion)
                 .input("opinion",sql.VarChar,opinion)
-                .input("nombre",sql.VarChar,nombre)
+                .input("NombreCli",sql.VarChar,NombreCli)
                 .query(tsqldetails.registerReview)
             res.send({
                 registerReview: "la review se guardo"

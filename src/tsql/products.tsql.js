@@ -219,4 +219,10 @@ export const tsqlproducts = {
 
                         
                 `,
+
+
+calificacion:`
+select ((sum(calificacion) ) /  (count (idproducto)))  AS calificación 
+from mvResena 
+where idproducto=@IdArticulo`
 };
