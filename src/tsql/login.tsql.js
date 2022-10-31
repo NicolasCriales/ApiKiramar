@@ -16,4 +16,14 @@ export const tsqllogin = {
                 changePassword: ` update MtCliente
                     set password=@encryptpassword
                         where  Nit=@Nit  `,
+                        updatecodigo: ` update MtCliente
+                            set codpassword=@codpassword
+                            where  Nit=@Nit`,
+
+                            recoverpassword:`select codpassword from MtCliente where Nit=@Nit`,
+                            newpasword: `
+                            update MtCliente 
+                                set password=@encryptpassword
+                                where  Nit=@Nit
+                                `
 }

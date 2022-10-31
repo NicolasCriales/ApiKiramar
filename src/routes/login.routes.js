@@ -1,12 +1,16 @@
 import { Router } from 'express'
 import { validateJWT } from '../middlewares/validate-jwt'
-import { getverifydata,update_data,GetUpdatePassword } from '../controllers/index.js'
+import { getverifydata,getrecoverpassword,GetUpdatePassword,getsendmail,getnewpassword } from '../controllers/index.js'
 
 const router = Router()
 
 router.post('/',[validateJWT],getverifydata )
-//router.get('/update_data',[validateJWT],update_data)
-router.get('/UpdatePassword',[validateJWT],GetUpdatePassword)
+router.post('/UpdatePassword',[validateJWT],GetUpdatePassword)
+router.post('/sendmail',[validateJWT],getsendmail)
+router.post('/recoverpassword',getrecoverpassword)
+router.get('/newpassword',getnewpassword)
+
+
 
 
 
