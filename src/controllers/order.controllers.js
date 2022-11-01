@@ -31,18 +31,7 @@ const getMtPedido = async (req, res) => {
             ListaPrecios,
             PRODUCTO,
             CANTIDAD,
-            CANTORIG,
-            VALORUNIT,
-            IVA,
-            DTOBASE,
-            DTOPROMO,
-            CONDCTOPROMO,
-            DTOAUTORIZADO,
-            CONDCTOAUTORIZADO,
-            DTOCCIAL,
-            CONDCTOCOMERCIAL,
-            CONIVA,
-            MVNETO,
+            CANTORIG
         } = req.body;
 
         const MtCliente = await pool.request().input("NIT", sql.VarChar, NIT).query(tsqlorder.mtprocli); 
@@ -57,10 +46,10 @@ const getMtPedido = async (req, res) => {
         }
 
         if ( MtCliente.rowsAffected[0] > 0 ===true )  {
-            console.log('si existe el cliente', Cliente);
+            //console.log('si existe el cliente', Cliente);
 
         } else {
-            console.log('No existe', Cliente);
+           // console.log('No existe', Cliente);
             const MtClienteInsert = await pool.request().query(`
 
             
@@ -95,6 +84,7 @@ const getMtPedido = async (req, res) => {
             TIPODCTO = "PM";
             var BODEGA = '1101'
         }
+        
 
         const result = await pool.request().query(
             `insert into MtPedido
@@ -109,15 +99,16 @@ const getMtPedido = async (req, res) => {
             )`
         );
         for (let i = 0; i < product.length; i++) {
-
-            /*const result2 = await pool
+            const result2 = await pool
                 .request()
                 .input("PRODUCTO",product[i].PRODUCTO)
-                .query()*/
-            
-
+                .input("NIT",NIT)
+                .query(tsqlorder.infoproduct)
+                const Articulo = await result2.recordsets[0][0]            
                 
             const result3 = await pool.request().query(
+
+    
                 `insert into  MvPedido
                     (
                         [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], [DTOBASE], [DTOPROMO], [CONDCTOPROMO],
@@ -125,9 +116,9 @@ const getMtPedido = async (req, res) => {
                     )
                     values
                     (
-                      '${TIPODCTO}', ${updatenrodcto} ,'${BODEGA}', '${product[i].PRODUCTO}', '${product[i].CANTIDAD}', '${product[i].CANTORIG}', '${product[i].VALORUNIT}',
-                      '${product[i].IVA}', '${product[i].DTOBASE}', '${product[i].DTOPROMO}', '${product[i].CONDCTOPROMO}','${product[i].DTOAUTORIZADO}', 
-                      '${product[i].CONDCTOAUTORIZADO}', '${product[i].DTOCCIAL}','${product[i].CONDCTOCOMERCIAL}','${product[i].CONIVA}', '${product[i].MVNETO}',
+                      '${TIPODCTO}', ${updatenrodcto} ,'${BODEGA}', '${Articulo.IdProducto}', '${product[i].CANTIDAD}', '${product[i].CANTORIG}', '${Articulo.Valorunit}',
+                      '${Articulo.IVA}', '${Articulo.DctoBase}', '${Articulo.DctoPromocional}', '${Articulo.CONDCTOPROMO * product[i].CANTIDAD}','0', 
+                      '${Articulo.CONDCTOPROMO * product[i].CANTIDAD}', '${Articulo.DTOCCIAL}','${Articulo.CONDCTOCOMERCIAL * product[i].CANTIDAD}','${Articulo.CONIVA * product[i].CANTIDAD}', '${Articulo.NETO * product[i].CANTIDAD}',
                       'COMPRA Kiramar app'
                     )`
             );
