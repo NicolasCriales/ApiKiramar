@@ -90,9 +90,9 @@ export const tsqlorder = {
         `,
 
         pedido_detail: `
-        select pedido.TIPODCTO + '-' + pedido.NRODCTO as Npedido,pedido.FECHAING,pedido.FECHAING as FECHAFAC,
-        pedido.ESTADOPED, estado.Estado, pedido.direccion,pedido.Complemento, pedido.nit, '' as Descuento,
-        CONVERT(numeric(10,0),  pedido.NETO)  AS NETO
+        select pedido.TIPODCTO + '-' + pedido.NRODCTO as NPedido,pedido.Fechaing,pedido.FECHAING as FechaFac,
+        pedido.EstadoPed, estado.Estado, pedido.Direccion,pedido.Complemento, pedido.Nit, '' as Descuento,
+        CONVERT(numeric(10,0),  pedido.NETO)  AS Neto
 
        
         from MtPedido pedido
@@ -100,8 +100,8 @@ export const tsqlorder = {
                       where pedido.NIT=@Nit and NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO `,
 
                       pedido_detail1: `
-                      select  articulo.NombreAlterno, pedido.CANTIDAD, pedido.PRODUCTO,   ---, pedido.NETO,
-                      CONVERT(numeric(10,0),  pedido.NETO)  AS PrecioUnitario,
+                      select  articulo.NombreAlterno as nombre, pedido.cantidad, pedido.producto,
+                      CONVERT(numeric(10,0),  pedido.NETO)  AS ValorUnitario,
                     CONVERT(numeric(10,0),  pedido.NETO * pedido.CANTIDAD)  AS Neto,
                   img.small_img  as Imagen                   
                   from MvPedido  pedido     
@@ -165,7 +165,7 @@ mtprocli: `
 		where MvPedido.NRODCTO = MtPedido.NRODCTO and MvPedido.TIPODCTO = MtPedido.TIPODCTO
 			 and MtPedido.idtransaccion =@idtransaccion`,
 
-        ArticulosTotal2: `select sum(CANTIDAD) as Articulos
+        ArticulosTotal2: `select sum(CANTIDAD) as TotalArticulos
         from MvPedido 
         where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`
 

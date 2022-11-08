@@ -109,7 +109,7 @@ export const tsqlbanners = {
   banners_releases: `
                             select imagen,ruta,orden,swInactivo,swDkasa,swKiramar,codproveedor
                             from MtBanners 
-                            where swInactivo='0' AND swKiramar='1' AND swDkasa='0' AND orden = 0
+                            where swInactivo='0' AND swKiramar='1' AND swDkasa='0' and idzona='2'
                         `,
 
   products_new: `
@@ -145,7 +145,7 @@ export const tsqlbanners = {
 
                         
                             WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND  
-                                    FecIng  >= DATEADD(day, -120, getdate()) AND MTA.CodProveedor=@CodProveedor AND
+                                    FecIng  >= DATEADD(day, -180, getdate()) AND MTA.CodProveedor=@CodProveedor AND
                                     PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
                         )   AS AUX
 

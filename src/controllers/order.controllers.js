@@ -319,13 +319,13 @@ const getPedido_detail = async (req, res) => {
 
         if (result.rowsAffected[0] > 0) {
             const orders = result.recordsets[0];
-            const order = result2.recordsets[0];
-            const Articulos = result3.recordsets[0];
+            const Articulos = result2.recordsets[0];
+            const ContadorArt = result3.recordsets[0];
 
             res.send({
                 orders,
-                order,
-                Articulos
+                Articulos,
+                ContadorArt
             });
         } else {
             res.status(500).send({
