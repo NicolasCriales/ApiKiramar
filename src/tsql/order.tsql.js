@@ -165,7 +165,8 @@ mtprocli: `
 		where MvPedido.NRODCTO = MtPedido.NRODCTO and MvPedido.TIPODCTO = MtPedido.TIPODCTO
 			 and MtPedido.idtransaccion =@idtransaccion`,
 
-        ArticulosTotal2: `select sum(CANTIDAD) as TotalArticulos
+        ArticulosTotal2: `select sum(CANTIDAD) as TotalArticulos,
+        sum(CONVERT(numeric(10,0),  NETO))  AS Neto
         from MvPedido 
         where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`
 
