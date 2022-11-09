@@ -30,8 +30,8 @@ export const tsqlorder = {
 
   factureb2b: `
                         select  nombre,cantidad,producto,
-                        CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)))  AS ValorUnitario,
-			CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100)* cantidad  ) *  (1+(IVA / 100 )))  AS Neto,
+                        CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100) * (1+(IVA / 100 ))))  AS ValorUnitario,
+			CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100) * (1+(IVA / 100 )) * cantidad))  AS Neto,
                         (
                                 Select top 1 b.small_img
                                         from MtArticuloImagen b
@@ -91,9 +91,7 @@ export const tsqlorder = {
 
         pedido_detail: `
         select pedido.TIPODCTO + '-' + pedido.NRODCTO as NPedido,pedido.Fechaing,pedido.FECHAING as FechaFac,
-        pedido.EstadoPed, estado.Estado, pedido.Direccion,pedido.Complemento, pedido.Nit, '' as Descuento,
-        CONVERT(numeric(10,0),  pedido.NETO)  AS Neto
-
+        pedido.EstadoPed, estado.Estado, pedido.Direccion,pedido.Complemento, pedido.Nit, '' as Descuento
        
         from MtPedido pedido
         inner join MtEstadoPedido estado on estado.idestadopedido = pedido.ESTADOPED
@@ -101,8 +99,8 @@ export const tsqlorder = {
 
                       pedido_detail1: `
                       select  articulo.NombreAlterno as nombre, pedido.cantidad, pedido.producto,
-                      CONVERT(numeric(10,0),  pedido.NETO)  AS ValorUnitario,
-                    CONVERT(numeric(10,0),  pedido.NETO * pedido.CANTIDAD)  AS Neto,
+                      CONVERT(numeric(10,0),  pedido.NETO / pedido.cantidad)  AS ValorUnitario,
+                    CONVERT(numeric(10,0),  pedido.NETO )  AS Neto,
                   img.small_img  as Imagen                   
                   from MvPedido  pedido     
                                         inner join  MtArticulo articulo on articulo.IdArticulo = pedido.PRODUCTO
