@@ -155,7 +155,7 @@ const getstatus = async (req, res) => {
         const pool = await getConnection();
         const { NRODCTO, status,TIPODCTO, Total } = req.body;
         const salt = bcryptjs.genSaltSync(10);
-        const IdTransaccion = bcryptjs.hashSync(NRODCTO, salt);
+        const IdTransaccion = bcryptjs.hashSync(TIPODCTO, salt);
         var ESTADOPED = 1;
         if (status === 200) {
             ESTADOPED = 2;
@@ -204,7 +204,9 @@ const getstatus = async (req, res) => {
             if (result.rowsAffected[0] > 0) {
                 const updateStatus = result.recordsets[0];
                 const urlpago = 'www.google.com.co'
+                const validPassword = bcryptjs.compareSync( 'PM',IdTransaccion)
                 res.send({
+                    validPassword,
                     urlpago: urlpago,
                     IdTransaccion: IdTransaccion
                 });
@@ -229,39 +231,82 @@ const getpayment = async (req,res) =>{
     try {
         const pool = await getConnection();
         const { idtransaccion } = req.query
-        const result = await pool 
-            .request()
-            .input("idtransaccion", idtransaccion)
-            .query(tsqlorder.DatosEnvio)
-        
-        const result2 = await pool 
-            .request()
-            .input("idtransaccion", idtransaccion)
-            .query(tsqlorder.DatosCliente)   
+        const validkc = bcryptjs.compareSync( 'KC',idtransaccion)
+        const TIPODCTO = 'KC'
+        if (validkc){
+            const result = await pool
+                .request()
+                .input("TIPODCTO",TIPODCTO)
+                .input("idtransaccion",idtransaccion)
+                .query(tsqlorder.DatosEnviofac) 
 
-        const result3 = await pool 
-            .request()
-            .input("idtransaccion", idtransaccion)
-            .query(tsqlorder.ArticulosTotal)   
+                const result2 = await pool
+                .request()
+                .input("TIPODCTO",TIPODCTO)
+                .input("idtransaccion",idtransaccion)
+                .query(tsqlorder.DatosClientefac) 
+
+                const result3 = await pool
+                .request()
+                .input("TIPODCTO",TIPODCTO)
+                .input("idtransaccion",idtransaccion)
+                .query(tsqlorder.TotalArticulosfac) 
+
+                const result4 = await pool
+                .request()
+                .input("TIPODCTO",TIPODCTO)
+                .input("idtransaccion",idtransaccion)
+                .query(tsqlorder.DetalleTransacciónfac) 
+
+
+
+                const DatosEnvio = result.recordsets[0]
+                const DatosCliente = result2.recordsets[0]
+                const TotalArticulos =result3.recordsets[0]
+                const DetalleTransacción = result4.recordsets[0]
+                res.send({
+                    DatosEnvio,
+                    DatosCliente,
+                    TotalArticulos,
+                    DetalleTransacción
+                })
+
+        }else {
+            console.log(validkc);
+            const result = await pool 
+                .request()
+                .input("idtransaccion", idtransaccion)
+                .query(tsqlorder.DatosEnvio)
             
-        const result4 = await pool 
-            .request()
-            .input("idtransaccion", idtransaccion)
-            .query(tsqlorder.DetalleTransacción)
+            const result2 = await pool 
+                .request()
+                .input("idtransaccion", idtransaccion)
+                .query(tsqlorder.DatosCliente)   
 
-        const DatosEnvio = result.recordsets[0]
-        const DatosCliente = result2.recordsets[0]
-        const TotalArticulos = result3.recordsets[0]
-        const DetalleTransacción = result4.recordsets[0]
+            const result3 = await pool 
+                .request()
+                .input("idtransaccion", idtransaccion)
+                .query(tsqlorder.ArticulosTotal)   
+
+            const result4 = await pool 
+                .request()
+                .input("idtransaccion", idtransaccion)
+                .query(tsqlorder.DetalleTransacción)
+
+            const DatosEnvio = result.recordsets[0]
+            const DatosCliente = result2.recordsets[0]
+            const TotalArticulos = result3.recordsets[0]
+            const DetalleTransacción = result4.recordsets[0]
 
 
 
-            res.send({
-                DatosEnvio,
-                DatosCliente,
-                TotalArticulos,
-                DetalleTransacción
-            })
+                res.send({
+                    DatosEnvio,
+                    DatosCliente,
+                    TotalArticulos,
+                    DetalleTransacción
+                })
+        }
 
         
     } catch (error) {

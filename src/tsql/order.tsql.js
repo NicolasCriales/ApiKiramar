@@ -53,25 +53,6 @@ export const tsqlorder = {
 
         `,
 
-                /*
-  orderb2c: `
-                select 
-                        pedido.TIPODCTO, pedido.NRODCTO, pedido.FECHA, pedido.NIT, pedido.BRUTO, pedido.DESCUENTO, pedido.TOTALIVA, pedido.NETO, estado.Estado , pedido.NROFACTURA, pedido.FECHAFACT 
-                from    MtPedido as pedido
-                        INNER JOIN MtEstadoPedido Estado on estado.IdEstadoPedido =pedido.ESTADOPED
-                where   fecha >= DATEADD([month], DATEDIFF([month], '19000101', GETDATE()) - 3, '19000101') AND 
-                        fecha < DATEADD([month], DATEDIFF([month], '19000101', GETDATE()), '19000101') AND
-                        pedido.NIT=@Nit
-            `,
-
-  factureb2c: `
-                    select 
-                        TIPODCTO, NRODCTO, PRODUCTO, CANTIDAD, CANTORIG, VALORUNIT,IVA,DTOBASE,CONDCTOPROMO, DTOAUTORIZADO,
-                        CONDCTOAUTORIZADO, DTOCCIAL, CONDCTOCOMERCIAL, CONIVA,NETO
-                    from MvPedido
-                    where  TIPODCTO=@Tipodcto and NRODCTO=@Nrodcto 
-            `,*/
-
   pedido: `
   select pedido.FECHAING,pedido.ESTADOPED, estado.Estado, pedido.direccion, pedido.Complemento,
    pedido.Nit, pedido.NRODCTO, pedido.TIPODCTO,  pedido.TIPODCTO + '-' + pedido.NRODCTO as Pedido,
@@ -171,12 +152,36 @@ mtprocli: `
         factureStatus: `
         insert into MtPagoCartera
         (
-        [TIPODCTO], [NRODCTO], [NIT], [FECHA], [VALOR], [ESTADO], [IDTRANSACCION]
+        [TIPODCTO], [NRODCTO], [NIT], [FECHA], [VALOR], [ESTADO], [IDTRANSACCION], [METODOPAGO], [ESTADOTRANSACCION], [MOTIVO]
         )
         values
         (
-        @TIPODCTO, @NRODCTO, @NitUsername, @FechaKiramar,@Total, @ESTADOPED, @IdTransaccion
-        )`
+        @TIPODCTO, @NRODCTO, @NitUsername, @FechaKiramar,@Total, @ESTADOPED, @IdTransaccion, '' , '' , ''
+        )`,
+
+
+        DatosEnviofac: `
+        select cliente.direccion, '' as Complemento, cliente.ciudad, cliente.codciudad, pagocartera.valor as Total, estado.Estado as ESTADOPED,pagocartera.Estado,
+                        pagocartera.tipodcto + '-' + pagocartera.nrodcto as ReferenciaPedido, '' as Descuento from MtpagoCartera pagocartera
+        inner join MtCliente cliente on cliente.Nit = pagocartera.nit
+        inner join MtEstadoPedido estado on estado.IdEstadoPedido = pagocartera.estado
+        where idtransaccion=@idtransaccion and pagocartera.tipodcto=@TIPODCTO
+        `,
+
+
+        DatosClientefac: `select cliente.Nombre, cliente.Nit, cliente.Celular, cliente.Email
+        from MtpagoCartera pagocartera
+inner join MtCliente cliente on cliente.Nit = pagocartera.nit
+where pagocartera.idtransaccion =@idtransaccion and pagocartera.tipodcto=@TIPODCTO `,
+
+TotalArticulosfac: `select sum(mvtrade.cantidad) as Articulos
+from MtpagoCartera pagocartera
+inner join mvtrade mvtrade on mvtrade.nrodcto = pagocartera.nrodcto
+where pagocartera.idtransaccion =@idtransaccion`,
+
+DetalleTransacciónfac: `select pagocartera.MetodoPago, pagocartera.estadotransaccion, pagocartera.Motivo, pagocartera.idtransaccion AS ReferenciaTransaccion
+from MtpagoCartera pagocartera
+where pagocartera.idtransaccion = @idtransaccion`
 
 };
 
