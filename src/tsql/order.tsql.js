@@ -110,7 +110,7 @@ export const tsqlorder = {
         `,
 
         facture_detailfech: `
-                                 select  FechaDcto,FechaVencimiento,Dias ,  deuda,
+                                 select  FechaDcto,FechaVencimiento,Dias ,  deuda,Nit,
                                         CASE 
                                                 WHEN Dias > 0 THEN 'MORA'
                                                   WHEN Dias < 0 THEN 'PENDIENTE'
@@ -125,7 +125,7 @@ export const tsqlorder = {
                 update MtPedido
                         set ESTADOPED=@ESTADOPED,
                             IdTransaccion=@IdTransaccion,
-                            EstadoTransaccion='Aprovado'
+                            EstadoTransaccion='Aprobado'
                         where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`,
 
 
@@ -153,7 +153,7 @@ mtprocli: `
 
 
         DetalleTransacción: `
-        select '' as MetodoPago, estadotransaccion ,'' as Motivo, idtransaccion as ReferenciaTransaccion from MtPedido 
+        select '' as MetodoPago, LTRIM(RTRIM(estadotransaccion)) as  estadotransaccion,'' as Motivo, idtransaccion as ReferenciaTransaccion from MtPedido 
                         where idtransaccion =@idtransaccion`,
 
         ArticulosTotal :`		
@@ -166,7 +166,17 @@ mtprocli: `
         ArticulosTotal2: `select sum(CANTIDAD) as TotalArticulos,
         sum(CONVERT(numeric(10,0),  NETO))  AS Neto
         from MvPedido 
-        where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`
+        where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`,
+
+        factureStatus: `
+        insert into MtPagoCartera
+        (
+        [TIPODCTO], [NRODCTO], [NIT], [FECHA], [VALOR], [ESTADO], [IDTRANSACCION]
+        )
+        values
+        (
+        @TIPODCTO, @NRODCTO, @NitUsername, @FechaKiramar,@Total, @ESTADOPED, @IdTransaccion
+        )`
 
 };
 

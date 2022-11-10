@@ -153,7 +153,7 @@ const getMtPedido = async (req, res) => {
 const getstatus = async (req, res) => {
     try {
         const pool = await getConnection();
-        const { NRODCTO, status,TIPODCTO } = req.body;
+        const { NRODCTO, status,TIPODCTO, Total } = req.body;
         const salt = bcryptjs.genSaltSync(10);
         const IdTransaccion = bcryptjs.hashSync(NRODCTO, salt);
         var ESTADOPED = 1;
@@ -161,26 +161,61 @@ const getstatus = async (req, res) => {
             ESTADOPED = 2;
         } else {
             ESTADOPED = 3;
-        }   
-        const result = await pool
+        }
+        if (TIPODCTO == 'KC' ) {//
+
+            const FechaGenerada = new Date();
+            const Fecha = new Date(FechaGenerada).toLocaleDateString("en-CA");
+            const FechaKiramar = Fecha + " " + "00:00:00.000";
+
+            const result0 = await pool
+                .request()
+                .input("TIPODCTO",TIPODCTO)
+                .input("NRODCTO",NRODCTO)
+                .query(tsqlorder.facture_detailfech)
+            const DataUsername = result0.recordsets[0][0]
+            const NitUsername = DataUsername.Nit
+
+            const result = await pool
+                .request()
+                .input("TIPODCTO",TIPODCTO)
+                .input("NRODCTO",NRODCTO)
+                .input("NitUsername",NitUsername)
+                .input("FechaKiramar",FechaKiramar)
+                .input("Total",Total)
+                .input("ESTADOPED",ESTADOPED)
+                .input("IdTransaccion",IdTransaccion)
+                .query(tsqlorder.factureStatus)
+                const urlpago = 'www.google.com.co'
+                res.send({
+                    urlpago: urlpago,
+                    IdTransaccion
+                })
+               
+        } else {
+            const result = await pool
             .request()
             .input("IdTransaccion", sql.VarChar, IdTransaccion)
             .input("NRODCTO", sql.VarChar, NRODCTO)
             .input("ESTADOPED", sql.Numeric, ESTADOPED)
             .input("TIPODCTO", sql.VarChar, TIPODCTO)
             .query(tsqlorder.status);
-        if (result.rowsAffected[0] > 0) {
-            const updateStatus = result.recordsets[0];
-            const urlpago = 'www.google.com.co'
-            res.send({
-                urlpago: urlpago,
-                IdTransaccion: IdTransaccion
-            });
-        } else {
-            res.status(500).send({
-                message: "No se encontro ninguna orden asociado al cliente",
-            });
+
+            if (result.rowsAffected[0] > 0) {
+                const updateStatus = result.recordsets[0];
+                const urlpago = 'www.google.com.co'
+                res.send({
+                    urlpago: urlpago,
+                    IdTransaccion: IdTransaccion
+                });
+            } else {
+                res.status(500).send({
+                    message: "No se encontro ninguna orden asociado al cliente",
+                });
+            }
         }
+       
+
     } catch (error) {
         console.log("Error: no se pudo consultar las ordenes del usuario ", error);
         res.status(500).send({
@@ -261,7 +296,7 @@ const getPedido = async (req, res) => {
             message: "Problemas al consultar las ordenes del usuario",
         });
     }
-}; //
+}; 
 
 
 const getPedidoWEb = async (req, res) => {
@@ -416,59 +451,37 @@ const getfacture_detailb2b = async (req, res) => {
     }
 };
 
-/*
-const getorderb2c = async (req, res) => {
-  try {
-    const pool = await getConnection();
-    const { Nit } = req.query;
-    const result = await pool
-      .request()
-      .input("Nit", sql.VarChar, Nit)
-      .query(tsqlorder.orderb2c);
-    if (result.rowsAffected[0] > 0) {
-      const order = result.recordsets[0];
-      res.send({
-        order,
-      });
-    } else {
-      res.satus(500).send({
-        message: "No se encuentra la factura seleccionada",
-      });
+const getfacture_status = async (req,res) => {
+    try {
+        const pool = await getConnection();
+        const { TipoDcto,NroDcto,Valor } = req.body
+        const salt = bcryptjs.genSaltSync(10);
+        const IdTransaccion = bcryptjs.hashSync(NroDcto, salt);
+        const FechaGenerada = new Date();
+        const Fecha = new Date(FechaGenerada).toLocaleDateString("en-CA");
+        const FechaKiramar = Fecha + " " + "00:00:00.000";
+        const result = await pool
+            .request()
+            .input("TipoDcto",TipoDcto)
+            .input("NroDcto",NroDcto)
+            .input("Valor",Valor)
+            .input("IdTransaccion",IdTransaccion)
+            .query(tsqlorder.factureStatus)
+            const urlpago = 'www.google.com.co'
+            res.send({
+                urlpago: urlpago,
+                IdTransaccion
+            })
+    } catch (error) {
+        console.log("Error: no se encontro la factura enviada", error);
+        res.status(500).send({
+            message: "Problemas al consultar la factura",
+        });
     }
-  } catch (error) {
-    console.log("Error: no se encontro la factura enviada", error);
-    res.status(500).send({
-      message: "Problemas al consultar la factura",
-    });
-  }
-};
 
-const getfactureb2c = async (req, res) => {
-  try {
-    const pool = await getConnection();
-    const { Tipodcto, Nrodcto } = req.query;
-    const result = await pool
-      .request()
-      .input("Tipodcto", sql.VarChar, Tipodcto)
-      .input("Nrodcto", sql.VarChar, Nrodcto)
-      .query(tsqlorder.factureb2c);
-    if (result.rowsAffected[0] > 0) {
-      const facture = result.recordsets[0];
-      res.send({
-        facture,
-      });
-    } else {
-      res.satus(500).send({
-        message: "No se encuentra la factura seleccionada",
-      });
-    }
-  } catch (error) {
-    console.log("Error: no se encontro la factura enviada", error);
-    res.status(500).send({
-      message: "Problemas al consultar la factura",
-    });
-  }
-};*/
+}
+
+
 
 module.exports = {
     getMtPedido,
@@ -478,5 +491,6 @@ module.exports = {
     getfacture_orderb2b,
     getfacture_detailb2b,
     getstatus,
-    getpayment
+    getpayment,
+    getfacture_status
 };
