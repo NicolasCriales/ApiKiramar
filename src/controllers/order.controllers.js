@@ -160,7 +160,7 @@ const getstatus = async (req, res) => {
         if (status === 200) {
             ESTADOPED = 2;
         } else {
-            ESTADOPED = 3;
+            ESTADOPED = 2;
         }
         if (TIPODCTO == 'KC' ) {//
 
