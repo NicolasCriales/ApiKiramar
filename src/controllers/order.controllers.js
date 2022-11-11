@@ -145,15 +145,13 @@ const getstatus = async (req, res) => {
 	try {
 
 		const pool = await getConnection();
-		//const crypto = require('crypto')
 		const { NRODCTO, status, TIPODCTO, Total } = req.body;
-		//const hash = crypto.createHash('md5').update(TIPODCTO,NRODCTO).digest("hex")
-		//const salt = await  bcryptjs.genSaltSync(0);
-		//const Encriptar = await bcryptjs.hashSync(TIPODCTO);
-		//const buscar = '/'
-		//const IdTransaccion = await (Encriptar.replace(new RegExp(buscar,"g") ,"&"));
-		const IdTransaccion =  await bcryptjs.hashSync(TIPODCTO);
-		//console.log(hash,'prueba');
+		const salt = await  bcryptjs.genSaltSync(0);
+		const Encriptar = await bcryptjs.hashSync(TIPODCTO);
+		const buscar = '/'
+		const IdTransaccion = await (Encriptar.replace(new RegExp(buscar,"g") ,"-"));
+		//const IdTransaccion =  await bcryptjs.hashSync(TIPODCTO);
+		console.log(Encriptar,IdTransaccion);
 		var ESTADOPED = 1;
 		if (status === 200) {
 			ESTADOPED = 2;
@@ -225,8 +223,11 @@ const getpayment = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const { idtransaccion } = req.query;
-		const validkc = bcryptjs.compareSync('KC', idtransaccion);
+		const buscarsigno =  '-'
+		const cambiarsigno = await (idtransaccion.replace(new RegExp(buscarsigno,"g") ,"/"));
+		const validkc =  await bcryptjs.compareSync('KC', cambiarsigno);
 		const TIPODCTO = 'KC';
+		console.log(idtransaccion,cambiarsigno,validkc);
 		if (validkc) {
 			console.log(validkc);
 			const result = await pool
