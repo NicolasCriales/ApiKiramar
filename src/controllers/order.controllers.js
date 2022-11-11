@@ -151,7 +151,6 @@ const getstatus = async (req, res) => {
 		const buscar = '/'
 		const IdTransaccion = await (Encriptar.replace(new RegExp(buscar,"g") ,"-"));
 		//const IdTransaccion =  await bcryptjs.hashSync(TIPODCTO);
-		console.log(Encriptar,IdTransaccion);
 		var ESTADOPED = 1;
 		if (status === 200) {
 			ESTADOPED = 2;
@@ -227,7 +226,6 @@ const getpayment = async (req, res) => {
 		const cambiarsigno = await (idtransaccion.replace(new RegExp(buscarsigno,"g") ,"/"));
 		const validkc =  await bcryptjs.compareSync('KC', cambiarsigno);
 		const TIPODCTO = 'KC';
-		console.log(idtransaccion,cambiarsigno,validkc);
 		if (validkc) {
 			console.log(validkc);
 			const result = await pool
