@@ -233,7 +233,7 @@ const getpayment = async (req, res) => {
 				.input('TIPODCTO', TIPODCTO)
 				.input('idtransaccion', idtransaccion)
 				.query(tsqlorder.DatosEnviofac);
-
+ 
 			const result2 = await pool
 				.request()
 				.input('TIPODCTO', TIPODCTO)
