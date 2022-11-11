@@ -1,11 +1,9 @@
-import { Router } from 'express'
-import { validateJWT } from '../middlewares/validate-jwt'
-import { getspecialized_store } from '../controllers/index.js'
+import { Router } from 'express';
+import { validateJWT } from '../middlewares/validate-jwt';
+import { getspecialized_store } from '../controllers/index.js';
 
-const router = Router()
+const router = Router();
 
-router.get('/',[validateJWT], getspecialized_store)
+router.get('/', [validateJWT], getspecialized_store);
 
-
-
-module.exports = router
+module.exports = router;

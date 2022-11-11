@@ -1,7 +1,5 @@
-import Server from './models/server'
+import Server from './models/server';
 
-const app = new Server()
+const app = new Server();
 
-export default app
-
-
+export default app;
