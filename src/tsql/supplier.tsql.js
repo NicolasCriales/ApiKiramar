@@ -11,7 +11,8 @@ export const tsqlsupplier = {
 	select DISTINCT subl.NOMBRE,subl.CODSUBLINEA
         from MtArticulo  art
                                         inner join MtSubLinea subl on subl.CODSUBLINEA = art.CodSubLinea
-        where art.CodProveedor=@CodProveedor and not subl.CodSubLinea in ('1070', '1052', '1049') order by subl.NOMBRE ASC 
+                                        inner join MtSaldo    sal  on art.idarticulo = sal.IdArticulo and sal.Saldo > 0 and sal.IdBodega = '1101'
+        where art.Habilitado='1' and art.CodProveedor=@CodProveedor and not subl.CodSubLinea in ('1070', '1052', '1049') order by subl.NOMBRE ASC 
 
                     `,
 
