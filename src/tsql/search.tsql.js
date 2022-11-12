@@ -53,7 +53,7 @@ export const tsqlsearch = {
   category: `       
                                 SELECT	AUX.CodSubLinea, AUX.NombreSubLinea
                                 FROM   (
-                                                select DISTINCT  (MTA.CodSubLinea), MTA.NombreSubLinea
+                                                select DISTINCT  (MTA.CodSubLinea), SUBL.Nombre as NombreSubLinea
                                                 from    MtArticulo MTA
                                                         INNER JOIN KellerDeskTop.[dbo].MtSaldo SAL ON SAL.IdArticulo = MTA.IdArticulo
                                                         INNER JOIN KellerDeskTop.[dbo].MtListaPrecioArticulo LISTAP ON LISTAP.IdProducto = MTA.IdArticulo

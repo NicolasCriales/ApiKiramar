@@ -67,7 +67,7 @@ export const tsqlsupplier = {
 
                                         FROM (
                                                 SELECT  MTA.IdArticulo, MTA.Codigo_Barras, MTA.NombreArticulo, MTA.NombreAlterno, MTA.CodProveedor, MTA.NombreProveedor, MTA.CodLinea,
-                                                        MTA.NombreLinea, MTA.CodSubLinea, MTA.NombreSubLinea, MTA.CodTipoInv, MTA.TipoInventario, 
+                                                        MTA.NombreLinea, MTA.CodSubLinea, SUBL.Nombre as  NombreSubLinea, MTA.CodTipoInv, MTA.TipoInventario, 
                                                         MTA.IdCategoria, MTA.Descripcion, SAL.Disponible AS Inventario, LISTAP.IdListaPrecios, IMG.small_img as IMAGEN,
                                                         CONVERT(numeric(15,0),(LISTAP.Precio)) as VALORUNIT,
                                                         CONVERT(numeric(15,0),(LISTAP.IVA)) as IVA,

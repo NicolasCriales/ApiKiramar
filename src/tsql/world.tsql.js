@@ -9,7 +9,7 @@ export const tsqlworld = {
                         select DISTINCT SUBL.NOMBRE,MTA.CodSubLinea
                         from MtArticulo MTA
                              INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
-                         where MTA.CodLinea=@CODLINEA AND NOT SUBL.NOMBRE='REPUESTOS' and not MTA.CODSUBLINEA='0'
+                         where MTA.CodLinea=@CODLINEA AND NOT SUBL.NOMBRE='REPUESTOS' and not MTA.CODSUBLINEA='0' order by SUBL.NOMBRE asc
                     `,
 
   productcategory: `
