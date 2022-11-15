@@ -192,4 +192,9 @@ export const tsqlorder = {
                                 from MtpagoCartera pagocartera
                                 where pagocartera.idtransaccion = @idtransaccion
                             `,
+
+    datafacture: `
+                    select * from MtPedido where NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO and IdTransaccion=@IdTransaccion
+
+    `
 };

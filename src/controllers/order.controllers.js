@@ -194,15 +194,26 @@ const getstatus = async (req, res) => {
 				.input('ESTADOPED', sql.Numeric, ESTADOPED)
 				.input('TIPODCTO', sql.VarChar, TIPODCTO)
 				.query(tsqlorder.status);
+			
+			const result2 = await pool
+				.request()
+				.input('IdTransaccion', sql.VarChar, IdTransaccion)
+				.input('NRODCTO', sql.VarChar, NRODCTO)
+				.input('TIPODCTO', sql.VarChar, TIPODCTO)
+				.query(tsqlorder.datafacture);
+
+
 
 			if (result.rowsAffected[0] > 0) {
 				const updateStatus = result.recordsets[0];
+				const  DatosFactura= result2.recordsets[0];
 				const urlpago = 'www.google.com.co';
 				const validPassword = bcryptjs.compareSync('PM', IdTransaccion);
 				res.send({
 					validPassword,
 					urlpago: urlpago,
 					IdTransaccion: IdTransaccion,
+					DatosFactura
 				});
 			} else {
 				res.status(500).send({

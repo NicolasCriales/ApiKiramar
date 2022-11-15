@@ -50,7 +50,7 @@ export const tsqlproducts = {
                                         AUX.CodProveedor, AUX.NombreProveedor,AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, 
                                         AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,AUX.Descripcion,
                                         AUX.Inventario, AUX.IdListaPrecios , AUX.VALORUNIT, AUX.Iva, aux.DctoBase, 
-                                        aux.DctoPromocional , aux.CONDCTOPROMO,UX.DTOAUTORIZADO, AUX.CONDCTOAUTORIZADO, 
+                                        aux.DctoPromocional , aux.CONDCTOPROMO,AUX.DTOAUTORIZADO, AUX.CONDCTOAUTORIZADO, 
                                         AUX.DctoCcial , AUX.CONDCTOCOMERCIAL, AUX.CONIVA, AUX.NETO_CON_DESCUENTO, AUX.NETO_SIN_DESCUENTO,
                                         AUX.IMAGEN
 
