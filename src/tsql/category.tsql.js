@@ -1,10 +1,11 @@
 export const tsqlcategory = {
-  category: `
-                select CODSUBLINEA,NOMBRE
-                from MtSubLinea
-                where not NOMBRE='REPUESTOS' and not CODSUBLINEA='0'
-            `,
-  productcategory: `
+	/*category: `
+                        select CODSUBLINEA,NOMBRE
+                        from MtSubLinea
+                        where not NOMBRE='REPUESTOS' and not CODSUBLINEA='0'
+                  `,*/
+
+	/*productcategory: `
                                 SELECT  AUX.IdArticulo, AUX.Codigo_Barras, AUX.NombreArticulo, AUX.NombreAlterno, AUX.CodProveedor, AUX.NombreProveedor,
                                         AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,
                                         AUX.Descripcion, AUX.Inventario, AUX.IdListaPrecios , AUX.VALORUNIT, AUX.Iva, aux.DctoBase, aux.DctoPromocional , aux.CONDCTOPROMO,
@@ -36,7 +37,7 @@ export const tsqlcategory = {
                                                 LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = mta.IdArticulo   
 
                                         WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
-                                                MTA.CodSubLinea=@CODSUBLINEA   AND  PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
+                                                MTA.CodSubLinea=@CODSUBLINEA   AND  PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND SAL.Disponible > 30 AND NOT SUBL.NOMBRE='REPUESTOS'
                                 )   AS AUX
-                    `,
+                         `,*/
 };

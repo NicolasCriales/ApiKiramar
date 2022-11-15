@@ -50,7 +50,7 @@ const getidbanners = async (req, res) => {
 	}
 };
 
-const getproducts_banners = async (req, res) => {
+/*const getproducts_banners = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const {
@@ -151,9 +151,9 @@ const getproducts_banners = async (req, res) => {
 			message: 'Problemas al consultar los productos del banner',
 		});
 	}
-};
+};*/
 
-const getbanners_releases = async (req, res) => {
+/*const getbanners_releases = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const result = await pool.request().query(tsqlbanners.banners_releases);
@@ -173,9 +173,9 @@ const getbanners_releases = async (req, res) => {
 			message: 'Problemas al consultar los lanzamientos',
 		});
 	}
-};
+};*/
 
-const getproducts_releases = async (req, res) => {
+/*const getproducts_releases = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const { IdListaPrecios, CodProveedor, page, limit } = req.query;
@@ -201,12 +201,12 @@ const getproducts_releases = async (req, res) => {
 			message: 'Problemas al consultar los productos del lanzamiento',
 		});
 	}
-};
+};*/
 
 module.exports = {
 	getbanners,
-	getproducts_banners,
-	getbanners_releases,
-	getproducts_releases,
+	//getproducts_banners,
+	//getbanners_releases,
+	//getproducts_releases,
 	getidbanners,
 };

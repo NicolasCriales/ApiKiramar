@@ -1,12 +1,15 @@
 export const tsqlbanners = {
-  banners: `
-                    select imagen,ruta,orden,swInactivo,swDkasa,swKiramar,codproveedor, idzonas,is_video, Titulo
-                    from MtBanners 
-                    where swInactivo='0' AND swKiramar='1' AND swDkasa='0' AND orden >= 1 AND idzonas=@id
-                `,
-                idbanners: `select id, descripcion from MTBannerZonas`,
+	idbanners: `    
+                        select id, descripcion from MTBannerZonas
+                   `,
 
-  products_banners: `
+	banners: ` 
+                        select imagen,ruta,orden,swInactivo,swDkasa,swKiramar,codproveedor, idzonas,is_video, Titulo
+                        from MtBanners 
+                        where swInactivo='0' AND swKiramar='1' AND swDkasa='0' AND orden >= 1 AND idzonas=@id
+                 `,
+
+	/*products_banners: `
                                 SELECT  AUX.IdArticulo, AUX.Codigo_Barras, AUX.NombreArticulo, AUX.NombreAlterno, AUX.CodProveedor, AUX.NombreProveedor,
                                         AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,
                                         AUX.Descripcion, AUX.Inventario, AUX.IdListaPrecios , AUX.VALORUNIT, AUX.Iva, aux.DctoBase, aux.DctoPromocional , aux.CONDCTOPROMO,
@@ -14,7 +17,7 @@ export const tsqlbanners = {
                                         AUX.IMAGEN, aux.FecIng
 
                                 FROM (
-                                        SELECT  MTA.IdArticulo, MTA.Codigo_Barras, MTA.NombreArticulo, MTA.NombreAlterno, MTA.CodProveedor, MTA.NombreProveedor, MTA.CodLinea,
+                                        SELECT  MTA.IdArticulo, MaTA.Codigo_Barras, MTA.NombreArticulo, MTA.NombreAlterno, MTA.CodProveedor, MTA.NombreProveedor, MTA.CodLinea,
                                                 MTA.NombreLinea, MTA.CodSubLinea, MTA.NombreSubLinea, MTA.CodTipoInv, MTA.TipoInventario, 
                                                 MTA.IdCategoria, MTA.Descripcion, SAL.Disponible AS Inventario, LISTAP.IdListaPrecios, IMG.small_img as IMAGEN, MTA.FecIng,
                                                 CONVERT(numeric(15,0),(LISTAP.Precio)) as VALORUNIT,
@@ -42,9 +45,9 @@ export const tsqlbanners = {
                                         PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' and not mta.NombreAlterno like '%gratis%'
                            
     
-                        `,
+                        `,*/
 
-                        category: `
+	/*category: `
                         SELECT	AUX.CodSubLinea, AUX.NombreSubLinea
         FROM   (
         select DISTINCT  (MTA.CodSubLinea), MTA.NombreSubLinea
@@ -56,9 +59,9 @@ export const tsqlbanners = {
         LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
         WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND  
         MTA.NombreAlterno LIKE @LikeNombreAlterno AND prov.CODSUMIN=@LikeCodProveedor and
-        PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' and not mta.NombreAlterno like '%gratis%') aux `,
+        PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' and not mta.NombreAlterno like '%gratis%') aux `,*/
 
-        max_min: `
+	/*max_min: `
         SELECT	MAX(aux.NETO_CON_DESCUENTO) AS MAX, MIN(aux.NETO_CON_DESCUENTO) AS MIN 
 
         FROM (
@@ -87,10 +90,9 @@ export const tsqlbanners = {
 
                         WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND  
                         MTA.NombreAlterno LIKE @LikeNombreAlterno AND
-                        PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' and not mta.NombreAlterno like '%gratis%' `,
+                        PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' and not mta.NombreAlterno like '%gratis%' `,*/
 
-
-        supplier: `SELECT	AUX.NombreProveedor, AUX.CodProveedor
+	/*supplier: `SELECT	AUX.NombreProveedor, AUX.CodProveedor
         FROM    (
                         SELECT DISTINCT (MTA.NombreProveedor), MTA.CodProveedor
                         FROM    MtArticulo MTA
@@ -104,15 +106,15 @@ export const tsqlbanners = {
                                 PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' and not mta.NombreAlterno like '%gratis%'
                                  ) AUX
 
-                                `,
+                                `,*/
 
-  banners_releases: `
-                            select imagen,ruta,orden,swInactivo,swDkasa,swKiramar,codproveedor
-                            from MtBanners 
-                            where swInactivo='0' AND swKiramar='1' AND swDkasa='0' and idzona='2'
-                        `,
+	/*banners_releases: `
+                                select imagen,ruta,orden,swInactivo,swDkasa,swKiramar,codproveedor
+                                from MtBanners 
+                                where swInactivo='0' AND swKiramar='1' AND swDkasa='0' and idzonas='2'
+                          `,*/
 
-  products_new: `
+	/*products_new: `
                                 SELECT  AUX.IdArticulo, AUX.Codigo_Barras, AUX.NombreArticulo, AUX.NombreAlterno, AUX.CodProveedor, AUX.NombreProveedor,
                                         AUX.CodLinea, AUX.NombreLinea, AUX.CodSubLinea, AUX.NombreSubLinea, AUX.CodTipoInv, AUX.TipoInventario, AUX.IdCategoria,
                                         AUX.Descripcion, AUX.Inventario, AUX.IdListaPrecios , AUX.VALORUNIT, AUX.Iva, aux.DctoBase, aux.DctoPromocional , aux.CONDCTOPROMO,
@@ -149,5 +151,5 @@ export const tsqlbanners = {
                                     PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
                         )   AS AUX
 
-                    `,
+                    `,*/
 };

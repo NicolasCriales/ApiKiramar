@@ -3,7 +3,7 @@ import { tsqlcategory } from '../tsql';
 import { express } from 'express';
 import { pagination } from '../helpers/pagination';
 
-const getcategory = async (req, res) => {
+/* const getcategory = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const { page, limit } = req.query;
@@ -26,9 +26,9 @@ const getcategory = async (req, res) => {
 			message: 'Problemas al consultar las categorias',
 		});
 	}
-};
+};*/
 
-const getproductcategory = async (req, res) => {
+/*const getproductcategory = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const { IdListaPrecios, CODSUBLINEA } = req.query;
@@ -54,8 +54,9 @@ const getproductcategory = async (req, res) => {
 			message: 'Problemas al consultar los productos de la categoria',
 		});
 	}
-};
+};*/
+
 module.exports = {
-	getcategory,
-	getproductcategory,
+	//getcategory,
+	//getproductcategory,
 };

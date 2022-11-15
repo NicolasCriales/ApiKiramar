@@ -4,7 +4,7 @@ import { getcategory, getproductcategory } from '../controllers/index.js';
 
 const router = Router();
 
-router.get('/', [validateJWT], getcategory);
-router.get('/product', [validateJWT], getproductcategory);
+//router.get('/', [validateJWT], getcategory);
+//router.get('/product', [validateJWT], getproductcategory);
 
 module.exports = router;

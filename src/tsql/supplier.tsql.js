@@ -48,7 +48,7 @@ export const tsqlsupplier = {
                                                         LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = mta.IdArticulo 
 
                                                  WHERE   SAL.IdBodega='1101' AND NOT MTA.NombreSubLinea='REPUESTOS' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
-                                                         MTA.CodProveedor=@CodProveedor AND MTA.CodSubLinea=@CodSubLinea  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
+                                                         MTA.CodProveedor=@CodProveedor AND MTA.CodSubLinea=@CodSubLinea  AND PROV.SWACTIVO='1'  AND SAL.Disponible > 30 AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
                                           )   AS AUX
                         `,
 
@@ -91,7 +91,7 @@ export const tsqlsupplier = {
                                                                 LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = mta.IdArticulo 
 
                                                         WHERE   SAL.IdBodega='1101' AND NOT MTA.NombreSubLinea='REPUESTOS' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
-                                                                MTA.NombreProveedor='DKASA' AND MTA.CodSubLinea=@CodSubLinea  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
+                                                                MTA.NombreProveedor='DKASA' AND MTA.CodSubLinea=@CodSubLinea  AND PROV.SWACTIVO='1' AND SAL.Disponible > 30 AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
                                         )   AS AUX                
                         `,
 };
