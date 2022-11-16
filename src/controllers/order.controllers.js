@@ -96,11 +96,12 @@ const getMtPedido = async (req, res) => {
                 'NCRIALES','S','${FechaKiramar}', '${DIRECCION}', '${Complemento}' ,'${CIUDAD}','${CODCIUDAD}'
             )`
 		);
-		for (let i = 0; i < product.length; i++) {
+		for (let i = 0; i < product.length; i++) { 
 			const result2 = await pool
 				.request()
 				.input('PRODUCTO', product[i].PRODUCTO)
 				.input('NIT', NIT)
+				.input('ListaPrecios', ListaPrecios)
 				.query(tsqlorder.infoproduct);
 			const Articulo = await result2.recordsets[0][0];
 
@@ -238,7 +239,6 @@ const getstatus = async (req, res) => {
 
 
 			if (result.rowsAffected[0] > 0) {
-
 				const updateStatus = result.recordsets[0];
 				const  DatosFactura= result2.recordsets[0];
 				const urlpago = 'www.google.com.co';
