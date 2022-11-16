@@ -3,6 +3,7 @@ import { tsqlorder } from '../tsql';
 import { pagination } from '../helpers/pagination';
 import bcryptjs from 'bcryptjs';
 import { Numeric } from 'mssql';
+//import fetch from 'node-fetch'
 
 const getMtPedido = async (req, res) => {
 	try {
@@ -145,6 +146,7 @@ const getstatus = async (req, res) => {
 	try {
 
 		const pool = await getConnection();
+		const URL = 'https://noccapi-stg.paymentez.com/linktopay/init_order/'
 		const { NRODCTO, status, TIPODCTO, Total } = req.body;
 		const salt = await  bcryptjs.genSaltSync(0);
 		const Encriptar = await bcryptjs.hashSync(TIPODCTO);
@@ -204,7 +206,39 @@ const getstatus = async (req, res) => {
 
 
 
+			const response = await (`${URL}`, { 
+					method: 'POST',
+					body: JSON.stringify({
+							"user": {
+								"id": "117",
+								"email": "santiagorr207@gmail.com",
+								"name": "Gabriel",
+								"last_name": "Cruz"
+							},
+							"order": {
+								"dev_reference": "1",
+								"description": "Product description",
+								"amount": 100000,
+								"installments_type": 0,
+								"currency": "COP"
+							},
+							"configuration": {
+								"partial_payment": true,
+								"expiration_days": 1,
+								"allowed_payment_methods": ["All", "Cash", "BankTransfer", "Card", "Qr"],
+								"success_url": "https://url-to-success.com",
+								"failure_url": "https://url-to-failure.com",
+								"pending_url": "https://url-to-pending.com",
+								"review_url": "https://url-to-review.com"
+							}
+					}),
+					headers: { 'Auth-Token': 'RFYtRElTS0lSQU1BUi1TVEctQ08tU0VSVkVSOzE2Njg1NDMyMzM7ZDUxODc3MmI4YmI5ZjRkYmYyNGI0OGY5YTliNWEwN2VlNGYwZGFhN2FkNWQxN2I2MDBkM2U4NTFkNzYzNzIyNA=='}
+				}); 
+
+
+
 			if (result.rowsAffected[0] > 0) {
+
 				const updateStatus = result.recordsets[0];
 				const  DatosFactura= result2.recordsets[0];
 				const urlpago = 'www.google.com.co';
@@ -213,7 +247,8 @@ const getstatus = async (req, res) => {
 					validPassword,
 					urlpago: urlpago,
 					IdTransaccion: IdTransaccion,
-					DatosFactura
+					DatosFactura,
+					response
 				});
 			} else {
 				res.status(500).send({

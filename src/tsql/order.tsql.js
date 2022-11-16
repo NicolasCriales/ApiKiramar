@@ -194,7 +194,11 @@ export const tsqlorder = {
                             `,
 
     datafacture: `
-                    select * from MtPedido where NRODCTO=@NRODCTO and TIPODCTO=@TIPODCTO and IdTransaccion=@IdTransaccion
-
-    `
+                    select PEDIDO.TIPODCTO, PEDIDO.NRODCTO, PEDIDO.FECHA, PEDIDO.Nit, PEDIDO.BRUTO, PEDIDO.DESCUENTO,
+                           PEDIDO.TOTALIVA, PEDIDO.NETO, PEDIDO.Direccion, pedido.Ciudad ,PEDIDO.IdTransaccion, 
+                           cliente.Nombre, Pais
+                    from MtPedido PEDIDO 
+                        inner join MtCliente cliente on cliente.Nit= PEDIDO.NIT 
+                    where PEDIDO.NRODCTO=@NRODCTO and PEDIDO.TIPODCTO=@TIPODCTO and PEDIDO.IdTransaccion=@IdTransaccion
+                `
 };
