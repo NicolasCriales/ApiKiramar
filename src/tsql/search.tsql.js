@@ -63,7 +63,7 @@ export const tsqlsearch = {
 						WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios= @IdListaPrecios AND 
 							MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
 							AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'  
-							and not mta.NombreAlterno like '%gratis%' and  PROV.CODSUMIN=@CodProveedor  ) AUX
+							and not mta.NombreAlterno like '%gratis%' and  PROV.CODSUMIN like @CodProveedor  ) AUX
 
 			`,
 
