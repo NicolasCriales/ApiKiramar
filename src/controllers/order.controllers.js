@@ -3,7 +3,6 @@ import { tsqlorder } from '../tsql';
 import { pagination } from '../helpers/pagination';
 import bcryptjs from 'bcryptjs';
 import { Numeric } from 'mssql';
-//import fetch from 'node-fetch'
 
 const getMtPedido = async (req, res) => {
 	try {
@@ -36,7 +35,7 @@ const getMtPedido = async (req, res) => {
 
 		const MtCliente = await pool.request().input('NIT', sql.VarChar, NIT).query(tsqlorder.mtprocli);
 		const Cliente = MtCliente.recordsets[0];
-
+console.log(ListaPrecios);
 		var TipoDocumento = '';
 		if (PERSONANJ == 'CC') {
 			var TipoDocumento = 1;
@@ -101,7 +100,7 @@ const getMtPedido = async (req, res) => {
 				.request()
 				.input('PRODUCTO', product[i].PRODUCTO)
 				.input('NIT', NIT)
-				.input('ListaPrecios', ListaPrecios)
+				//.input('ListaPrecios', ListaPrecios)
 				.query(tsqlorder.infoproduct);
 			const Articulo = await result2.recordsets[0][0];
 
@@ -207,7 +206,7 @@ const getstatus = async (req, res) => {
 
 
 
-			const response = await (`${URL}`, { 
+			const response = await fetch(URL, { 
 					method: 'POST',
 					body: JSON.stringify({
 							"user": {
@@ -233,12 +232,13 @@ const getstatus = async (req, res) => {
 								"review_url": "https://url-to-review.com"
 							}
 					}),
-					headers: { 'Auth-Token': 'RFYtRElTS0lSQU1BUi1TVEctQ08tU0VSVkVSOzE2Njg1NDMyMzM7ZDUxODc3MmI4YmI5ZjRkYmYyNGI0OGY5YTliNWEwN2VlNGYwZGFhN2FkNWQxN2I2MDBkM2U4NTFkNzYzNzIyNA=='}
+					headers: { 'Auth-Token': 'RFYtRElTS0lSQU1BUi1TVEctQ08tU0VSVkVSOzE2Njg2MjAxNzU7OTQ4M2YzODFmMTNkMTA2YTJlYzliZDQ4Y2I4ZmJhODk2NTlmN2ZkM2Y3MDhmOTlkN2Q1ZTU0MmVhNTMxN2EzNQ=='}
 				}); 
 
 
 
 			if (result.rowsAffected[0] > 0) {
+				const data = await response.json()
 				const updateStatus = result.recordsets[0];
 				const  DatosFactura= result2.recordsets[0];
 				const urlpago = 'www.google.com.co';
@@ -248,7 +248,7 @@ const getstatus = async (req, res) => {
 					urlpago: urlpago,
 					IdTransaccion: IdTransaccion,
 					DatosFactura,
-					response
+					data
 				});
 			} else {
 				res.status(500).send({

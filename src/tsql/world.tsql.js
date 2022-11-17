@@ -6,7 +6,7 @@ export const tsqlworld = {
             `,
 
   categoryworld: ` 
-                        select DISTINCT SUBL.NOMBRE,MTA.CodSubLinea
+                        select DISTINCT SUBL.NOMBRE,MTA.CodSubLinea,  'https://dkasa.com.co/media/Imageneskiramar/mundos/Categoria/'+ MTA.CodLinea +'/' + MTA.CodSubLinea + '.jpg' AS IMAGEN
                         from MtArticulo MTA
                              INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                          where MTA.CodLinea=@CODLINEA AND NOT SUBL.NOMBRE='REPUESTOS' and not MTA.CODSUBLINEA='0' order by SUBL.NOMBRE asc

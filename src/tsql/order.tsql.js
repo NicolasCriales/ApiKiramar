@@ -14,7 +14,7 @@ export const tsqlorder = {
 			                  ((100-B.DctoCcial)/100)) * (1+(b.IVA / 100 ))) AS NETO
 	            from MtCliente a
 		             inner join MtListaPrecioArticulo b on a.ListaPrecios = b.IdListaPrecios
-	            where a.nit =@Nit and B.IdProducto=@producto  AND b.IdListaPrecios=@ListaPrecios
+	            where a.nit =@Nit and B.IdProducto=@producto  
     `,
 
 	orderb2b: `    
