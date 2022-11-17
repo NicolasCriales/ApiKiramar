@@ -205,7 +205,6 @@ const getstatus = async (req, res) => {
 				.query(tsqlorder.datafacture);
 
 
-
 			const response = await fetch(URL, { 
 					method: 'POST',
 					body: JSON.stringify({
@@ -238,7 +237,7 @@ const getstatus = async (req, res) => {
 
 
 			if (result.rowsAffected[0] > 0) {
-				const data = await response.json()
+				//const data = await response.json()
 				const updateStatus = result.recordsets[0];
 				const  DatosFactura= result2.recordsets[0];
 				const urlpago = 'www.google.com.co';
@@ -248,7 +247,7 @@ const getstatus = async (req, res) => {
 					urlpago: urlpago,
 					IdTransaccion: IdTransaccion,
 					DatosFactura,
-					data
+					
 				});
 			} else {
 				res.status(500).send({
@@ -257,7 +256,7 @@ const getstatus = async (req, res) => {
 			}
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar las ordenes del usuario ', error);
+		console.log('Error:este mensaje lo mando yo ', error);
 		res.status(500).send({
 			message: 'Problemas al consultar las ordenes del usuario',
 		});

@@ -60,6 +60,7 @@ const getsearch = async (req, res) => {
 			.request()
 			.input('IdListaPrecios', sql.VarChar, IdListaPrecios)
 			.input('buscar', sql.VarChar, '%' + buscar + '%')
+			.input('CodProveedor', sql.VarChar, CodProveedor)
 			.query(tsqlsearch.category);
 
 		//MOSTRAMOS TODOS LOS PRODUCTOS DE LA BUSQUEDA Y FILTRO DE PRECIO
