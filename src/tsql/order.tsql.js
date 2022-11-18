@@ -95,9 +95,8 @@ export const tsqlorder = {
 
 	status: `
 	            update MtPedido
-		            set ESTADOPED=@ESTADOPED,
-		        	IdTransaccion=@IdTransaccion,
-		        	EstadoTransaccion='Aprobado'
+		            set	IdTransaccion=@IdTransaccion,
+		        		EstadoTransaccion='Pendiente'
 		        where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`,
 
 	NRODCTO: `
@@ -194,7 +193,7 @@ export const tsqlorder = {
                             `,
 
     datafacture: `
-                    select PEDIDO.TIPODCTO, PEDIDO.NRODCTO, PEDIDO.FECHA, PEDIDO.Nit, PEDIDO.BRUTO, PEDIDO.DESCUENTO,
+                    select PEDIDO.TIPODCTO, PEDIDO.NRODCTO, PEDIDO.FECHA, PEDIDO.Nit,cliente.Email, PEDIDO.BRUTO, PEDIDO.DESCUENTO,
                            PEDIDO.TOTALIVA, PEDIDO.NETO, PEDIDO.Direccion, pedido.Ciudad ,PEDIDO.IdTransaccion, 
                            cliente.Nombre, Pais
                     from MtPedido PEDIDO 

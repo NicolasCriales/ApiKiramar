@@ -3,6 +3,8 @@ import { tsqlorder } from '../tsql';
 import { pagination } from '../helpers/pagination';
 import bcryptjs from 'bcryptjs';
 import { Numeric } from 'mssql';
+import axios from 'axios';
+
 
 const getMtPedido = async (req, res) => {
 	try {
@@ -147,18 +149,18 @@ const getstatus = async (req, res) => {
 
 		const pool = await getConnection();
 		const URL = 'https://noccapi-stg.paymentez.com/linktopay/init_order/'
-		const { NRODCTO, status, TIPODCTO, Total } = req.body;
+		const { NRODCTO, TIPODCTO, Total } = req.body;
 		const salt = await  bcryptjs.genSaltSync(0);
 		const Encriptar = await bcryptjs.hashSync(TIPODCTO);
-		const buscar = '/'
+		const buscar = await '/'
 		const IdTransaccion = await (Encriptar.replace(new RegExp(buscar,"g") ,"-"));
 		//const IdTransaccion =  await bcryptjs.hashSync(TIPODCTO);
-		var ESTADOPED = 1;
+		/*var ESTADOPED = 1;
 		if (status === 200) {
 			ESTADOPED = 2;
 		} else {
 			ESTADOPED = 2;
-		}
+		}*/
 		if (TIPODCTO == 'KC') { 
 
 			const FechaGenerada = new Date();
@@ -193,7 +195,6 @@ const getstatus = async (req, res) => {
 				.request()
 				.input('IdTransaccion', sql.VarChar, IdTransaccion)
 				.input('NRODCTO', sql.VarChar, NRODCTO)
-				.input('ESTADOPED', sql.Numeric, ESTADOPED)
 				.input('TIPODCTO', sql.VarChar, TIPODCTO)
 				.query(tsqlorder.status);
 			
@@ -205,25 +206,51 @@ const getstatus = async (req, res) => {
 				.query(tsqlorder.datafacture);
 
 
-		
+				const validPassword = await bcryptjs.compareSync('PM', IdTransaccion);
+				const  DatosFactura = await result2.recordsets[0];
 
-
-			if (result.rowsAffected[0] > 0) {
-				//const data = await response.json()
-				const updateStatus = result.recordsets[0];
-				const  DatosFactura= result2.recordsets[0];
-				const urlpago = 'www.google.com.co';
-				const validPassword = bcryptjs.compareSync('PM', IdTransaccion);
+				const respuesta = await axios({
+					method: 'post',
+					url: URL,
+					data:{
+						"user": {
+							"id": `${DatosFactura[0].IdTransaccion}`,
+							"email": `${DatosFactura[0].Email}`,
+							"name": `${DatosFactura[0].Nombre}`,
+							"last_name": `${DatosFactura[0].Nombre}`
+						},
+						"order": {
+							"dev_reference": "1",
+							"description": "Product description",
+							"amount": `${Total}`,
+							"installments_type": 0,
+							"currency": "COP"
+						},
+						"configuration": {
+							"partial_payment": true,
+							"expiration_days": 1,
+							"allowed_payment_methods": ["All", "Cash", "BankTransfer", "Card", "Qr"],
+							"success_url": "https://url-to-success.com",
+							"failure_url": "https://url-to-failure.com",
+							"pending_url": "https://url-to-pending.com",
+							"review_url": "https://url-to-review.com"
+						}
+					},
+					headers: {
+						'Auth-Token': 'RFYtRElTS0lSQU1BUi1TVEctQ08tU0VSVkVSOzE2Njg3ODgzODI7NjRmMGQ5ODc3MjUyNWFjNDkzYWI1MmJjOGRlNWRhZTFhNTc0ZGQ5NGUyZDExM2VlYmYyZDgzZGQxODliZDQ5Zg=='
+					}
+				  });
+			if (await validPassword) {
+				const data = await respuesta.data
+				const urlpago =  data.data.payment.payment_url;
 				res.send({
 					validPassword,
-					urlpago: urlpago,
-					IdTransaccion: IdTransaccion,
-					//DatosFactura,
-					
+					urlpago,
+					IdTransaccion,
 				});
 			} else {
-				res.status(500).send({
-					message: 'No se encontro ninguna orden asociado al cliente',
+				res.status(200).send({
+					message: 'IdTransaccion no coincide',
 				});
 			}
 		}
