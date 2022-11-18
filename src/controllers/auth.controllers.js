@@ -1,6 +1,7 @@
 import { response } from 'express';
 import { generateJWT } from '../helpers/auth/generate-jwt.js';
 import { isValidJWT } from '../middlewares/validate-jwt.js';
+import axios from 'axios';
 //import bcryptjs from "bcryptjs";
 //import sha256 from 'crypto-js/sha256';
 //import hmacSHA512 from 'crypto-js/hmac-sha512';
@@ -51,8 +52,25 @@ const prueba = async (req, res) => {
 	});
 };
 
+
+
+const prueba2 = async (req, res) => {
+	try {
+		const response = await axios.get('https://localhost:3000/api/auth/prueba');
+		console.log(await response);
+
+		res.send({
+			res: response.data
+		}) 
+	  } catch (err) {
+		console.log(err);
+	  }
+	
+};
+
 module.exports = {
 	getJWT,
 	verifyJWT,
 	prueba,
+	prueba2,
 };

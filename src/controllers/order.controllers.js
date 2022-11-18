@@ -209,7 +209,7 @@ const getstatus = async (req, res) => {
 				const validPassword = await bcryptjs.compareSync('PM', IdTransaccion);
 				const  DatosFactura = await result2.recordsets[0];
 
-				const respuesta = await axios({
+				/*const respuesta = await axios({
 					method: 'post',
 					url: URL,
 					data:{
@@ -239,13 +239,14 @@ const getstatus = async (req, res) => {
 					headers: {
 						'Auth-Token': 'RFYtRElTS0lSQU1BUi1TVEctQ08tU0VSVkVSOzE2Njg3ODgzODI7NjRmMGQ5ODc3MjUyNWFjNDkzYWI1MmJjOGRlNWRhZTFhNTc0ZGQ5NGUyZDExM2VlYmYyZDgzZGQxODliZDQ5Zg=='
 					}
-				  });
+				  });*/
+
 			if (await validPassword) {
-				const data = await respuesta.data
-				const urlpago =  data.data.payment.payment_url;
+				//const data = await respuesta.data
+				//const urlpago =  data.data.payment.payment_url;
 				res.send({
 					validPassword,
-					urlpago,
+					urlpago: 'www.google.com.co',
 					IdTransaccion,
 				});
 			} else {
