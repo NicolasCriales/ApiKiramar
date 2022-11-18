@@ -205,35 +205,7 @@ const getstatus = async (req, res) => {
 				.query(tsqlorder.datafacture);
 
 
-			const response = await fetch(URL, { 
-					method: 'POST',
-					body: JSON.stringify({
-							"user": {
-								"id": "117",
-								"email": "santiagorr207@gmail.com",
-								"name": "Gabriel",
-								"last_name": "Cruz"
-							},
-							"order": {
-								"dev_reference": "1",
-								"description": "Product description",
-								"amount": 100000,
-								"installments_type": 0,
-								"currency": "COP"
-							},
-							"configuration": {
-								"partial_payment": true,
-								"expiration_days": 1,
-								"allowed_payment_methods": ["All", "Cash", "BankTransfer", "Card", "Qr"],
-								"success_url": "https://url-to-success.com",
-								"failure_url": "https://url-to-failure.com",
-								"pending_url": "https://url-to-pending.com",
-								"review_url": "https://url-to-review.com"
-							}
-					}),
-					headers: { 'Auth-Token': 'RFYtRElTS0lSQU1BUi1TVEctQ08tU0VSVkVSOzE2Njg2MjAxNzU7OTQ4M2YzODFmMTNkMTA2YTJlYzliZDQ4Y2I4ZmJhODk2NTlmN2ZkM2Y3MDhmOTlkN2Q1ZTU0MmVhNTMxN2EzNQ=='}
-				}); 
-
+		
 
 
 			if (result.rowsAffected[0] > 0) {
@@ -246,7 +218,7 @@ const getstatus = async (req, res) => {
 					validPassword,
 					urlpago: urlpago,
 					IdTransaccion: IdTransaccion,
-					DatosFactura,
+					//DatosFactura,
 					
 				});
 			} else {
