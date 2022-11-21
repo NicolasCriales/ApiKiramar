@@ -150,17 +150,13 @@ const getstatus = async (req, res) => {
 		const pool = await getConnection();
 		const URL = 'https://noccapi-stg.paymentez.com/linktopay/init_order/'
 		const { NRODCTO, TIPODCTO, Total } = req.body;
-		const salt = await  bcryptjs.genSaltSync(16,16);
-		const Encriptar = await bcryptjs.hashSync(TIPODCTO);
-		const buscar =  '/'
-		const IdTransaccion = await (Encriptar.replace(new RegExp(buscar,"g") ,"-"));
-		//const IdTransaccion =  await bcryptjs.hashSync(TIPODCTO);
-		/*var ESTADOPED = 1;
-		if (status === 200) {
-			ESTADOPED = 2;
-		} else {
-			ESTADOPED = 2;
-		}*/
+		var FechaActual = new Date().getTime();
+		const IdTransaccion =  'xxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxx'.replace(/[xy]/g,function(c) {
+			const aleatorio =(FechaActual + Math.random() * 16) % 16 | 0;
+			FechaActual = Math.floor(FechaActual / 16);
+			return (c == 'x' ? aleatorio : (aleatorio & 0x3 | 0x8 )).toString(16);
+		})
+
 		if (TIPODCTO == 'KC') { 
 
 			const FechaGenerada = new Date();
@@ -205,11 +201,8 @@ const getstatus = async (req, res) => {
 				.input('TIPODCTO', sql.VarChar, TIPODCTO)
 				.query(tsqlorder.datafacture);
 
-
-				const validPassword = await bcryptjs.compareSync('PM', IdTransaccion);
 				const  DatosFactura = await result2.recordsets[0];
 				const token = await GetToken()
-
 				const respuesta = await axios({
 					method: 'post',
 					url: URL,
@@ -242,19 +235,12 @@ const getstatus = async (req, res) => {
 					}
 				  });
 
-			if (await validPassword) {
 				const data = await respuesta.data
 				const urlpago =  data.data.payment.payment_url;
 				res.send({
-					validPassword,
 					urlpago,
 					IdTransaccion,
 				});
-			} else {
-				res.status(200).send({
-					message: 'IdTransaccion no coincide',
-				});
-			}
 		}
 	} catch (error) {
 		console.log('Error: veificar que ´paso en orden  ', error);
