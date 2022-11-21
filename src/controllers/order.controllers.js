@@ -1,6 +1,7 @@
 import { getConnection, sql } from '../database/connection';
 import { tsqlorder } from '../tsql';
 import { pagination } from '../helpers/pagination';
+import { GetToken } from '../helpers/auth/generate-jwt'
 import bcryptjs from 'bcryptjs';
 import { Numeric } from 'mssql';
 import axios from 'axios';
@@ -37,7 +38,6 @@ const getMtPedido = async (req, res) => {
 
 		const MtCliente = await pool.request().input('NIT', sql.VarChar, NIT).query(tsqlorder.mtprocli);
 		const Cliente = MtCliente.recordsets[0];
-console.log(ListaPrecios);
 		var TipoDocumento = '';
 		if (PERSONANJ == 'CC') {
 			var TipoDocumento = 1;
@@ -51,20 +51,20 @@ console.log(ListaPrecios);
 			// console.log('No existe', Cliente);
 			const MtClienteInsert = await pool.request().query(`
 
-            
-            insert into MtCliente
-        (
-        	   [IdEmpresa], [Nit], [CodAlterno], [Nombre], [Pais], [CodCiudad], [Ciudad], [Direccion], [Telefono], 
-               [Celular], [Email], [Contacto], [ListaPrecios], [CodVendedor], [Habilitado], [Estado], [Cupo], 
-               [DctoPiePag], [CodTipoCl], [Latitud], [Longitud],[GeoPosCertificada], [Modificado], [CodVenModifica], 
-               [ObsCartera], [password], [PERSONANJ]
-        )
-        values
-        (
-        	    '1', '${NIT}','${NIT}','${NOMBRE}', 'COLOMBIA', '${CODCIUDAD}', '${CIUDAD}', '${DIRECCION}', '${TELEFONO}',
-                '${CELULAR}', '${EMAIL}','${CELULAR}', 'WEB', '1034','S', '1', '0',  '0',  '0',  '0', '0','0', '0',  '0',
-                '0',  '0', ${TipoDocumento}
-        )`);
+			
+			insert into MtCliente
+		(
+			   [IdEmpresa], [Nit], [CodAlterno], [Nombre], [Pais], [CodCiudad], [Ciudad], [Direccion], [Telefono], 
+			   [Celular], [Email], [Contacto], [ListaPrecios], [CodVendedor], [Habilitado], [Estado], [Cupo], 
+			   [DctoPiePag], [CodTipoCl], [Latitud], [Longitud],[GeoPosCertificada], [Modificado], [CodVenModifica], 
+			   [ObsCartera], [password], [PERSONANJ]
+		)
+		values
+		(
+				'1', '${NIT}','${NIT}','${NOMBRE}', 'COLOMBIA', '${CODCIUDAD}', '${CIUDAD}', '${DIRECCION}', '${TELEFONO}',
+				'${CELULAR}', '${EMAIL}','${CELULAR}', 'WEB', '1034','S', '1', '0',  '0',  '0',  '0', '0','0', '0',  '0',
+				'0',  '0', ${TipoDocumento}
+		)`);
 		}
 
 		const result0 = await pool.request().query(tsqlorder.NRODCTO);
@@ -85,17 +85,17 @@ console.log(ListaPrecios);
 
 		const result = await pool.request().query(
 			`insert into MtPedido
-            (
-                [TIPODCTO], [NRODCTO], [FECHA], [CODVEN], [NIT], [BRUTO], [DESCUENTO], [TOTALIVA], [NETO], [NOTA], 
-                [ESTADOPED], [TIPOFAC], [NROFACTURA],[FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], 
-                [COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING],[Direccion],[Complemento],[Ciudad], [CodCiudad]
-            )
-            values 
-            (
-                '${TIPODCTO}',${updatenrodcto},  '${FechaKiramar}', '1052','${NIT}','${BRUTO}','${DESCUENTO}','${TOTALIVA}',
-                '${NETO}', 'COMPRA Kiramar app','1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK',
-                'NCRIALES','S','${FechaKiramar}', '${DIRECCION}', '${Complemento}' ,'${CIUDAD}','${CODCIUDAD}'
-            )`
+			(
+				[TIPODCTO], [NRODCTO], [FECHA], [CODVEN], [NIT], [BRUTO], [DESCUENTO], [TOTALIVA], [NETO], [NOTA], 
+				[ESTADOPED], [TIPOFAC], [NROFACTURA],[FECHAFACT], [SYNC], [LATITUD], [LONGITUD], [IDCOMPRA], 
+				[COMENTARIO], [AUTORIZADOPOR], [SYNCCLOUD], [FECHAING],[Direccion],[Complemento],[Ciudad], [CodCiudad]
+			)
+			values 
+			(
+				'${TIPODCTO}',${updatenrodcto},  '${FechaKiramar}', '1052','${NIT}','${BRUTO}','${DESCUENTO}','${TOTALIVA}',
+				'${NETO}', 'COMPRA Kiramar app','1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK',
+				'NCRIALES','S','${FechaKiramar}', '${DIRECCION}', '${Complemento}' ,'${CIUDAD}','${CODCIUDAD}'
+			)`
 		);
 		for (let i = 0; i < product.length; i++) { 
 			const result2 = await pool
@@ -108,21 +108,21 @@ console.log(ListaPrecios);
 
 			const result3 = await pool.request().query(
 				`insert into  MvPedido
-                    (
-                        [TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], 
-                        [DTOBASE], [DTOPROMO], [CONDCTOPROMO],[DTOAUTORIZADO], [CONDCTOAUTORIZADO], [DTOCCIAL], 
-                        [CONDCTOCOMERCIAL], [CONIVA], [NETO], [NOTA]
-                    )
-                    values
-                    (
-                      '${TIPODCTO}', ${updatenrodcto} ,'${BODEGA}', '${Articulo.IdProducto}', '${product[i].CANTIDAD}', 
-                      '${product[i].CANTORIG}', '${Articulo.Valorunit}','${Articulo.IVA}', '${Articulo.DctoBase}', 
-                      '${Articulo.DctoPromocional}', '${Articulo.CONDCTOPROMO * product[i].CANTIDAD}','0', 
-                      '${Articulo.CONDCTOPROMO * product[i].CANTIDAD}', '${Articulo.DTOCCIAL}',
-                      '${Articulo.CONDCTOCOMERCIAL * product[i].CANTIDAD}','${Articulo.CONIVA * product[i].CANTIDAD}', 
-                      '${Articulo.NETO * product[i].CANTIDAD}',
-                      'COMPRA Kiramar app'
-                    )`
+					(
+						[TIPODCTO], [NRODCTO], [BODEGA], [PRODUCTO], [CANTIDAD], [CANTORIG], [VALORUNIT], [IVA], 
+						[DTOBASE], [DTOPROMO], [CONDCTOPROMO],[DTOAUTORIZADO], [CONDCTOAUTORIZADO], [DTOCCIAL], 
+						[CONDCTOCOMERCIAL], [CONIVA], [NETO], [NOTA]
+					)
+					values
+					(
+					  '${TIPODCTO}', ${updatenrodcto} ,'${BODEGA}', '${Articulo.IdProducto}', '${product[i].CANTIDAD}', 
+					  '${product[i].CANTORIG}', '${Articulo.Valorunit}','${Articulo.IVA}', '${Articulo.DctoBase}', 
+					  '${Articulo.DctoPromocional}', '${Articulo.CONDCTOPROMO * product[i].CANTIDAD}','0', 
+					  '${Articulo.CONDCTOPROMO * product[i].CANTIDAD}', '${Articulo.DTOCCIAL}',
+					  '${Articulo.CONDCTOCOMERCIAL * product[i].CANTIDAD}','${Articulo.CONIVA * product[i].CANTIDAD}', 
+					  '${Articulo.NETO * product[i].CANTIDAD}',
+					  'COMPRA Kiramar app'
+					)`
 			);
 		}
 
@@ -150,9 +150,9 @@ const getstatus = async (req, res) => {
 		const pool = await getConnection();
 		const URL = 'https://noccapi-stg.paymentez.com/linktopay/init_order/'
 		const { NRODCTO, TIPODCTO, Total } = req.body;
-		const salt = await  bcryptjs.genSaltSync(0);
+		const salt = await  bcryptjs.genSaltSync(16,16);
 		const Encriptar = await bcryptjs.hashSync(TIPODCTO);
-		const buscar = await '/'
+		const buscar =  '/'
 		const IdTransaccion = await (Encriptar.replace(new RegExp(buscar,"g") ,"-"));
 		//const IdTransaccion =  await bcryptjs.hashSync(TIPODCTO);
 		/*var ESTADOPED = 1;
@@ -208,8 +208,9 @@ const getstatus = async (req, res) => {
 
 				const validPassword = await bcryptjs.compareSync('PM', IdTransaccion);
 				const  DatosFactura = await result2.recordsets[0];
+				const token = await GetToken()
 
-				/*const respuesta = await axios({
+				const respuesta = await axios({
 					method: 'post',
 					url: URL,
 					data:{
@@ -237,16 +238,16 @@ const getstatus = async (req, res) => {
 						}
 					},
 					headers: {
-						'Auth-Token': 'RFYtRElTS0lSQU1BUi1TVEctQ08tU0VSVkVSOzE2Njg3ODgzODI7NjRmMGQ5ODc3MjUyNWFjNDkzYWI1MmJjOGRlNWRhZTFhNTc0ZGQ5NGUyZDExM2VlYmYyZDgzZGQxODliZDQ5Zg=='
+						'Auth-Token': `${token}`
 					}
-				  });*/
+				  });
 
 			if (await validPassword) {
-				//const data = await respuesta.data
-				//const urlpago =  data.data.payment.payment_url;
+				const data = await respuesta.data
+				const urlpago =  data.data.payment.payment_url;
 				res.send({
 					validPassword,
-					urlpago: 'www.google.com.co',
+					urlpago,
 					IdTransaccion,
 				});
 			} else {
@@ -256,7 +257,7 @@ const getstatus = async (req, res) => {
 			}
 		}
 	} catch (error) {
-		console.log('Error:este mensaje lo mando yo ', error);
+		console.log('Error: veificar que ´paso en orden  ', error);
 		res.status(500).send({
 			message: 'Problemas al consultar las ordenes del usuario',
 		});

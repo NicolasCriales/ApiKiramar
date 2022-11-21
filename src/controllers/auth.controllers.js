@@ -36,41 +36,7 @@ const verifyJWT = async (req, res = response) => {
 	}
 };
 
-const prueba = async (req, res) => {
-	const app_code = 'DV-DISKIRAMAR-STG-CO-SERVER';
-	const app_key = 'x0TNuW5w3E4c1lOwlsfys57ZeZUTNe';
-	const unix = new Date().getTime() + 100000;
-	const timestamp = unix.toString().slice(0, 10);
-	console.log(timestamp);
-	const key_time = app_key + timestamp;
-	const uniq_token = CryptoJS.SHA256(key_time);
-	const str_union = `${app_code};${timestamp};${uniq_token}`;
-	const token = Buffer.from(str_union).toString('base64');
-	console.log(token);
-	res.send({
-		token: token,
-	});
-};
-
-
-
-const prueba2 = async (req, res) => {
-	try {
-		const response = await axios.get('https://localhost:3000/api/auth/prueba');
-		console.log(await response);
-
-		res.send({
-			res: response.data
-		}) 
-	  } catch (err) {
-		console.log(err);
-	  }
-	
-};
-
 module.exports = {
 	getJWT,
 	verifyJWT,
-	prueba,
-	prueba2,
 };

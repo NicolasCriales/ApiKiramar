@@ -6,7 +6,4 @@ const router = Router();
 router.get('/jwt', getJWT);
 router.get('/jwt/verify', verifyJWT);
 
-router.get('/prueba', prueba);  
-router.get('/prueba2', prueba2); 
-
 module.exports = router;

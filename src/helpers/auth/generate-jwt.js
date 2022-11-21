@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+var CryptoJS = require('crypto-js');
+
 
 const generateJWT = (keyword = '') => {
 	return new Promise((resolve, reject) => {
@@ -22,6 +24,25 @@ const generateJWT = (keyword = '') => {
 	});
 };
 
+const GetToken = () => {
+	return new Promise((resolve, reject) => {
+		try {
+			const app_code = 'DV-DISKIRAMAR-STG-CO-SERVER';
+			const app_key = 'x0TNuW5w3E4c1lOwlsfys57ZeZUTNe';
+			const unix = new Date().getTime() + 100000;
+			const timestamp = unix.toString().slice(0, 10);
+			const key_time = app_key + timestamp;
+			const uniq_token = CryptoJS.SHA256(key_time);
+			const str_union = `${app_code};${timestamp};${uniq_token}`;
+			const token = Buffer.from(str_union).toString('base64');
+			resolve(token)
+		} catch (error) {
+			reject("Error generando token:", error)
+		}
+	})
+}
+
 module.exports = {
 	generateJWT,
+	GetToken,
 };
