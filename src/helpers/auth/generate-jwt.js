@@ -30,7 +30,9 @@ const GetToken = () => {
 			const app_code = 'DV-DISKIRAMAR-STG-CO-SERVER';
 			const app_key = 'x0TNuW5w3E4c1lOwlsfys57ZeZUTNe';
 			const unix = new Date().getTime() + 100000;
+			console.log('unix:',unix);
 			const timestamp = unix.toString().slice(0, 10);
+			console.log('timestamp:',timestamp);
 			const key_time = app_key + timestamp;
 			const uniq_token = CryptoJS.SHA256(key_time);
 			const str_union = `${app_code};${timestamp};${uniq_token}`;

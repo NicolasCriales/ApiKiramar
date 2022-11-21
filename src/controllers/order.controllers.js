@@ -149,7 +149,7 @@ const getstatus = async (req, res) => {
 
 		const pool = await getConnection();
 		const URL = 'https://noccapi-stg.paymentez.com/linktopay/init_order/'
-		const { NRODCTO, TIPODCTO, Total } = req.body;
+		const { NRODCTO, TIPODCTO, Total, tokenquemado } = req.body;
 		var FechaActual = new Date().getTime();
 		const IdTransaccion =  'xxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxx'.replace(/[xy]/g,function(c) {
 			const aleatorio =(FechaActual + Math.random() * 16) % 16 | 0;
@@ -231,7 +231,7 @@ const getstatus = async (req, res) => {
 						}
 					},
 					headers: {
-						'Auth-Token': `${token}`
+						'Auth-Token': `${tokenquemado}`
 					}
 				  });
 
