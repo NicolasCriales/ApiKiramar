@@ -231,7 +231,7 @@ const getstatus = async (req, res) => {
 						}
 					},
 					headers: {
-						'Auth-Token': `${tokenquemado}`
+						'Auth-Token': `${tokenquemado}` //prueba
 					}
 				  });
 
