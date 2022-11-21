@@ -259,7 +259,7 @@ const getpayment = async (req, res) => {
 		const validkc =  await bcryptjs.compareSync('KC', cambiarsigno);
 		const TIPODCTO = 'KC';
 		if (validkc) {
-			console.log(validkc);
+			//console.log(validkc);
 			const result = await pool
 				.request()
 				.input('TIPODCTO', TIPODCTO)
@@ -295,7 +295,7 @@ const getpayment = async (req, res) => {
 				DetalleTransacción,
 			});
 		} else {
-			console.log(validkc);
+			//console.log(validkc);
 			const result = await pool.request().input('idtransaccion', idtransaccion).query(tsqlorder.DatosEnvio);
 
 			const result2 = await pool.request().input('idtransaccion', idtransaccion).query(tsqlorder.DatosCliente);
@@ -370,7 +370,7 @@ const getPedidoWEb = async (req, res) => {
 			message: 'Problemas al consultar las ordenes del usuario',
 		});
 	}
-}; //
+}; 
 
 const getPedido_detail = async (req, res) => {
 	try {
