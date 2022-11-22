@@ -13,7 +13,6 @@ class Server {
 			products: '/api/products',
 			world: '/api/world',
 			login: '/api/login',
-			category: '/api/category',
 			Search: '/api/Search',
 			supplier: '/api/supplier',
 			specialized_store: '/api/specialized_store',
@@ -60,7 +59,6 @@ class Server {
 		this.app.use(this.paths.products, require('../routes/products.routes'));
 		this.app.use(this.paths.world, require('../routes/world.routes'));
 		this.app.use(this.paths.login, require('../routes/login.routes'));
-		this.app.use(this.paths.category, require('../routes/category.routes'));
 		this.app.use(this.paths.Search, require('../routes/Search.routes'));
 		this.app.use(this.paths.supplier, require('../routes/supplier.routes'));
 		this.app.use(this.paths.specialized_store, require('../routes/specialized_store.routes'));

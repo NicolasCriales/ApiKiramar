@@ -201,7 +201,23 @@ const getstatus = async (req, res) => {
 				.query(tsqlorder.datafacture);
 
 				const  DatosFactura = await result2.recordsets[0];
-				const token = await GetToken()
+				//const token = await GetToken()
+				var CryptoJS = require('crypto-js');
+
+				const app_code = 'DV-DISKIRAMAR-STG-CO-SERVER';
+				const app_key = 'x0TNuW5w3E4c1lOwlsfys57ZeZUTNe';
+				const unix = new Date().getTime() + 100000;
+				const timestamp = unix.toString().slice(0, 10);
+				const key_time = app_key + timestamp;
+				const uniq_token = CryptoJS.SHA256(key_time);
+				const str_union = `${app_code};${timestamp};${uniq_token}`;
+				const token = Buffer.from(str_union).toString('base64');
+				console.log(token);
+
+
+				//const tokenn = await axios.get('https://localhost:3000/api/auth/prueba');
+				//console.log('esto es token patmentes:',tokenn.data);
+		
 				const respuesta = await axios({
 					method: 'post',
 					url: URL,
@@ -230,7 +246,7 @@ const getstatus = async (req, res) => {
 						}
 					},
 					headers: {
-						'Auth-Token': `${token}` //prueba
+						'Auth-Token': `${token}`
 					}
 				  });
 
