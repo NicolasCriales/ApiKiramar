@@ -101,8 +101,7 @@ const getMtPedido = async (req, res) => {
 			const result2 = await pool
 				.request()
 				.input('PRODUCTO', product[i].PRODUCTO)
-				.input('NIT', NIT)
-				//.input('ListaPrecios', ListaPrecios)
+				.input('ListaPrecios', ListaPrecios)
 				.query(tsqlorder.infoproduct);
 			const Articulo = await result2.recordsets[0][0];
 

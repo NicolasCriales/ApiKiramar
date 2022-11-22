@@ -1,20 +1,14 @@
 export const tsqlorder = {
 	infoproduct: `
 
-	            Select  a.nit, a.ListaPrecios, a.Nombre,b.IdProducto, b.Precio as Valorunit,
-		                b.IVA,b.DctoBase, b.DctoPromocional,
-		                CONVERT(numeric(10,0),( ((b.Precio * ((100-B.DctoBase))/100) * ((100-B.DctoPromocional))/100)
-			                    )) AS CONDCTOPROMO,
-		                b.DctoCcial as DTOCCIAL,
-		                CONVERT(numeric(10,0), ((b.Precio * ((100-B.DctoBase))/100) * ((100-B.DctoPromocional)/100)) * 
-			                  ((100-B.DctoCcial)/100) )  AS CONDCTOCOMERCIAL,
-		                CONVERT(numeric(10,0), (((b.Precio * ((100-B.DctoBase))/100) * ((100-B.DctoPromocional)/100)) * 
-			                  ((100-B.DctoCcial)/100)) * (b.IVA / 100 ) )  AS CONIVA,
-		                CONVERT(numeric(10,0), (((b.Precio * ((100-B.DctoBase))/100) * ((100-B.DctoPromocional)/100)) * 
-			                  ((100-B.DctoCcial)/100)) * (1+(b.IVA / 100 ))) AS NETO
-	            from MtCliente a
-		             inner join MtListaPrecioArticulo b on a.ListaPrecios = b.IdListaPrecios
-	            where a.nit =@Nit and B.IdProducto=@producto  
+	Select  b.IdProducto, b.Precio as Valorunit,b.IVA,b.DctoBase, b.DctoPromocional,
+	CONVERT(numeric(10,0),( ((b.Precio * ((100-B.DctoBase))/100) * ((100-B.DctoPromocional))/100))) AS CONDCTOPROMO,
+	b.DctoCcial as DTOCCIAL,
+	CONVERT(numeric(10,0), ((b.Precio * ((100-B.DctoBase))/100) * ((100-B.DctoPromocional)/100)) * ((100-B.DctoCcial)/100) )  AS CONDCTOCOMERCIAL,
+	CONVERT(numeric(10,0), (((b.Precio * ((100-B.DctoBase))/100) * ((100-B.DctoPromocional)/100)) * ((100-B.DctoCcial)/100)) * (b.IVA / 100 ) )  AS CONIVA,
+	CONVERT(numeric(10,0), (((b.Precio * ((100-B.DctoBase))/100) * ((100-B.DctoPromocional)/100)) * ((100-B.DctoCcial)/100)) * (1+(b.IVA / 100 ))) AS NETO
+	from MtListaPrecioArticulo as b
+	where b.IdListaPrecios =@ListaPrecios and B.IdProducto=@PRODUCTO
     `,
 
 	orderb2b: `    
