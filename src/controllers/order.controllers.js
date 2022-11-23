@@ -534,6 +534,16 @@ const getfacture_status = async (req, res) => {
 	}
 };
 
+
+const getPedido_response = async (req,res) => {
+	try {
+		
+	} catch (error) {
+		
+	}
+
+}
+
 module.exports = {
 	getMtPedido,
 	getPedido,
@@ -544,4 +554,5 @@ module.exports = {
 	getstatus,
 	getpayment,
 	getfacture_status,
+	getPedido_response
 };
