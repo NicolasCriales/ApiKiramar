@@ -22,6 +22,7 @@
     "https": "^1.0.0",
     "i": "^0.3.7",
     "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
     "mongoose": "^6.5.4",
     "mongoose-paginate-v2": "^1.7.0",
     "mssql": "^9.0.1",

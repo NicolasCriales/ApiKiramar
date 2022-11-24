@@ -202,7 +202,23 @@ const getstatus = async (req, res) => {
 
 				const  DatosFactura = await result2.recordsets[0];
 				const token = await GetToken()
-	
+				var CryptoJS = require('crypto-js');
+				var md5 = require('md5');
+
+				const transaction_id = "PSE-49538"
+				const app_code = "DV-DISKIRAMAR-STG-CO-SERVER"
+				const user_id = "856f085bf-6154-47ac-9fc1-f6f6fccee"
+				const app_key = "x0TNuW5w3E4c1lOwlsfys57ZeZUTNe"
+				const for_md5 = transaction_id+"_"+app_code+"_"+user_id+"_"+app_key
+				const stoken =md5(for_md5)
+
+
+
+				//const stoken = hashlib.md5(for_md5.encode("utf-8")).hexdigest()
+
+				//const stoken = CryptoJS.md5(for_md5.encode("utf-8"))
+				console.log(stoken)
+
 				const respuesta = await axios({
 					method: 'post',
 					url: URL,
@@ -521,48 +537,7 @@ const getfacture_status = async (req, res) => {
 
 
 const getPedido_response = async (req,res) => {
-	try {
-
-		const URL = "https://kiramar.com.co:4483/api/order/MPedido/payment/response"
-		const respuesta = await axios({
-			method: 'post',
-			url: URL,
-			data:{
-				"transaction": {
-				   "status": "1",
-				   "order_description": "ORDER #1507155336536",
-				   "status_detail": "3",
-				   "date": "04/01/2020 22:15:37",
-				   "id": "PSE-1000",
-				   "payment_method_type": "2",
-				   "dev_reference": "1507155336536",
-				   "amount": "10.5",
-				   "paid_date": "04/10/2017 19:15:00",
-				   "ltp_id": "LeNgJbx57Vnj9Rnq",
-				   "stoken": "e03f67eba6d730d8468f328961ac9b2e",
-				   "application_code": "AndroidTest",
-				   "terminal_code": "12334"
-				},
-				"user": {
-				   "id": "4",
-				   "email": "user@example.com"
-				}
-			  }
-		  });
-
-		const WebHook = await respuesta.data
-		res.send({
-			message: WebHook.data,
-			message2: "funciono"
-		})
-		
-	} catch (error) {
-		console.log("paso algo",error);
-		res.send({
-			message: "paso algo" 
-		})
-		
-	}
+	
 
 }
 
