@@ -201,23 +201,8 @@ const getstatus = async (req, res) => {
 				.query(tsqlorder.datafacture);
 
 				const  DatosFactura = await result2.recordsets[0];
-				//const token = await GetToken()
-				var CryptoJS = require('crypto-js');
-
-				const app_code = 'DV-DISKIRAMAR-STG-CO-SERVER';
-				const app_key = 'x0TNuW5w3E4c1lOwlsfys57ZeZUTNe';
-				const unix = new Date().getTime() + 100000;
-				const timestamp = unix.toString().slice(0, 10);
-				const key_time = app_key + timestamp;
-				const uniq_token = CryptoJS.SHA256(key_time);
-				const str_union = `${app_code};${timestamp};${uniq_token}`;
-				const token = Buffer.from(str_union).toString('base64');
-				console.log(token);
-
-
-				//const tokenn = await axios.get('https://localhost:3000/api/auth/prueba');
-				//console.log('esto es token patmentes:',tokenn.data);
-		
+				const token = await GetToken()
+	
 				const respuesta = await axios({
 					method: 'post',
 					url: URL,
@@ -254,7 +239,7 @@ const getstatus = async (req, res) => {
 				const urlpago =  data.data.payment.payment_url;
 				res.send({
 					urlpago,
-					IdTransaccion,
+					IdTransaccion
 				});
 		}
 	} catch (error) {
@@ -537,8 +522,45 @@ const getfacture_status = async (req, res) => {
 
 const getPedido_response = async (req,res) => {
 	try {
+
+		const URL = "https://kiramar.com.co:4483/api/order/MPedido/payment/response"
+		const respuesta = await axios({
+			method: 'post',
+			url: URL,
+			data:{
+				"transaction": {
+				   "status": "1",
+				   "order_description": "ORDER #1507155336536",
+				   "status_detail": "3",
+				   "date": "04/01/2020 22:15:37",
+				   "id": "PSE-1000",
+				   "payment_method_type": "2",
+				   "dev_reference": "1507155336536",
+				   "amount": "10.5",
+				   "paid_date": "04/10/2017 19:15:00",
+				   "ltp_id": "LeNgJbx57Vnj9Rnq",
+				   "stoken": "e03f67eba6d730d8468f328961ac9b2e",
+				   "application_code": "AndroidTest",
+				   "terminal_code": "12334"
+				},
+				"user": {
+				   "id": "4",
+				   "email": "user@example.com"
+				}
+			  }
+		  });
+
+		const WebHook = await respuesta.data
+		res.send({
+			message: WebHook.data,
+			message2: "funciono"
+		})
 		
 	} catch (error) {
+		console.log("paso algo",error);
+		res.send({
+			message: "paso algo" 
+		})
 		
 	}
 

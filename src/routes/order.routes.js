@@ -22,7 +22,7 @@ router.get('/MPedido/pedido', [validateJWT], getPedido);
 router.get('/MPedido/PedidoWEb', [validateJWT], getPedidoWEb);
 router.get('/MPedido/pedido/detail', [validateJWT], getPedido_detail);
 
-router.post('/MPedido/patment/response', getPedido_response);
+router.post('/MPedido/payment/response', getPedido_response);
 
 
 router.get('/b2b/facture', [validateJWT], getfacture_orderb2b);

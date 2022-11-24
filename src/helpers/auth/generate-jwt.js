@@ -41,7 +41,15 @@ const GetToken = () => {
 		}
 	})
 }
-
+/*
+const transaction_id = "id paymentes"
+const app_code = "DV-DISKIRAMAR-STG-CO-SERVER"
+const user_id = "token"
+const app_key = "x0TNuW5w3E4c1lOwlsfys57ZeZUTNe"
+const for_md5 = transaction_id+"_"+app_code+"_"+user_id+"_"+app_key
+const stoken = CryptoJS.SHA256(for_md5.encode)
+const print(stoken)
+*/
 module.exports = {
 	generateJWT,
 	GetToken,
