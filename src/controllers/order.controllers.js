@@ -3,7 +3,6 @@ import { tsqlorder } from '../tsql';
 import { pagination } from '../helpers/pagination';
 import { GetToken } from '../helpers/auth/generate-jwt'
 import bcryptjs from 'bcryptjs';
-import { Numeric } from 'mssql';
 import axios from 'axios';
 
 
@@ -202,8 +201,8 @@ const getstatus = async (req, res) => {
 
 				const  DatosFactura = await result2.recordsets[0];
 				const token = await GetToken()
-				var CryptoJS = require('crypto-js');
-				var md5 = require('md5');
+				//var CryptoJS = require('crypto-js');
+				//var md5 = require('md5');
 
 				//const transaction_id = "PSE-49538"
 				//const app_code = "DV-DISKIRAMAR-STG-CO-SERVER"
@@ -368,7 +367,6 @@ const getPedidoWEb = async (req, res) => {
 		const { Nit } = req.query;
 		const CLienteWeb = `and cliente.ListaPrecios='web' `;
 		const PedidoWeb = tsqlorder.pedido + CLienteWeb;
-		console.log(PedidoWeb);
 		const result = await pool.request().input('Nit', sql.VarChar, Nit).query(PedidoWeb);
 		if (result.rowsAffected[0] > 0) {
 			const order = result.recordsets[0];
@@ -537,7 +535,69 @@ const getfacture_status = async (req, res) => {
 
 
 const getPedido_response = async (req,res) => {
-	console.log(req);
+	try {
+		const pool = await getConnection()
+		const data = req.body
+
+		const Aprovado = 1
+		const cancelado = 2
+		const Rechazada = 4
+		const Expirada = 5
+
+
+
+		const paymentez = await pool.request().query(`
+			insert into paymentez
+			(
+				[status], [bank_name], [order_description], [payment_method_type], [authorization_code], [application_code],
+				[dev_reference], [bank_code], [status_detail], [terminal_code], [amount], [paid_date], [pse_cycle], [date],
+				[stoken], [id_paymentez], [ltp_id], [email], [idtransaccion], [fiscal_number]
+		  	)
+			values
+			(
+				${req.transaction.status}, ${req.transaction.bank_name}, ${req.transaction.order_description}, ${req.transaction.payment_method_type}, ${req.transaction.authorization_code}, ${req.transaction.application_code},
+				${req.transaction.dev_reference},${req.transaction.bank_code}, ${req.transaction.status_detail}, ${req.transaction.terminal_code}, ${req.transaction.amount}, ${req.transaction.paid_date}, ${req.transaction.pse_cycle}, ${req.transaction.date},
+				${req.transaction.stoken}, ${req.transaction.id_paymentez}, ${req.transaction.ltp_id},${req.transaction.email}, ${req.transaction.idtransaccion},${req.transaction.fiscal_number}
+			)
+		`)
+
+
+		if( data.transaction.statu == 1 ) {
+			//Aprovado
+			const resul = await pool
+				.request()
+				.query(`update MtPedido set ESTADOPED = '1' where IdTransaccion = ${data.user.id}`)
+		} 
+
+		if( data.transaction.statu == 2 ) {
+			//cancelado
+			const resul = await pool
+				.request()
+				.query(`update MtPedido set ESTADOPED = '6' where IdTransaccion = ${data.user.id}`)
+		} 
+
+		if( data.transaction.statu == 4 ) {
+			//Rechazada
+			const resul = await pool
+				.request()
+				.query(`update MtPedido set ESTADOPED = '3' where IdTransaccion = ${data.user.id}`)
+		} 
+
+		if( data.transaction.statu == 5 ) {
+			//Expirada
+			const resul = await pool
+				.request()
+				.query(`update MtPedido set ESTADOPED = '6' where IdTransaccion = ${data.user.id}`)
+			
+		} 
+		res.send({
+			Data: data
+		})
+		console.log(data);
+	} catch (error) {
+		console.log('error');
+		
+	}
 }
 
 const getPedido_responseid = async (req,res) => {
