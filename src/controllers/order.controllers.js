@@ -545,7 +545,6 @@ const getPedido_response = async (req,res) => {
 		const Expirada = 5
 
 
-
 		const paymentez = await pool.request().query(`
 			insert into paymentez
 			(
@@ -555,12 +554,11 @@ const getPedido_response = async (req,res) => {
 		  	)
 			values
 			(
-				${req.transaction.status}, ${req.transaction.bank_name}, ${req.transaction.order_description}, ${req.transaction.payment_method_type}, ${req.transaction.authorization_code}, ${req.transaction.application_code},
-				${req.transaction.dev_reference},${req.transaction.bank_code}, ${req.transaction.status_detail}, ${req.transaction.terminal_code}, ${req.transaction.amount}, ${req.transaction.paid_date}, ${req.transaction.pse_cycle}, ${req.transaction.date},
-				${req.transaction.stoken}, ${req.transaction.id_paymentez}, ${req.transaction.ltp_id},${req.transaction.email}, ${req.transaction.idtransaccion},${req.transaction.fiscal_number}
+				'${data.transaction.status}', '${data.transaction.bank_name}', '${data.transaction.order_description}', '${data.transaction.payment_method_type}', '${data.transaction.authorization_code}', '${data.transaction.application_code}',
+				'${data.transaction.dev_reference}','${data.transaction.bank_code}', '${data.transaction.status_detail}', '${data.transaction.terminal_code}', '${data.transaction.amount}', '${data.transaction.paid_date}', '${data.transaction.pse_cycle}', '${data.transaction.date}',
+				'${data.transaction.stoken}', '${data.transaction.id_paymentez}', '${data.transaction.ltp_id}','${data.user.email}', '${data.user.idtransaccion}','${data.user.fiscal_number}'
 			)
 		`)
-
 
 		if( data.transaction.statu == 1 ) {
 			//Aprovado
@@ -595,7 +593,7 @@ const getPedido_response = async (req,res) => {
 		})
 		console.log(data);
 	} catch (error) {
-		console.log('error');
+		console.log('error:',error);
 		
 	}
 }
