@@ -205,19 +205,19 @@ const getstatus = async (req, res) => {
 				var CryptoJS = require('crypto-js');
 				var md5 = require('md5');
 
-				const transaction_id = "PSE-49538"
-				const app_code = "DV-DISKIRAMAR-STG-CO-SERVER"
-				const user_id = "856f085bf-6154-47ac-9fc1-f6f6fccee"
-				const app_key = "x0TNuW5w3E4c1lOwlsfys57ZeZUTNe"
-				const for_md5 = transaction_id+"_"+app_code+"_"+user_id+"_"+app_key
-				const stoken =md5(for_md5)
+				//const transaction_id = "PSE-49538"
+				//const app_code = "DV-DISKIRAMAR-STG-CO-SERVER"
+				//const user_id = "856f085bf-6154-47ac-9fc1-f6f6fccee"
+				//const app_key = "x0TNuW5w3E4c1lOwlsfys57ZeZUTNe"
+				//const for_md5 = transaction_id+"_"+app_code+"_"+user_id+"_"+app_key
+				//const stoken =md5(for_md5)
 
 
 
 				//const stoken = hashlib.md5(for_md5.encode("utf-8")).hexdigest()
 
 				//const stoken = CryptoJS.md5(for_md5.encode("utf-8"))
-				console.log(stoken)
+				//console.log(stoken)
 
 				const respuesta = await axios({
 					method: 'post',
@@ -537,10 +537,12 @@ const getfacture_status = async (req, res) => {
 
 
 const getPedido_response = async (req,res) => {
-	
-
+	console.log(req);
 }
 
+const getPedido_responseid = async (req,res) => {
+
+}
 module.exports = {
 	getMtPedido,
 	getPedido,
@@ -551,5 +553,6 @@ module.exports = {
 	getstatus,
 	getpayment,
 	getfacture_status,
-	getPedido_response
+	getPedido_response,
+	getPedido_responseid
 };

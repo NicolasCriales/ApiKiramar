@@ -10,7 +10,8 @@ import {
 	getfacture_orderb2b,
 	getfacture_detailb2b,
 	getfacture_status,
-	getPedido_response
+	getPedido_response,
+	getPedido_responseid
 } from '../controllers/index.js';
 
 const router = Router();
@@ -23,6 +24,8 @@ router.get('/MPedido/PedidoWEb', [validateJWT], getPedidoWEb);
 router.get('/MPedido/pedido/detail', [validateJWT], getPedido_detail);
 
 router.post('/MPedido/payment/response', getPedido_response);
+router.post('/MPedido/payment/response/id', getPedido_responseid);
+
 
 
 router.get('/b2b/facture', [validateJWT], getfacture_orderb2b);
