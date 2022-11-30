@@ -146,7 +146,6 @@ const getstatus = async (req, res) => {
 	try {
 
 		const pool = await getConnection();
-		const URL = 'noccapi-stg.paymentez.com/linktopay/init_order/'
 		const { NRODCTO, TIPODCTO, Total } = req.body;
 		var FechaActual = new Date().getTime();
 		const IdTransaccion =  'xxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxx'.replace(/[xy]/g,function(c) {
@@ -220,7 +219,7 @@ const getstatus = async (req, res) => {
 
 				const respuesta = await axios({
 					method: 'post',
-					url: URL,
+					url: 'https://noccapi-stg.paymentez.com/linktopay/init_order/',
 					data:{
 						"user": {
 							"id": `${DatosFactura[0].IdTransaccion}`,
