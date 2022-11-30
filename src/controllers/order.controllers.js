@@ -146,7 +146,7 @@ const getstatus = async (req, res) => {
 	try {
 
 		const pool = await getConnection();
-		const URL = 'https://noccapi-stg.paymentez.com/linktopay/init_order/'
+		const URL = 'noccapi-stg.paymentez.com/linktopay/init_order/'
 		const { NRODCTO, TIPODCTO, Total } = req.body;
 		var FechaActual = new Date().getTime();
 		const IdTransaccion =  'xxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxx'.replace(/[xy]/g,function(c) {
@@ -556,7 +556,7 @@ const getPedido_response = async (req,res) => {
 			(
 				'${data.transaction.status}', '${data.transaction.bank_name}', '${data.transaction.order_description}', '${data.transaction.payment_method_type}', '${data.transaction.authorization_code}', '${data.transaction.application_code}',
 				'${data.transaction.dev_reference}','${data.transaction.bank_code}', '${data.transaction.status_detail}', '${data.transaction.terminal_code}', '${data.transaction.amount}', '${data.transaction.paid_date}', '${data.transaction.pse_cycle}', '${data.transaction.date}',
-				'${data.transaction.stoken}', '${data.transaction.id_paymentez}', '${data.transaction.ltp_id}','${data.user.email}', '${data.user.idtransaccion}','${data.user.fiscal_number}'
+				'${data.transaction.stoken}', '${data.transaction.id}', '${data.transaction.ltp_id}','${data.user.email}', '${data.user.id}','${data.user.fiscal_number}'
 			)
 		`)
 
