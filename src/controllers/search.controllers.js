@@ -7,6 +7,15 @@ const getsearch = async (req, res) => {
 		const pool = await getConnection();
 		const { IdListaPrecios, buscar, CodProveedor, category, orderP, orderF, preciomin, preciomax, page, limit } =
 			req.query;
+		if (CodProveedor == 'Dkasa') {
+			var addcodsumin = ` and MTA.NombreProveedor='Dkasa' ) as AUX `;
+		} else {
+			if (CodProveedor.length != 0) {
+				var addcodsumin = `and PROV.codsumin in (${CodProveedor})  ) as AUX `;
+			} else {
+				var addcodsumin = `) as AUX `;
+			}
+		}
 
 		if (category.length != 0) {
 			var addcategory = `and  mta.CodSubLinea in (${category})`;
@@ -14,11 +23,11 @@ const getsearch = async (req, res) => {
 			var addcategory = ``;
 		}
 
-		if (CodProveedor.length != 0) {
+		/*if (CodProveedor.length != 0) {
 			var addcodsumin = `and PROV.codsumin in (${CodProveedor})  ) as AUX `;
 		} else {
 			var addcodsumin = `) as AUX `;
-		}
+		}*/
 
 		if (orderP.length != 0) {
 			var addorderP = `ORDER BY AUX.NETO_CON_DESCUENTO ${orderP}`;
