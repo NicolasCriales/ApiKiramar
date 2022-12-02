@@ -201,15 +201,15 @@ const getstatus = async (req, res) => {
 				const  DatosFactura = await result2.recordsets[0];
 				const token = await GetToken()
 				//var CryptoJS = require('crypto-js');
-				//var md5 = require('md5');
+				var md5 = require('md5');
 
-				//const transaction_id = "PSE-49538"
-				//const app_code = "DV-DISKIRAMAR-STG-CO-SERVER"
-				//const user_id = "856f085bf-6154-47ac-9fc1-f6f6fccee"
-				//const app_key = "x0TNuW5w3E4c1lOwlsfys57ZeZUTNe"
-				//const for_md5 = transaction_id+"_"+app_code+"_"+user_id+"_"+app_key
-				//const stoken =md5(for_md5)
-
+				const transaction_id = "PSE-50448"
+				const app_code = "DV-DISKIRAMAR-STG-CO-SERVER"
+				const user_id = "b54d80fae-a5cd-4a54-9c0e-e89abad0b"
+				const app_key = "x0TNuW5w3E4c1lOwlsfys57ZeZUTNe"
+				const for_md5 = transaction_id+"_"+app_code+"_"+user_id+"_"+app_key
+				const stoken =md5(for_md5)
+console.log(stoken	);
 
 
 				//const stoken = hashlib.md5(for_md5.encode("utf-8")).hexdigest()
@@ -564,21 +564,29 @@ const getPedido_response = async (req,res) => {
 			const resul = await pool
 				.request()
 				.query(`update MtPedido set ESTADOPED = '1', EstadoTransaccion='Aprobado' where IdTransaccion = ${data.user.id}`)
-		} 
+		} else {
+			console.log(data.user.id,'estado 1');
+		}
 
 		if( data.transaction.status == 2 ) {
 			//cancelado
 			const resul = await pool
 				.request()
 				.query(`update MtPedido set ESTADOPED = '6', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
-		} 
+		} else {
+			console.log(data.user.id,'estado 2');
+
+		}
 
 		if( data.transaction.status == 4 ) {
 			//Rechazada
 			const resul = await pool
 				.request()
 				.query(`update MtPedido set ESTADOPED = '3', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
-		} 
+		} else {
+			console.log(data.user.id,'estado 4');
+
+		}
 
 		if( data.transaction.status == 5 ) {
 			//Expirada
@@ -586,7 +594,10 @@ const getPedido_response = async (req,res) => {
 				.request()
 				.query(`update MtPedido set ESTADOPED = '6', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
 			
-		} 
+		} else {
+			console.log(data.user.id,'estado 5');
+
+		}
 		res.send({
 			Data: data
 		})
