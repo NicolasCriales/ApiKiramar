@@ -577,14 +577,14 @@ const getPedido_response = async (req,res) => {
 			//Rechazada
 			const resul = await pool
 				.request()
-				.query(`update MtPedido set ESTADOPED = '3', EstadoTransaccion='Pendiente' where IdTransaccion = ${data.user.id}`)
+				.query(`update MtPedido set ESTADOPED = '3', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
 		} 
 
 		if( data.transaction.statu == 5 ) {
 			//Expirada
 			const resul = await pool
 				.request()
-				.query(`update MtPedido set ESTADOPED = '6' where IdTransaccion = ${data.user.id}`)
+				.query(`update MtPedido set ESTADOPED = '6', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
 			
 		} 
 		res.send({

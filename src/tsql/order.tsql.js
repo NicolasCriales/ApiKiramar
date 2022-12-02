@@ -90,7 +90,7 @@ export const tsqlorder = {
 	status: `
 	            update MtPedido
 		            set	IdTransaccion=@IdTransaccion,
-		        		EstadoTransaccion='En Estudio'
+		        		EstadoTransaccion='Pendiente'
 		        where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`,
 
 	NRODCTO: `
