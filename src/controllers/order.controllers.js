@@ -558,35 +558,27 @@ const getPedido_response = async (req,res) => {
 				'${data.transaction.stoken}', '${data.transaction.id}', '${data.transaction.ltp_id}','${data.user.email}', '${data.user.id}','${data.user.fiscal_number}'
 			)
 		`)
-
+console.log(data.user.id);
 		if( data.transaction.status == 1 ) {
 			//Aprovado
 			const resul = await pool
 				.request()
 				.query(`update MtPedido set ESTADOPED = '1', EstadoTransaccion='Aprobado' where IdTransaccion = ${data.user.id}`)
-		} else {
-			console.log(data.user.id,'estado 1');
-		}
+		} 
 
 		if( data.transaction.status == 2 ) {
 			//cancelado
 			const resul = await pool
 				.request()
 				.query(`update MtPedido set ESTADOPED = '6', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
-		} else {
-			console.log(data.user.id,'estado 2');
-
-		}
+		} 
 
 		if( data.transaction.status == 4 ) {
 			//Rechazada
 			const resul = await pool
 				.request()
 				.query(`update MtPedido set ESTADOPED = '3', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
-		} else {
-			console.log(data.user.id,'estado 4');
-
-		}
+		} 
 
 		if( data.transaction.status == 5 ) {
 			//Expirada
@@ -594,10 +586,7 @@ const getPedido_response = async (req,res) => {
 				.request()
 				.query(`update MtPedido set ESTADOPED = '6', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
 			
-		} else {
-			console.log(data.user.id,'estado 5');
-
-		}
+		} 
 		res.send({
 			Data: data
 		})
