@@ -563,21 +563,21 @@ const getPedido_response = async (req,res) => {
 			//Aprovado
 			const resul = await pool
 				.request()
-				.query(`update MtPedido set ESTADOPED = '1' where IdTransaccion = ${data.user.id}`)
+				.query(`update MtPedido set ESTADOPED = '1', EstadoTransaccion='Aprobado' where IdTransaccion = ${data.user.id}`)
 		} 
 
 		if( data.transaction.statu == 2 ) {
 			//cancelado
 			const resul = await pool
 				.request()
-				.query(`update MtPedido set ESTADOPED = '6' where IdTransaccion = ${data.user.id}`)
+				.query(`update MtPedido set ESTADOPED = '6', EstadoTransaccion='Rechazado' where IdTransaccion = ${data.user.id}`)
 		} 
 
 		if( data.transaction.statu == 4 ) {
 			//Rechazada
 			const resul = await pool
 				.request()
-				.query(`update MtPedido set ESTADOPED = '3' where IdTransaccion = ${data.user.id}`)
+				.query(`update MtPedido set ESTADOPED = '3', EstadoTransaccion='Pendiente' where IdTransaccion = ${data.user.id}`)
 		} 
 
 		if( data.transaction.statu == 5 ) {

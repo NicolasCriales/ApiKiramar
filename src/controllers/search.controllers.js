@@ -5,8 +5,17 @@ import { pagination } from '../helpers/pagination';
 const getsearch = async (req, res) => {
 	try {
 		const pool = await getConnection();
-		const { IdListaPrecios, buscar, CodProveedor, category, orderP, orderF, preciomin, preciomax, page, limit } =
-			req.query;
+		const { IdListaPrecios,
+				buscar, 
+				CodProveedor, 
+				category, 
+				orderP, 
+				orderF, 
+				preciomin, 
+				preciomax, 
+				page, 
+				limit 
+			} = req.query;
 		if (CodProveedor == 'Dkasa') {
 			var addcodsumin = ` and MTA.NombreProveedor='Dkasa' ) as AUX `;
 		} else {
