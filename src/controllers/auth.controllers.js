@@ -2,6 +2,7 @@ import { response } from 'express';
 import { generateJWT } from '../helpers/auth/generate-jwt.js';
 import { isValidJWT } from '../middlewares/validate-jwt.js';
 import axios from 'axios';
+import { getConnection } from './../database/connection';
 var CryptoJS = require('crypto-js');
 
 const getJWT = async (req, res = response) => {
@@ -32,22 +33,17 @@ const verifyJWT = async (req, res = response) => {
 	}
 };
 
-const prueba =  (req, res) => {
-	const app_code = 'DV-DISKIRAMAR-STG-CO-SERVER';
-	const app_key = 'x0TNuW5w3E4c1lOwlsfys57ZeZUTNe';
-	const unix = new Date().getTime() + 100000;
-	const timestamp = unix.toString().slice(0, 10);
-	const key_time = app_key + timestamp;
-	const uniq_token = CryptoJS.SHA256(key_time);
-	const str_union = `${app_code};${timestamp};${uniq_token}`;
-	const token = Buffer.from(str_union).toString('base64');
-	console.log(token);
+const version_app = async (req,res) => {
+	const pool = await getConnection();
+	const result = await pool.request().query(`select app_version, url_tienda_ios, url_tienda_android from appkiramar_version`); 
+	const version = result.recordsets[0]
 	res.send({
-		token: token,
-	});
-};
+		version
+	})
+
+}
 module.exports = {
 	getJWT,
 	verifyJWT,
-	prueba
+	version_app
 };
