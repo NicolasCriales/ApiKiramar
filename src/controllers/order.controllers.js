@@ -167,7 +167,7 @@ const getstatus = async (req, res) => {
 				.query(tsqlorder.facture_detailfech);
 			const DataUsername = result0.recordsets[0][0];
 			const NitUsername = DataUsername.Nit;
-
+			
 			const result = await pool
 				.request()
 				.input('TIPODCTO', TIPODCTO)
@@ -175,10 +175,55 @@ const getstatus = async (req, res) => {
 				.input('NitUsername', NitUsername)
 				.input('FechaKiramar', FechaKiramar)
 				.input('Total', Total)
-				.input('ESTADOPED', ESTADOPED)
+				.input('ESTADOPED', '1')
 				.input('IdTransaccion', IdTransaccion)
 				.query(tsqlorder.factureStatus);
-			const urlpago = 'www.google.com.co';
+
+				const result1 = await pool
+				.request()
+				.input('NitUsername', NitUsername)
+				.query(tsqlorder.datoscli);
+			const datospago = result1.recordsets[0][0];
+
+
+
+			const token = await GetToken()
+			const respuesta = await axios({
+				method: 'post',
+				url: 'https://noccapi-stg.paymentez.com/linktopay/init_order/',
+				data:{
+					"user": {
+						"id": `${IdTransaccion}`,
+						"email": `${datospago.Email}`,
+						"name": `${datospago.Nombre}`,
+						"last_name": `${datospago.Nombre}`
+					},
+					"order": {
+						"dev_reference": "1",
+						"description": "Product description",
+						"amount": `${Total}`,
+						"installments_type": 0,
+						"currency": "COP"
+					},
+					"configuration": {
+						"partial_payment": true,
+						"expiration_days": 1,
+						"allowed_payment_methods": ["All", "Cash", "BankTransfer", "Card", "Qr"],
+						"success_url": "https://url-to-success.com",
+						"failure_url": "https://url-to-failure.com",
+						"pending_url": "https://url-to-pending.com",
+						"review_url": "https://url-to-review.com"
+					}
+				},
+				headers: {
+					'Auth-Token': `${token}`
+				}
+			  });
+
+			const data = await respuesta.data
+			const urlpago =  data.data.payment.payment_url;
+
+
 			res.send({
 				urlpago: urlpago,
 				IdTransaccion,

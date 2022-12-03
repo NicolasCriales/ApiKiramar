@@ -193,5 +193,7 @@ export const tsqlorder = {
                     from MtPedido PEDIDO 
                         inner join MtCliente cliente on cliente.Nit= PEDIDO.NIT 
                     where PEDIDO.NRODCTO=@NRODCTO and PEDIDO.TIPODCTO=@TIPODCTO and PEDIDO.IdTransaccion=@IdTransaccion
-                `
+                `,
+
+	datoscli: `select Email,Nombre from MtCliente where Nit=@NitUsername`
 };
