@@ -598,6 +598,7 @@ const getPedido_response = async (req,res) => {
 		const result0 = await pool.request.query(`select  idtransaccion from MtpagoCartera where idtransaccion = '${data.user.id}' `)
 
 		if(result0.rowsAffected[0] > 0) {
+			console.log(result0.rowsAffected[0]);
 
 			if( data.transaction.status == 1 ) {
 				//Aprovado
