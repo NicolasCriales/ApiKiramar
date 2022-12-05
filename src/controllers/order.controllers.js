@@ -307,25 +307,21 @@ const getpayment = async (req, res) => {
 			//console.log(validkc);
 			const result = await pool
 				.request()
-				.input('TIPODCTO', TIPODCTO)
 				.input('idtransaccion', idtransaccion)
 				.query(tsqlorder.DatosEnviofac);
  
 			const result2 = await pool
 				.request()
-				.input('TIPODCTO', TIPODCTO)
 				.input('idtransaccion', idtransaccion)
 				.query(tsqlorder.DatosClientefac);
 
 			const result3 = await pool
 				.request()
-				.input('TIPODCTO', TIPODCTO)
 				.input('idtransaccion', idtransaccion)
 				.query(tsqlorder.TotalArticulosfac);
 
 			const result4 = await pool
 				.request()
-				.input('TIPODCTO', TIPODCTO)
 				.input('idtransaccion', idtransaccion)
 				.query(tsqlorder.DetalleTransacciónfac);
 
@@ -597,9 +593,8 @@ const getPedido_response = async (req,res) => {
 
 		const result0 = await pool.request().query(`select  idtransaccion from MtpagoCartera where idtransaccion = '${data.user.id}' `)
 
-		if(result0.rowsAffected[0] > 0) {
-			console.log(result0.rowsAffected[0]);
 
+		if(result0.rowsAffected[0] > 0) {
 			if( data.transaction.status == 1 ) {
 				//Aprovado
 				const resul = await pool

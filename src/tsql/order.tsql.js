@@ -162,21 +162,21 @@ export const tsqlorder = {
                         from MtpagoCartera pagocartera
 	                        inner join MtCliente cliente on cliente.Nit = pagocartera.nit
                             inner join MtEstadoPedido estado on estado.IdEstadoPedido = pagocartera.estado
-                        where idtransaccion=@idtransaccion and pagocartera.tipodcto=@TIPODCTO
+                        where idtransaccion=@idtransaccion
     `               ,
 
 	DatosClientefac: `
                         select cliente.Nombre, cliente.Nit, cliente.Celular, cliente.Email
                         from MtpagoCartera pagocartera
                             inner join MtCliente cliente on cliente.Nit = pagocartera.nit
-                        where pagocartera.idtransaccion =@idtransaccion and pagocartera.tipodcto=@TIPODCTO 
+                        where pagocartera.idtransaccion =@idtransaccion 
                     `,
 
 	TotalArticulosfac: `
                             select sum(mvtrade.cantidad) as Articulos
                             from MtpagoCartera pagocartera
                                 inner join mvtrade mvtrade on mvtrade.nrodcto = pagocartera.nrodcto
-                            where pagocartera.idtransaccion =@idtransaccion
+                            where pagocartera.idtransaccion=@idtransaccion
                         `,
 
 	DetalleTransacciónfac: `
