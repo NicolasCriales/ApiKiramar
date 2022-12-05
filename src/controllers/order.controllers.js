@@ -301,7 +301,7 @@ const getpayment = async (req, res) => {
 		//const cambiarsigno = await (idtransaccion.replace(new RegExp(buscarsigno,"g") ,"/"));
 		//const validkc =  await bcryptjs.compareSync('KC', cambiarsigno);
 		//const TIPODCTO = 'KC';
-		const result0 = await pool.request.query(`select  idtransaccion from MtpagoCartera where idtransaccion = ${idtransaccion} `)
+		const result0 = await pool.request().query(`select  idtransaccion from MtpagoCartera where idtransaccion = '${idtransaccion}' `)
 
 		if (result0.rowsAffected[0] > 0) {
 			//console.log(validkc);
@@ -595,7 +595,7 @@ const getPedido_response = async (req,res) => {
 			)
 		`)
 
-		const result0 = await pool.request.query(`select  idtransaccion from MtpagoCartera where idtransaccion = ${data.user.id} `)
+		const result0 = await pool.request.query(`select  idtransaccion from MtpagoCartera where idtransaccion = '${data.user.id}' `)
 
 		if(result0.rowsAffected[0] > 0) {
 
