@@ -245,22 +245,6 @@ const getstatus = async (req, res) => {
 
 				const  DatosFactura = await result2.recordsets[0];
 				const token = await GetToken()
-				//var CryptoJS = require('crypto-js');
-				//var md5 = require('md5');
-
-				//const transaction_id = "PSE-50448"
-				//const app_code = "DV-DISKIRAMAR-STG-CO-SERVER"
-				//const user_id = "b54d80fae-a5cd-4a54-9c0e-e89abad0b"
-				//const app_key = "x0TNuW5w3E4c1lOwlsfys57ZeZUTNe"
-				//const for_md5 = transaction_id+"_"+app_code+"_"+user_id+"_"+app_key
-				//const stoken =md5(for_md5)
-				//console.log(stoken	);
-
-
-				//const stoken = hashlib.md5(for_md5.encode("utf-8")).hexdigest()
-
-				//const stoken = CryptoJS.md5(for_md5.encode("utf-8"))
-				//console.log(stoken)
 
 				const respuesta = await axios({
 					method: 'post',
@@ -313,11 +297,13 @@ const getpayment = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const { idtransaccion } = req.query;
-		const buscarsigno =  '-'
-		const cambiarsigno = await (idtransaccion.replace(new RegExp(buscarsigno,"g") ,"/"));
-		const validkc =  await bcryptjs.compareSync('KC', cambiarsigno);
-		const TIPODCTO = 'KC';
-		if (validkc) {
+		//const buscarsigno =  '-'
+		//const cambiarsigno = await (idtransaccion.replace(new RegExp(buscarsigno,"g") ,"/"));
+		//const validkc =  await bcryptjs.compareSync('KC', cambiarsigno);
+		//const TIPODCTO = 'KC';
+		const result0 = await pool.request.query(`select  idtransaccion from MtpagoCartera where idtransaccion = ${idtransaccion} `)
+
+		if (result0.rowsAffected[0] > 0) {
 			//console.log(validkc);
 			const result = await pool
 				.request()
@@ -382,6 +368,7 @@ const getpayment = async (req, res) => {
 		});
 	}
 };
+
 const getPedido = async (req, res) => {
 	try {
 		const pool = await getConnection();
@@ -477,6 +464,7 @@ const getPedido_detail = async (req, res) => {
 	}
 };
 
+
 const getfacture_orderb2b = async (req, res) => {
 	try {
 		const pool = await getConnection();
@@ -548,6 +536,9 @@ const getfacture_detailb2b = async (req, res) => {
 	}
 };
 
+
+
+//preguntar si utilizan 
 const getfacture_status = async (req, res) => {
 	try {
 		const pool = await getConnection();
@@ -603,35 +594,72 @@ const getPedido_response = async (req,res) => {
 				'${data.transaction.stoken}', '${data.transaction.id}', '${data.transaction.ltp_id}','${data.user.email}', '${data.user.id}','${data.user.fiscal_number}'
 			)
 		`)
-console.log(data.user.id);
-		if( data.transaction.status == 1 ) {
-			//Aprovado
-			const resul = await pool
-				.request()
-				.query(`update MtPedido set ESTADOPED = 1, EstadoTransaccion='Aprobado' where IdTransaccion = '${data.user.id}' `)
-		} 
 
-		if( data.transaction.status == 2 ) {
-			//cancelado
-			const resul = await pool
-				.request()
-				.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
-		} 
+		const result0 = await pool.request.query(`select  idtransaccion from MtpagoCartera where idtransaccion = ${data.user.id} `)
 
-		if( data.transaction.status == 4 ) {
-			//Rechazada
-			const resul = await pool
-				.request()
-				.query(`update MtPedido set ESTADOPED = 3, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
-		} 
+		if(result0.rowsAffected[0] > 0) {
 
-		if( data.transaction.status == 5 ) {
-			//Expirada
-			const resul = await pool
-				.request()
-				.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
-			
-		} 
+			if( data.transaction.status == 1 ) {
+				//Aprovado
+				const resul = await pool
+					.request()
+					.query(`update MtpagoCartera set estado = 1, EstadoTransaccion='Aprobado' where idtransaccion = '${data.user.id}' `)
+			} 
+	
+			if( data.transaction.status == 2 ) {
+				//cancelado
+				const resul = await pool
+					.request()
+					.query(`update MtpagoCartera set estado = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+			} 
+	
+			if( data.transaction.status == 4 ) {
+				//Rechazada
+				const resul = await pool
+					.request()
+					.query(`update MtpagoCartera set estado = 3, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+			} 
+	
+			if( data.transaction.status == 5 ) {
+				//Expirada
+				const resul = await pool
+					.request()
+					.query(`update MtpagoCartera set estado = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+				
+			} 
+
+
+		} else {
+			if( data.transaction.status == 1 ) {
+				//Aprovado
+				const resul = await pool
+					.request()
+					.query(`update MtPedido set ESTADOPED = 1, EstadoTransaccion='Aprobado' where IdTransaccion = '${data.user.id}' `)
+			} 
+	
+			if( data.transaction.status == 2 ) {
+				//cancelado
+				const resul = await pool
+					.request()
+					.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+			} 
+	
+			if( data.transaction.status == 4 ) {
+				//Rechazada
+				const resul = await pool
+					.request()
+					.query(`update MtPedido set ESTADOPED = 3, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+			} 
+	
+			if( data.transaction.status == 5 ) {
+				//Expirada
+				const resul = await pool
+					.request()
+					.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+				
+			} 	
+		}
+		
 		res.send({
 			Data: data
 		})
@@ -642,9 +670,7 @@ console.log(data.user.id);
 	}
 }
 
-const getPedido_responseid = async (req,res) => {
 
-}
 module.exports = {
 	getMtPedido,
 	getPedido,
@@ -656,5 +682,5 @@ module.exports = {
 	getpayment,
 	getfacture_status,
 	getPedido_response,
-	getPedido_responseid
+	
 };

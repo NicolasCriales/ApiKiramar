@@ -151,7 +151,7 @@ export const tsqlorder = {
                         values
                             (
                                 @TIPODCTO, @NRODCTO, @NitUsername, @FechaKiramar,@Total, @ESTADOPED, @IdTransaccion, 
-                                '' , '' , ''
+                                '' , 'Pendiente' , ''
                             )
                     `,
 
@@ -180,10 +180,10 @@ export const tsqlorder = {
                         `,
 
 	DetalleTransacciónfac: `
-                                select pagocartera.MetodoPago, pagocartera.estadotransaccion, pagocartera.Motivo,
-                                       pagocartera.idtransaccion AS ReferenciaTransaccion
-                                from MtpagoCartera pagocartera
-                                where pagocartera.idtransaccion = @idtransaccion
+                                select MetodoPago,  LTRIM(RTRIM(estadotransaccion)) as  estadotransaccion, Motivo,
+                                    idtransaccion AS ReferenciaTransaccion
+                                from MtpagoCartera 
+                                where idtransaccion = @idtransaccion
                             `,
 
     datafacture: `
