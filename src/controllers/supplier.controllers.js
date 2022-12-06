@@ -90,7 +90,6 @@ const getcodcategorysupplier = async (req, res) => {
 		const result = await pool
 			.request()
 			.input('IdListaPrecios', sql.VarChar, IdListaPrecios)
-			.input('CodProveedor', sql.VarChar, CodProveedor)
 			.input('CodSubLinea', sql.VarChar, CodSubLinea)
 			.query(sql_codcategorysupplier);
 		if (result.rowsAffected[0] > 0) {
