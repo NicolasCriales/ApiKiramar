@@ -30,10 +30,23 @@ const getcategorysupplier = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const { CodProveedor, page, limit } = req.query;
+
+		if (CodProveedor == 'Dkasa') {
+			var addcodsumin = ` and art.NombreProveedor='Dkasa'order by subl.NOMBRE ASC  `;
+		} else {
+			if (CodProveedor.length != 0) {
+				var addcodsumin = `and  art.CodProveedor= ${CodProveedor} order by subl.NOMBRE ASC  `;
+			} else {
+				var addcodsumin = `order by subl.NOMBRE ASC  `;
+			}
+		}
+
+		var sql_category = tsqlsupplier.categorysupplier + addcodsumin
+
 		const result = await pool
 			.request()
-			.input('CodProveedor', sql.VarChar, CodProveedor)
-			.query(tsqlsupplier.categorysupplier);
+			.query(sql_category);
+
 		if (result.rowsAffected[0] > 0) {
 			let supplier = result.recordsets[0];
 			supplier = await pagination(supplier, page, limit);
