@@ -22,7 +22,7 @@ export const tsqlorder = {
 	    `,
 
 	factureb2b: `
-	            select  nombre,cantidad,producto,
+	            select  nombre,cantidad,LTRIM(RTRIM(producto)) as producto,
 		                CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100) * (1+(IVA / 100 ))))  AS ValorUnitario,
 		                CONVERT(numeric(10,0),  ((valorunit * ((100-descuento))/100) * (1+(IVA / 100 )) * cantidad))  AS Neto,
 		                (

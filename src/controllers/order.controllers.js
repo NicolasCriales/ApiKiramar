@@ -575,6 +575,22 @@ const getPedido_response = async (req,res) => {
 		const Rechazada = 4
 		const Expirada = 5
 
+		if (data.transaction.payment_method_type == 0) {
+			var payment_method_type = 'Tarjeta de crédito'
+		} if (data.transaction.payment_method_type == 1) {
+			var payment_method_type = 'Boleto '
+		} if (data.transaction.payment_method_type == 3) {
+			var payment_method_type = 'monedero electrónico'
+		} if (data.transaction.payment_method_type == 5) {
+			var payment_method_type = 'Tarjeta de vales'
+		} if (data.transaction.payment_method_type == 6) {
+			var payment_method_type = 'Transferencia bancaria'
+		} if (data.transaction.payment_method_type == 7) {
+			var payment_method_type = 'Tarjeta de débito'
+		} if (data.transaction.payment_method_type == 7) {
+			var payment_method_type = 'Tarjeta de prepago'
+		}
+
 
 		const paymentez = await pool.request().query(`
 			insert into paymentez
@@ -599,28 +615,28 @@ const getPedido_response = async (req,res) => {
 				//Aprovado
 				const resul = await pool
 					.request()
-					.query(`update MtpagoCartera set estado = 1, EstadoTransaccion='Aprobado' where idtransaccion = '${data.user.id}' `)
+					.query(`update MtpagoCartera set estado = 1, EstadoTransaccion='Aprobado', MetodoPago='${payment_method_type}', Motivo='Aprobado' where idtransaccion = '${data.user.id}' `)
 			} 
 	
 			if( data.transaction.status == 2 ) {
 				//cancelado
 				const resul = await pool
 					.request()
-					.query(`update MtpagoCartera set estado = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+					.query(`update MtpagoCartera set estado = 6, EstadoTransaccion='Rechazado', MetodoPago='${payment_method_type}', Motivo='Rechazado' where IdTransaccion = '${data.user.id}' `)
 			} 
 	
 			if( data.transaction.status == 4 ) {
 				//Rechazada
 				const resul = await pool
 					.request()
-					.query(`update MtpagoCartera set estado = 3, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+					.query(`update MtpagoCartera set estado = 3, EstadoTransaccion='Rechazado', MetodoPago='${payment_method_type}', Motivo='Rechazado' where IdTransaccion = '${data.user.id}' `)
 			} 
 	
 			if( data.transaction.status == 5 ) {
 				//Expirada
 				const resul = await pool
 					.request()
-					.query(`update MtpagoCartera set estado = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+					.query(`update MtpagoCartera set estado = 6, EstadoTransaccion='Rechazado', MetodoPago='${payment_method_type}', Motivo='Rechazado' where IdTransaccion = '${data.user.id}' `)
 				
 			} 
 
