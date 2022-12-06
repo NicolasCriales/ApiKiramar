@@ -574,6 +574,7 @@ const getPedido_response = async (req,res) => {
 		const cancelado = 2
 		const Rechazada = 4
 		const Expirada = 5
+		 var payment_method_type = ''
 
 		if (data.transaction.payment_method_type == 0) {
 			var payment_method_type = 'Tarjeta de crédito'
