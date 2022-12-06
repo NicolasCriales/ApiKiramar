@@ -31,7 +31,7 @@ const getcategorysupplier = async (req, res) => {
 		const pool = await getConnection();
 		const { CodProveedor, page, limit } = req.query;
 
-		if (CodProveedor == 'Dkasa') {
+		if (CodProveedor == 1004) {
 			var addcodsumin = ` and art.NombreProveedor='Dkasa'order by subl.NOMBRE ASC  `;
 		} else {
 			if (CodProveedor.length != 0) {
@@ -70,12 +70,29 @@ const getcodcategorysupplier = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const { IdListaPrecios, CodProveedor, CodSubLinea, page, limit } = req.query;
+
+		
+		if (CodProveedor == 1004) {
+			var addcodsumin = ` AND MTA.NombreProveedor='Dkasa'  )   AS AUX`;
+		} else {
+			if (CodProveedor.length != 0) {
+				var addcodsumin = `and  MTA.CodProveedor= ${CodProveedor} )   AS AUX `;
+			} else {
+				var addcodsumin = `)   AS AUX`;
+			}
+		}
+		console.log(CodProveedor);
+
+		var  sql_codcategorysupplier = tsqlsupplier.codcategorysupplier + addcodsumin
+
+
+
 		const result = await pool
 			.request()
 			.input('IdListaPrecios', sql.VarChar, IdListaPrecios)
 			.input('CodProveedor', sql.VarChar, CodProveedor)
 			.input('CodSubLinea', sql.VarChar, CodSubLinea)
-			.query(tsqlsupplier.codcategorysupplier);
+			.query(sql_codcategorysupplier);
 		if (result.rowsAffected[0] > 0) {
 			let supplier = result.recordsets[0];
 			supplier = await pagination(supplier, page, limit);
@@ -94,7 +111,7 @@ const getcodcategorysupplier = async (req, res) => {
 		});
 	}
 };
-
+//no se utiliza estos de abajo
 const getcategorydkasa = async (req, res) => {
 	try {
 		const pool = await getConnection();

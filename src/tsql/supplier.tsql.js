@@ -47,9 +47,9 @@ export const tsqlsupplier = {
                                                         INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                                                         LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = mta.IdArticulo 
 
-                                                 WHERE   SAL.IdBodega='1101' AND NOT MTA.NombreSubLinea='REPUESTOS' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
-                                                         MTA.CodProveedor=@CodProveedor AND MTA.CodSubLinea=@CodSubLinea  AND PROV.SWACTIVO='1'  AND SAL.Disponible > 30 AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
-                                          )   AS AUX
+                                                 WHERE   SAL.IdBodega='1101' AND NOT MTA.NombreSubLinea='REPUESTOS' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios 
+                                                  AND MTA.CodSubLinea=@CodSubLinea  AND PROV.SWACTIVO='1'  AND SAL.Disponible > 30 AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS'
+                                          
                         `,
 
   categorydkasa: `
