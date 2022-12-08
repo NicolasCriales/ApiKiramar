@@ -16,9 +16,9 @@ const getsearch = async (req, res) => {
 				page, 
 				limit 
 			} = req.query;
-		if (CodProveedor == 'Dkasa') {
+		if (CodProveedor == 'Dkasa' || 1004) {
 			var addcodsumin = ` and MTA.NombreProveedor='Dkasa' ) as AUX `;
-		} else {
+		}  else {
 			if (CodProveedor.length != 0) {
 				var addcodsumin = `and PROV.codsumin in (${CodProveedor})  ) as AUX `;
 			} else {
