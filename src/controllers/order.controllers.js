@@ -190,7 +190,7 @@ const getstatus = async (req, res) => {
 			const token = await GetToken()
 			const respuesta = await axios({
 				method: 'post',
-				url: 'https://noccapi-stg.paymentez.com/linktopay/init_order/',
+				url: 'https://noccapi.paymentez.com/linktopay/init_order/',
 				data:{
 					"user": {
 						"id": `${IdTransaccion}`,

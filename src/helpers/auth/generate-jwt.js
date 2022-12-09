@@ -27,8 +27,8 @@ const generateJWT = (keyword = '') => {
 const GetToken = () => {
 	return new Promise((resolve, reject) => {
 		try {
-			const app_code = 'DV-DISKIRAMAR-STG-CO-SERVER';
-			const app_key = 'x0TNuW5w3E4c1lOwlsfys57ZeZUTNe';
+			const app_code = 'DV-KIRAMAR-CO-SERVER';
+			const app_key = 'QGrSPyfeJwayGDw27Y0ILJRDBJ8IK9';
 			const unix = new Date().getTime() + 100000;
 			const timestamp = unix.toString().slice(0, 10);
 			const key_time = app_key + timestamp;
