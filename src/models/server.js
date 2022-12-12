@@ -29,6 +29,7 @@ class Server {
 
 		this.httpsServer = https.createServer(
 			{
+				rejectUnauthorized: false,
 				key: fs.readFileSync('src/cert/kiramar.com.co.pem'),
 				cert: fs.readFileSync('src/cert/kiramar.com.co.pem'),
 			},
