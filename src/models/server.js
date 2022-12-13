@@ -29,7 +29,7 @@ class Server {
 
 
 const httpsOptions = { 
-		cert: fs.readFileSync('src/cert/8fbfcadbac453ff7.pem'),
+		cert: fs.readFileSync('src/cert/kiramar.com.co.pem'),
 		key: fs.readFileSync('src/cert/kiramar.key'),
 		ca: fs.readFileSync('src/cert/gd_bundle-g2-g1.crt')
 }
