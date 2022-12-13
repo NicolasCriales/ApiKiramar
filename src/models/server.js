@@ -28,30 +28,26 @@ class Server {
 		this.routes();
 
 
-const httpsOptions = { 
+/*const httpsOptions = { 
 		cert: fs.readFileSync('src/cert/kiramar.com.co.pem'),
 		key: fs.readFileSync('src/cert/kiramar.key'),
 		ca: fs.readFileSync('src/cert/gd_bundle-g2-g1.crt')
 }
 
-
-
-
-
 this.httpsServer = https.createServer(
 	httpsOptions,
 	this.app
-);
+);*/
 
 
-		/*this.httpsServer = https.createServer(
+		this.httpsServer = https.createServer(
 			{
-				rejectUnauthorized: false,
-				key: fs.readFileSync('src/cert/kiramar.com.co.pem'),
 				cert: fs.readFileSync('src/cert/kiramar.com.co.pem'),
+				key: fs.readFileSync('src/cert/kiramar.key'),
+				ca: fs.readFileSync('src/cert/kiramar.crt')
 			},
 			this.app
-		);*/
+		);
 
 
 	}
