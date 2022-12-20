@@ -100,12 +100,13 @@ const getsendmail = async (req, res) => {
 				subject: 'Recuperar clave Kiramar S.A.S', //Línea de asunto
 				text: `Este es su codigo de recuperacion ${codpassword}`, //cuerpo de texto sin formato
 			};
-			transporter.sendMail(mailoption, (err, result) => {
-				if (err) {
-					console.log(err);
-					res.json('ocurrio un error');
-				} else {
-					res.json('Se envio la notificacion al correo');
+
+			transporter.sendMail(mailoption, (req, res) => {
+				if (err){
+					console.log(err)
+						res.json('ocurrio un error')
+				} else{
+						res.json('Se envio la notificacion al correo');
 				}
 			});
 			res.send({
