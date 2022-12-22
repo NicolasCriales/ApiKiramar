@@ -17,7 +17,7 @@ const getverifydata = async (req, res) => {
 				client: data_client,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'Nit o Contraseña incorrectos',
 			});
 		}
@@ -56,7 +56,7 @@ const GetUpdatePassword = async (req, res) => {
 				result: 'SE cambio la contraseña exitosamente',
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'Contraseña no coincide',
 			});
 		}
@@ -113,7 +113,7 @@ const getsendmail = async (req, res) => {
 				message: 'Se envio el codigo a su correo electronico',
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				mensagge: 'no se encontro el nit de usuario',
 			});
 		}

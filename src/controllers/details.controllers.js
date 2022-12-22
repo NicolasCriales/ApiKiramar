@@ -15,7 +15,7 @@ const getdatasheet = async (req, res) => {
 				datasheet,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro ficha tecnica',
 			});
 		}
@@ -38,7 +38,7 @@ const gettypePQRS = async (req, res) => {
 				typePQRS,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				Message: 'no se encontro pqrs',
 			});
 		}
@@ -116,7 +116,7 @@ const getPQRS = async (req, res) => {
 				PQRS,
 			});
 		} else {
-			res.status(401).query({
+			res.status(200).query({
 				message: 'Este cliente no tiene PQRS',
 			});
 		}
@@ -153,7 +153,7 @@ const getidPQRS = async (req, res) => {
 				idresponse,
 			});
 		} else {
-			res.status(401).query({
+			res.status(200).query({
 				message: 'Este cliente no tiene id de PQRS',
 			});
 		}
@@ -183,7 +183,7 @@ const getVericationReview = async (req, res) => {
 				review: review,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'no tiene reseña',
 			});
 		}
@@ -208,7 +208,7 @@ const getregisterReview = async (req, res) => {
 		const NombreCli = result1.recordsets[0][0].Nombre;
 
 		if (result.rowsAffected[0] > 0) {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'Ya tiene una reseña registrada',
 			});
 		} else {
@@ -245,7 +245,7 @@ const getreview = async (req, res) => {
 				review,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No hay reseñas',
 			});
 		}

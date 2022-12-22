@@ -393,7 +393,7 @@ const getPedido = async (req, res) => {
 				order,
 			});
 		} else {
-			res.status(401).send({
+			res.status(200).send({
 				message: 'No se encontro ninguna orden asociado al cliente',
 			});
 		}
@@ -418,7 +418,7 @@ const getPedidoWEb = async (req, res) => {
 				order,
 			});
 		} else {
-			res.status(401).send({
+			res.status(200).send({
 				message: 'No se encontro ninguna orden asociado al cliente',
 			});
 		}
@@ -465,7 +465,7 @@ const getPedido_detail = async (req, res) => {
 				ContadorArt,
 			});
 		} else {
-			res.status(401).send({
+			res.status(200).send({
 				message: 'No se encontro ninguna orden asociado al cliente',
 			});
 		}
@@ -490,7 +490,7 @@ const getfacture_orderb2b = async (req, res) => {
 				order,
 			});
 		} else {
-			res.status(401).send({
+			res.status(200).send({
 				message: 'No se encontro ninguna orden asociado al cliente',
 			});
 		}
@@ -537,7 +537,7 @@ const getfacture_detailb2b = async (req, res) => {
 				Articulos,
 			});
 		} else {
-			res.status(401).send({
+			res.status(200).send({
 				message: 'No se encuentra la factura seleccionada',
 			});
 		}

@@ -14,7 +14,7 @@ const getsupplier = async (req, res) => {
 				supplier,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro proveedores',
 			});
 		}
@@ -54,7 +54,7 @@ const getcategorysupplier = async (req, res) => {
 				supplier: supplier,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro categoria del proveedor',
 			});
 		}
@@ -99,7 +99,7 @@ const getcodcategorysupplier = async (req, res) => {
 				supplier,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro codigo de  proveedores',
 			});
 		}
@@ -123,7 +123,7 @@ const getcategorydkasa = async (req, res) => {
 				supplier: supplier,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro codigo de  proveedores',
 			});
 		}

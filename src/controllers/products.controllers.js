@@ -44,7 +44,7 @@ const getproducts_individually = async (req, res) => {
 				Calificacion,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro resultado, verificar los datos',
 			});
 		}
@@ -71,7 +71,7 @@ const getproducts_discount = async (req, res) => {
 				products_discount,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro la lista de precio del producto con descuento',
 			});
 		}
@@ -98,7 +98,7 @@ const getproducts_lastunits = async (req, res) => {
 				products_lastunits: products_lastunits,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro la lista de las ultimas unidades',
 			});
 		}
@@ -126,7 +126,7 @@ const getproducts_recommends = async (req, res) => {
 				products_recommends,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro los productos recomendados',
 			});
 		}

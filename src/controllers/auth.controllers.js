@@ -27,7 +27,7 @@ const verifyJWT = async (req, res = response) => {
 			isValid: 1,
 		});
 	} else {
-		res.status(401).json({
+		res.status(200).json({
 			isinvalid: 'El token es invalido',
 		});
 	}

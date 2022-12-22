@@ -11,7 +11,7 @@ const getcity = async (req, res) => {
 				city: result.recordsets,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro resultado de ciudades',
 			});
 		}
@@ -33,7 +33,7 @@ const getdepartment = async (req, res) => {
 				department: result.recordsets,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro resultado de los departamentos',
 			});
 		}

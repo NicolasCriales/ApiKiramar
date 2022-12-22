@@ -103,7 +103,7 @@ const getsearch = async (req, res) => {
 				max_min,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro el producto',
 			});
 		}
@@ -129,7 +129,7 @@ const getsearchautocomplete = async (req, res) => {
 				searchautocomplete,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro el producto',
 			});
 		}

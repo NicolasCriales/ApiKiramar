@@ -22,7 +22,7 @@ const getbanners = async (req, res) => {
 				Banners,
 			});
 		} else {
-			res.status(401).json({
+			res.status(200).json({
 				message: 'No se encontro resultado de BANNERS',
 			});
 		}
