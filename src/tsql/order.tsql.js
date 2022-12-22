@@ -94,7 +94,7 @@ export const tsqlorder = {
 		        where  NRODCTO=@NRODCTO AND TIPODCTO=@TIPODCTO`,
 
 	NRODCTO: `
-	            select Id,ConsecutPedAPKBq, ConsecutPedAPKNq 
+	            select Id,ConsecutPedAPKBq, ConsecutPedAPKNq, ConsecutPedAPKCa
 	            from MtConsecutivoTipoDcto
             `,
 
