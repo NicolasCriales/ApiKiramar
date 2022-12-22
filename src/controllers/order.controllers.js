@@ -108,8 +108,8 @@ const getMtPedido = async (req, res) => {
 			values 
 			(
 				'${TIPODCTO}',${updatenrodcto},  '${FechaKiramar}', '1052','${NIT}','${BRUTO}','${DESCUENTO}','${TOTALIVA}',
-				'${NETO}', 'COMPRA Kiramar app','1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', 'COMPRA APK',
-				'NCRIALES','S','${FechaKiramar}', '${DIRECCION}', '${Complemento}' ,'${CIUDAD}','${CODCIUDAD}'
+				'${NETO}', '','1','NULL','NULL','${FechaKiramar}','S','0','0','NULL', '',
+				'','S','${FechaKiramar}', '${DIRECCION}', '${Complemento}' ,'${CIUDAD}','${CODCIUDAD}'
 			)`
 		);
 		for (let i = 0; i < product.length; i++) { 
@@ -668,28 +668,28 @@ const getPedido_response = async (req,res) => {
 				//Aprovado
 				const resul = await pool
 					.request()
-					.query(`update MtPedido set ESTADOPED = 1, EstadoTransaccion='Aprobado' where IdTransaccion = '${data.user.id}' `)
+					.query(`update MtPedido set ESTADOPED = 1, EstadoTransaccion='Aprobado', NOTA='Aprobado por el banco ID_transaccion: ${data.transaction.id}' where IdTransaccion = '${data.user.id}' `)
 			} 
 	
 			if( data.transaction.status == 2 ) {
 				//cancelado
 				const resul = await pool
 					.request()
-					.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+					.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado', NOTA='Cancelado por el banco ID_transaccion: ${data.transaction.id}' where IdTransaccion = '${data.user.id}' `)
 			} 
 	
 			if( data.transaction.status == 4 ) {
 				//Rechazada
 				const resul = await pool
 					.request()
-					.query(`update MtPedido set ESTADOPED = 3, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+					.query(`update MtPedido set ESTADOPED = 3, EstadoTransaccion='Rechazado',NOTA='Rechazado por el banco ID_transaccion: ${data.transaction.id}' where IdTransaccion = '${data.user.id}' `)
 			} 
 	
 			if( data.transaction.status == 5 ) {
 				//Expirada
 				const resul = await pool
 					.request()
-					.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado' where IdTransaccion = '${data.user.id}' `)
+					.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado', NOTA='Expirado por el banco ID_transaccion:  ${data.transaction.id}' where IdTransaccion = '${data.user.id}' `)
 				
 			} 	
 		}
