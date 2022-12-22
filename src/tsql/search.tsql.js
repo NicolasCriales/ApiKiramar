@@ -46,7 +46,7 @@ export const tsqlsearch = {
 							LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
 						WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios= @IdListaPrecios AND 
 							MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
-							AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1  and not mta.NombreAlterno like '%gratis%' ) AUX
+							AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'  and not mta.NombreAlterno like '%gratis%' ) AUX
    
 			`,
 
