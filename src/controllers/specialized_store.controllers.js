@@ -14,12 +14,12 @@ const getspecialized_store = async (req, res) => {
 				specialized_store: specialized_store,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro las tiendas especializadas',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar las tiendas especializadas');
+		console.log('Error: Problema al consultar las tiendas especializadas');
 		res.status(500).json({
 			message: 'Problema al consultar las tiendas especializadas',
 		});

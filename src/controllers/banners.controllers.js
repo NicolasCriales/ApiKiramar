@@ -22,12 +22,12 @@ const getbanners = async (req, res) => {
 				Banners,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro resultado de BANNERS',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los banners ', error);
+		console.log('Error: Problemas al consultar los banner', error);
 		res.status(500).json({
 			message: 'Problemas al consultar los banners',
 		});
@@ -43,7 +43,7 @@ const getidbanners = async (req, res) => {
 			idBanners,
 		});
 	} catch (error) {
-		console.log('Error: No se pudo consultar los banners ', error);
+		console.log('Error: Problemas al consultar los banners ', error);
 		res.status(500).json({
 			message: 'Problemas al consultar los banners',
 		});

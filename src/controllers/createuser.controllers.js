@@ -38,9 +38,9 @@ const createuser = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo crear el usuario por error de consulta', error);
+		console.log('Error: Problemas al crear el usuario ', error);
 		res.status(500).json({
-			message: 'Problemas al crear el usuario por la consulta',
+			message: 'Problemas al crear el usuario ',
 		});
 	}
 };

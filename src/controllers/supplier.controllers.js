@@ -14,14 +14,14 @@ const getsupplier = async (req, res) => {
 				supplier,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro proveedores',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar los proveedores');
+		console.log('Error: Problema al  consultar proveedor');
 		res.status(500).json({
-			message: 'Problema al consultar el producto',
+			message: 'Problema al  consultar proveedor',
 		});
 	}
 };
@@ -54,12 +54,12 @@ const getcategorysupplier = async (req, res) => {
 				supplier: supplier,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro categoria del proveedor',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar la categoria del proveedor');
+		console.log('Error: nroblema al consultar la categoria del proveedor');
 		res.status(500).json({
 			message: 'Problema al consultar la categoria del proveedor',
 		});
@@ -99,12 +99,12 @@ const getcodcategorysupplier = async (req, res) => {
 				supplier,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro codigo de  proveedores',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar el proveedor');
+		console.log('Error: Problema al consultar el proveedor');
 		res.status(500).json({
 			message: 'Problema al consultar el proveedor',
 		});
@@ -123,7 +123,7 @@ const getcategorydkasa = async (req, res) => {
 				supplier: supplier,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro codigo de  proveedores',
 			});
 		}

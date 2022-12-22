@@ -11,12 +11,12 @@ const getcity = async (req, res) => {
 				city: result.recordsets,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro resultado de ciudades',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar las ciudades ', error);
+		console.log('Error: Problemas al consultar las ciudades', error);
 		res.status(500).json({
 			message: 'Problemas al consultar las ciudades',
 		});
@@ -33,12 +33,12 @@ const getdepartment = async (req, res) => {
 				department: result.recordsets,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro resultado de los departamentos',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los departamentos ', error);
+		console.log('Error: Problemas al consultar los departamentos', error);
 		res.status(500).json({
 			message: 'Problemas al consultar los departamentos',
 		});

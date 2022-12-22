@@ -18,7 +18,7 @@ const getproducts = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los productos ', error);
+		console.log('Error: roblemas al consultar los productos ', error);
 		res.status(500).json({
 			message: 'Problemas al consultar los productos',
 		});
@@ -44,12 +44,12 @@ const getproducts_individually = async (req, res) => {
 				Calificacion,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro resultado, verificar los datos',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los productos individuales ', error);
+		console.log('Error: Problemas al consultar los productos individuales ', error);
 		res.status(500).json({
 			message: 'Problemas al consultar los productos individuales',
 		});
@@ -71,12 +71,12 @@ const getproducts_discount = async (req, res) => {
 				products_discount,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro la lista de precio del producto con descuento',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los productos con descuento ', error);
+		console.log('Error: Problemas al consultar los productos con descuento', error);
 		res.status(500).json({
 			message: 'Problemas al consultar los productos con descuento',
 		});
@@ -98,14 +98,14 @@ const getproducts_lastunits = async (req, res) => {
 				products_lastunits: products_lastunits,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro la lista de las ultimas unidades',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los productos con ultimas unidades ', error);
+		console.log('Error: Problemas al consultar los productos con ultimas unidades ', error);
 		res.status(500).json({
-			message: 'Problemas al consultar los productos con descuento',
+			message: 'Problemas al consultar los productos con ultimas unidades',
 		});
 	}
 };
@@ -126,14 +126,14 @@ const getproducts_recommends = async (req, res) => {
 				products_recommends,
 			});
 		} else {
-			res.status(500).json({
-				message: 'No se encontro la lista de las ultimas unidades',
+			res.status(401).json({
+				message: 'No se encontro los productos recomendados',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los productos con ultimas unidades ', error);
+		console.log('Error: Problemas al consultar los productos recomendados', error);
 		res.status(500).json({
-			message: 'Problemas al consultar los productos con descuento',
+			message: 'Problemas al consultar los productos recomendados',
 		});
 	}
 };
@@ -154,13 +154,13 @@ const getBest_sellers = async (req, res) => {
 			});
 		} else {
 			res.status(500).json({
-				message: 'No se encontro la lista de las ultimas unidades',
+				message: 'No se encontro la lista de los mas vendidos',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los productos con ultimas unidades ', error);
+		console.log('Error: Problemas al consultar los productos mas vendidos', error);
 		res.status(500).json({
-			message: 'Problemas al consultar los productos con descuento',
+			message: 'Problemas al consultar los productos mas vendidos',
 		});
 	}
 };

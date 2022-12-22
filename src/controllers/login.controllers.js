@@ -17,12 +17,12 @@ const getverifydata = async (req, res) => {
 				client: data_client,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'Nit o Contraseña incorrectos',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los clientes ', error);
+		console.log('Error: Problemas al consultar cliente', error);
 		res.status(500).json({
 			message: 'Problemas al consultar cliente',
 		});
@@ -56,14 +56,14 @@ const GetUpdatePassword = async (req, res) => {
 				result: 'SE cambio la contraseña exitosamente',
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'Contraseña no coincide',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los clientes ', error);
+		console.log('Error:Problemas al consultar contraseña', error);
 		res.status(500).json({
-			message: 'Problemas al consultar cliente',
+			message: 'Problemas al consultar contraseña',
 		});
 	}
 };
@@ -113,14 +113,14 @@ const getsendmail = async (req, res) => {
 				message: 'Se envio el codigo a su correo electronico',
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				mensagge: 'no se encontro el nit de usuario',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los clientes ', error);
+		console.log('Error: Problemas al enviar correo para recuperar contraseña', error);
 		res.status(500).json({
-			message: 'Problemas al consultar cliente',
+			message: 'Problemas al enviar correo para recuperar contraseña',
 		});
 	}
 };
@@ -142,9 +142,9 @@ const getrecoverpassword = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los clientes ', error);
+		console.log('Error: Problemas al verificar codigo', error);
 		res.status(500).json({
-			message: 'Problemas al consultar cliente',
+			message: 'Problemas al verificar codigo',
 		});
 	}
 };
@@ -171,9 +171,9 @@ const getnewpassword = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar los clientes ', error);
+		console.log('Error: Problemas al actualizar contraseña', error);
 		res.status(500).json({
-			message: 'Problemas al consultar cliente',
+			message: 'Problemas al actualizar contraseña',
 		});
 	}
 };

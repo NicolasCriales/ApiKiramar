@@ -103,14 +103,14 @@ const getsearch = async (req, res) => {
 				max_min,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro el producto',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar el producto', error);
+		console.log('Error: Problemas al encontrar producto', error);
 		res.status(500).json({
-			message: 'Problemas al consultar el producto',
+			message: 'Problemas al encontrar producto',
 		});
 	}
 };
@@ -129,12 +129,12 @@ const getsearchautocomplete = async (req, res) => {
 				searchautocomplete,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro el producto',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar el producto', error);
+		console.log('Error: Problemas al consultar el producto', error);
 		res.status(500).json({
 			message: 'Problemas al consultar el producto',
 		});

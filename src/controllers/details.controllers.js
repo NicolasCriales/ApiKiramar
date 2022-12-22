@@ -15,12 +15,12 @@ const getdatasheet = async (req, res) => {
 				datasheet,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No se encontro ficha tecnica',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar la ficha tecnica ', error);
+		console.log('Error: Problemas al consultar la ficha tecnica', error);
 		res.status(500).json({
 			message: 'Problemas al consultar la ficha tecnica',
 		});
@@ -38,14 +38,14 @@ const gettypePQRS = async (req, res) => {
 				typePQRS,
 			});
 		} else {
-			res.status(500).json({
-				Message: 'No hay datos',
+			res.status(401).json({
+				Message: 'no se encontro pqrs',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar la ficha tecnica ', error);
+		console.log('Error:Problemas al consultar tipó PQRS', error);
 		res.status(500).json({
-			message: 'Problemas al consultar la ficha tecnica',
+			message: 'Problemas al consultar tipó PQRS',
 		});
 	}
 };
@@ -69,9 +69,9 @@ const getregisterPQRS = async (req, res) => {
 			registerPQRS: 'Le responderemos pronto',
 		});
 	} catch (error) {
-		console.log('Error: No se pudo consultar la ficha tecnica ', error);
+		console.log('Error: Problemas al registrar la pqr', error);
 		res.status(500).json({
-			message: 'Problemas',
+			message: 'Problemas al registrar la pqrs',
 		});
 	}
 };
@@ -96,9 +96,9 @@ const getresponsePQRS = async (req, res) => {
 			responsePQRS: 'Se guardo su respuesta',
 		});
 	} catch (error) {
-		console.log('Error: en la respuesta', error);
+		console.log('Error: Problemas al guardar la PQRS', error);
 		res.status(500).json({
-			message: 'Problemas',
+			message: 'Problemas al guardar la PQRS',
 		});
 	}
 };
@@ -116,14 +116,14 @@ const getPQRS = async (req, res) => {
 				PQRS,
 			});
 		} else {
-			res.status(500).query({
+			res.status(401).query({
 				message: 'Este cliente no tiene PQRS',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar la ficha tecnica ', error);
+		console.log('Error: Problemas al consultar pqrs', error);
 		res.status(500).json({
-			message: 'Problemas',
+			message: 'Problemas al consultar pqrs',
 		});
 	}
 };
@@ -153,14 +153,14 @@ const getidPQRS = async (req, res) => {
 				idresponse,
 			});
 		} else {
-			res.status(500).query({
-				message: 'Este cliente no tiene PQRS',
+			res.status(401).query({
+				message: 'Este cliente no tiene id de PQRS',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar la ficha tecnica ', error);
+		console.log('Error: Problemas al consultar el id del pqrs', error);
 		res.status(500).json({
-			message: 'Problemas',
+			message: 'Problemas al consultar el id del pqrs',
 		});
 	}
 };
@@ -183,14 +183,14 @@ const getVericationReview = async (req, res) => {
 				review: review,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'no tiene reseña',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar la ficha tecnica ', error);
+		console.log('Error: Problemas al consultar las reseñas', error);
 		res.status(500).json({
-			message: 'Problemas',
+			message: 'Problemas al consultar las reseñas',
 		});
 	}
 };
@@ -208,7 +208,7 @@ const getregisterReview = async (req, res) => {
 		const NombreCli = result1.recordsets[0][0].Nombre;
 
 		if (result.rowsAffected[0] > 0) {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'Ya tiene una reseña registrada',
 			});
 		} else {
@@ -225,9 +225,9 @@ const getregisterReview = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar la ficha tecnica ', error);
+		console.log('Error: Problemas al consultar reseña registrada', error);
 		res.status(500).json({
-			message: 'Problemas',
+			message: 'Problemas al consultar reseña registrada',
 		});
 	}
 };
@@ -245,14 +245,14 @@ const getreview = async (req, res) => {
 				review,
 			});
 		} else {
-			res.status(500).json({
+			res.status(401).json({
 				message: 'No hay reseñas',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar la ficha tecnica ', error);
+		console.log('Error: Problemas no hay reseña', error);
 		res.status(500).json({
-			message: 'Problemas',
+			message: 'Problemas no hay reseña',
 		});
 	}
 };

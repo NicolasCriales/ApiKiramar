@@ -10,7 +10,7 @@ const getworld = async (req, res) => {
 			world: result.recordsets,
 		});
 	} catch (error) {
-		console.log('Error: No se pudo consultar los mundos ', error);
+		console.log('Error:Problemas al consultar mundos', error);
 		res.status(500).json({
 			message: 'Problemas al consultar mundos',
 		});
@@ -30,11 +30,11 @@ const getcategoryworld = async (req, res) => {
 			});
 		} else {
 			res.status(500).json({
-				message: 'No se encontro categorias del mundo',
+				message: 'No se encontro el mundo',
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar el mundo', error);
+		console.log('Error: Problemas al consultar el mundo', error);
 		res.status(500).json({
 			message: 'Problemas al consultar el mundo',
 		});
@@ -63,9 +63,9 @@ const getcategoryproduct = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: No se pudo consultar el mundo ', error);
+		console.log('Error: Problemas al consultar categoria del mundo', error);
 		res.status(500).json({
-			message: 'Problemas al consultar el mundo',
+			message: 'Problemas al consultar categoria del mundo',
 		});
 	}
 };

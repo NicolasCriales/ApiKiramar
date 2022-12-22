@@ -135,9 +135,9 @@ const getMtPedido = async (req, res) => {
 			TIPODCTO: TIPODCTO,
 		});
 	} catch (error) {
-		console.log('Error: no se pudo consultar las ordenes del usuario ', error);
+		console.log('Error: Problemas al insertar pedido', error);
 		res.status(500).send({
-			message: 'Problemas al consultar las ordenes del usuario',
+			message: 'Problemas al insertar pedido',
 		});
 	}
 };
@@ -286,9 +286,9 @@ const getstatus = async (req, res) => {
 				});
 		}
 	} catch (error) {
-		console.log('Error: veificar que ´paso en orden  ', error);
+		console.log('Error: Problemas al enviar url de paymentez', error);
 		res.status(500).send({
-			message: 'Problemas al consultar las ordenes del usuario',
+			message: 'Problemas al enviar url de paymentez',
 		});
 	}
 };
@@ -358,9 +358,9 @@ const getpayment = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar las ordenes del usuario ', error);
+		console.log('Error: Problemas al consultar datos del pedido', error);
 		res.status(500).send({
-			message: 'Problemas al consultar las ordenes del usuario',
+			message: 'Problemas al consultar datos del pedido',
 		});
 	}
 };
@@ -376,12 +376,12 @@ const getPedido = async (req, res) => {
 				order,
 			});
 		} else {
-			res.status(500).send({
+			res.status(401).send({
 				message: 'No se encontro ninguna orden asociado al cliente',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar las ordenes del usuario ', error);
+		console.log('Error: Problemas al consultar las ordenes del usuario', error);
 		res.status(500).send({
 			message: 'Problemas al consultar las ordenes del usuario',
 		});
@@ -401,14 +401,14 @@ const getPedidoWEb = async (req, res) => {
 				order,
 			});
 		} else {
-			res.status(500).send({
+			res.status(401).send({
 				message: 'No se encontro ninguna orden asociado al cliente',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar las ordenes del usuario ', error);
+		console.log('Error: Problemas al consultar pedidos web btc', error);
 		res.status(500).send({
-			message: 'Problemas al consultar las ordenes del usuario',
+			message: 'Problemas al consultar pedidos web btc',
 		});
 	}
 }; 
@@ -448,14 +448,14 @@ const getPedido_detail = async (req, res) => {
 				ContadorArt,
 			});
 		} else {
-			res.status(500).send({
+			res.status(401).send({
 				message: 'No se encontro ninguna orden asociado al cliente',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar las ordenes del usuario ', error);
+		console.log('Error: Problemas al consultar detalles del pedido', error);
 		res.status(500).send({
-			message: 'Problemas al consultar las ordenes del usuario',
+			message: 'Problemas al consultar detalles del pedido',
 		});
 	}
 };
@@ -473,14 +473,14 @@ const getfacture_orderb2b = async (req, res) => {
 				order,
 			});
 		} else {
-			res.status(500).send({
+			res.status(401).send({
 				message: 'No se encontro ninguna orden asociado al cliente',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se pudo consultar las ordenes del usuario ', error);
+		console.log('Error: Problemas al consultar orden ', error);
 		res.status(500).send({
-			message: 'Problemas al consultar las ordenes del usuario',
+			message: 'Problemas al consultar orden',
 		});
 	}
 };
@@ -520,14 +520,14 @@ const getfacture_detailb2b = async (req, res) => {
 				Articulos,
 			});
 		} else {
-			res.status(500).send({
+			res.status(401).send({
 				message: 'No se encuentra la factura seleccionada',
 			});
 		}
 	} catch (error) {
-		console.log('Error: no se encontro la factura enviada', error);
+		console.log('Error: Problemas detalles de una orden', error);
 		res.status(500).send({
-			message: 'Problemas al consultar la factura',
+			message: 'Problemas detalles de una orden',
 		});
 	}
 };
@@ -678,7 +678,7 @@ const getPedido_response = async (req,res) => {
 		})
 		console.log(data);
 	} catch (error) {
-		console.log('error:',error);
+		console.log('error: al insertar datos paymentes',error);
 		
 	}
 }
