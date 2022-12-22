@@ -10,8 +10,8 @@ export const tsqlworld = {
                         from MtArticulo MTA
                              INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                              inner join MtSaldo    sal  on MTA.idarticulo = sal.IdArticulo and sal.Saldo > 30 and sal.IdBodega = '1101'
-                         where MTA.CodLinea=@CODLINEA AND NOT SUBL.NOMBRE='REPUESTOS' and not MTA.CODSUBLINEA='0' order by SUBL.NOMBRE asc AND 
-                              MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'
+                         where MTA.CodLinea=@CODLINEA AND NOT SUBL.NOMBRE='REPUESTOS' and not MTA.CODSUBLINEA='0' AND 
+                                MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'order by SUBL.NOMBRE asc 
                     `,
 
   productcategory: `

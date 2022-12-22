@@ -34,7 +34,7 @@ export const tsqlsearch = {
 					MTA.NombreAlterno like @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS' AND
 					IMG.item_order ='0'  and not mta.NombreAlterno like '%gratis%' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'
 	    `,
-//Agregar disponible > 30
+
 	supplier: `       SELECT	AUX.NombreProveedor, AUX.CodProveedor
 				FROM    (
 						SELECT DISTINCT (MTA.NombreProveedor), MTA.CodProveedor
