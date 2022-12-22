@@ -55,7 +55,7 @@ export const tsqlorder = {
                 from MtPedido pedido
                      inner join MtEstadoPedido estado on estado.idestadopedido = pedido.ESTADOPED
                      inner join MtCliente cliente on cliente.Nit  = pedido.NIT
-                where pedido.TIPODCTO in ('PM', 'PB') AND pedido.NIT=@Nit
+                where pedido.TIPODCTO in ('HN', 'HB', 'HC') AND pedido.NIT=@Nit
             `,
 
 	pedido_detail: `

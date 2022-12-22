@@ -72,6 +72,7 @@ const getMtPedido = async (req, res) => {
 		var updatenrodcto = nrodcto;
 		var TIPODCTO = '';
 		var BODEGA = '';
+		/*
 		if (ListaPrecios === 'PB005') {
 			updatenrodcto = updatenrodcto[0].ConsecutPedAPKBq + 1;
 			TIPODCTO = 'PB';
@@ -79,6 +80,20 @@ const getMtPedido = async (req, res) => {
 		} else {
 			updatenrodcto = updatenrodcto[0].ConsecutPedAPKNq + 1;
 			TIPODCTO = 'PM';
+			var BODEGA = '1101';
+		}
+		*/
+		if (ListaPrecios === 'PB005'){
+			updatenrodcto = updatenrodcto[0].ConsecutPedAPKBq + 1;
+			TIPODCTO = 'HB';
+			var BODEGA = '2101';
+		} else if  ( ListaPrecios ===   'PB003'){
+			updatenrodcto = updatenrodcto[0].ConsecutPedAPKNq + 1;
+			TIPODCTO = 'HN ';
+			var BODEGA = '1101';
+		} else {
+			updatenrodcto = updatenrodcto[0].ConsecutPedAPKCa + 1;
+			TIPODCTO = 'HC  ';
 			var BODEGA = '1101';
 		}
 
@@ -126,8 +141,10 @@ const getMtPedido = async (req, res) => {
 
 		if (ListaPrecios === 'PB005') {
 			const result4 = await pool.request().query(`update MtConsecutivoTipoDcto set ConsecutPedAPKBq=${updatenrodcto} `);
-		} else {
+		} else if (ListaPrecios === 'PB003') {
 			const result4 = await pool.request().query(`update MtConsecutivoTipoDcto set ConsecutPedAPKNq=${updatenrodcto} `);
+		} else {
+			const result4 = await pool.request().query(`update MtConsecutivoTipoDcto set ConsecutPedAPKCa=${updatenrodcto} `);
 		}
 
 		res.send({
