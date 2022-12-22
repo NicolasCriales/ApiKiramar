@@ -166,6 +166,7 @@ const getstatus = async (req, res) => {
 
 		const pool = await getConnection();
 		const { NRODCTO, TIPODCTO, Total } = req.body;
+		console.log( 'datos que recivo',NRODCTO, TIPODCTO);
 		var FechaActual = new Date().getTime();
 		const IdTransaccion =  'xxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxx'.replace(/[xy]/g,function(c) {
 			const aleatorio =(FechaActual + Math.random() * 16) % 16 | 0;
@@ -254,7 +255,7 @@ const getstatus = async (req, res) => {
 				.input('NRODCTO', sql.VarChar, NRODCTO)
 				.input('TIPODCTO', sql.VarChar, TIPODCTO)
 				.query(tsqlorder.status);
-			
+			console.log('transaccion',IdTransaccion);
 			const result2 = await pool
 				.request()
 				.input('IdTransaccion', sql.VarChar, IdTransaccion)
@@ -299,6 +300,7 @@ const getstatus = async (req, res) => {
 
 				const data = await respuesta.data
 				const urlpago =  data.data.payment.payment_url;
+				console.log('url de pago',urlpago);
 				res.send({
 					urlpago,
 					IdTransaccion
