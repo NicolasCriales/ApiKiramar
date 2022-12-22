@@ -89,13 +89,14 @@ const getMtPedido = async (req, res) => {
 			var BODEGA = '2101';
 		} else if  ( ListaPrecios ===   'PB003'){
 			updatenrodcto = updatenrodcto[0].ConsecutPedAPKNq + 1;
-			TIPODCTO = 'HN ';
+			TIPODCTO = 'HN';
 			var BODEGA = '1101';
 		} else {
 			updatenrodcto = updatenrodcto[0].ConsecutPedAPKCa + 1;
-			TIPODCTO = 'HC  ';
+			TIPODCTO = 'HC';
 			var BODEGA = '1101';
 		}
+		console.log(updatenrodcto,BODEGA,TIPODCTO);
 
 		const result = await pool.request().query(
 			`insert into MtPedido
@@ -146,6 +147,7 @@ const getMtPedido = async (req, res) => {
 		} else {
 			const result4 = await pool.request().query(`update MtConsecutivoTipoDcto set ConsecutPedAPKCa=${updatenrodcto} `);
 		}
+		console.log('final', updatenrodcto,TIPODCTO);
 
 		res.send({
 			Nrodcto: updatenrodcto,
