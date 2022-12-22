@@ -101,14 +101,6 @@ const getsendmail = async (req, res) => {
 				text: `Este es su codigo de recuperacion ${codpassword}`, //cuerpo de texto sin formato
 			};
 
-			transporter.sendMail(mailoption, (req, res) => {
-				if (err){
-					console.log(err)
-						res.json('ocurrio un error')
-				} else{
-						res.json('Se envio la notificacion al correo');
-				}
-			});
 			res.send({
 				message: 'Se envio el codigo a su correo electronico',
 			});
