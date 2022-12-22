@@ -32,7 +32,7 @@ export const tsqlsearch = {
 
 				WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
 					MTA.NombreAlterno like @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS' AND
-					IMG.item_order ='0'  and not mta.NombreAlterno like '%gratis%' 
+					IMG.item_order ='0'  and not mta.NombreAlterno like '%gratis%' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'
 	    `,
 //Agregar disponible > 30
 	supplier: `       SELECT	AUX.NombreProveedor, AUX.CodProveedor
@@ -46,7 +46,7 @@ export const tsqlsearch = {
 							LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
 						WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios= @IdListaPrecios AND 
 							MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
-							AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'  and not mta.NombreAlterno like '%gratis%' ) AUX
+							AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1  and not mta.NombreAlterno like '%gratis%' ) AUX
    
 			`,
 
@@ -62,7 +62,7 @@ export const tsqlsearch = {
 							LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
 						WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios= @IdListaPrecios AND 
 							MTA.NombreAlterno like  @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
-							AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'  
+							AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'
 							and not mta.NombreAlterno like '%gratis%' and  PROV.CODSUMIN like @CodProveedor  ) AUX
 
 			`,
@@ -96,7 +96,7 @@ export const tsqlsearch = {
 
 						WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND 
 							MTA.NombreAlterno like @buscar  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND NOT SUBL.NOMBRE='REPUESTOS' AND
-							IMG.item_order ='0' and not mta.NombreAlterno like '%gratis%'
+							IMG.item_order ='0' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1' and not mta.NombreAlterno like '%gratis%'
 				    
 			`,
 
@@ -111,5 +111,6 @@ export const tsqlsearch = {
 					LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = MTA.IdArticulo
 				WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND 
 					MTA.NombreAlterno like  @autocomplete  AND PROV.SWACTIVO='1' AND PROV.SWappkiramar='1'
-					AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0'  and not mta.NombreAlterno like '%gratis%'  ) AUX `,
+					AND PROV.swAppDkasa='0' AND NOT SUBL.NOMBRE='REPUESTOS' AND IMG.item_order ='0' AND 
+					MTA.swDisponibleVenta ='1' AND MTA.swImagen='1' and not mta.NombreAlterno like '%gratis%'  ) AUX `,
 };

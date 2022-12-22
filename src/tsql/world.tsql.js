@@ -11,7 +11,7 @@ export const tsqlworld = {
                              INNER JOIN MtSubLinea SUBL ON SUBL.CODSUBLINEA = MTA.CodSubLinea
                              inner join MtSaldo    sal  on MTA.idarticulo = sal.IdArticulo and sal.Saldo > 30 and sal.IdBodega = '1101'
                          where MTA.CodLinea=@CODLINEA AND NOT SUBL.NOMBRE='REPUESTOS' and not MTA.CODSUBLINEA='0' order by SUBL.NOMBRE asc AND 
-                              MTA.swDisponibleVenta ='1' AND MTA.swImagen='1
+                              MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'
                     `,
 
   productcategory: `
@@ -48,7 +48,7 @@ export const tsqlworld = {
                                                 WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1' AND LISTAP.IdListaPrecios=@IdListaPrecios AND PROV.SWACTIVO='1' AND
                                                         MTA.CodLinea=@CODLINEA AND MTA.CodSubLinea=@codcategory AND
                                                         PROV.SWappkiramar='1'  AND SAL.Disponible > 30 AND NOT SUBL.NOMBRE='REPUESTOS' AND 
-                                                        MTA.swDisponibleVenta ='1' AND MTA.swImagen='1
+                                                        MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'
                                 )   AS AUX
                 `,
 };
