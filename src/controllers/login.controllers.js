@@ -17,12 +17,12 @@ const getverifydata = async (req, res) => {
 				client: data_client,
 			});
 		} else {
-			res.status(200).json({
+			res.status(500).json({
 				message: 'Nit o Contraseña incorrectos',
 			});
 		}
 	} catch (error) {
-		console.log('Error: Problemas al consultar cliente', error);
+		console.log('Error: No se pudo consultar los clientes ', error);
 		res.status(500).json({
 			message: 'Problemas al consultar cliente',
 		});
@@ -56,14 +56,14 @@ const GetUpdatePassword = async (req, res) => {
 				result: 'SE cambio la contraseña exitosamente',
 			});
 		} else {
-			res.status(200).json({
+			res.status(500).json({
 				message: 'Contraseña no coincide',
 			});
 		}
 	} catch (error) {
-		console.log('Error:Problemas al consultar contraseña', error);
+		console.log('Error: Problemas al actualizar contraseña', error);
 		res.status(500).json({
-			message: 'Problemas al consultar contraseña',
+			message: 'Problemas al actualizar contraseña',
 		});
 	}
 };
@@ -100,27 +100,26 @@ const getsendmail = async (req, res) => {
 				subject: 'Recuperar clave Kiramar S.A.S', //Línea de asunto
 				text: `Este es su codigo de recuperacion ${codpassword}`, //cuerpo de texto sin formato
 			};
-
-			transporter.sendMail(mailoption, (req, res) => {
-				if (error){
-					console.log(error)
-						res.json('ocurrio un error')
-				} else{
-						res.json('Se envio la notificacion al correo');
+			transporter.sendMail(mailoption, (err, result) => {
+				if (err) {
+					console.log(err);
+					res.json('ocurrio un error');
+				} else {
+					res.json('Se envio la notificacion al correo');
 				}
 			});
 			res.send({
 				message: 'Se envio el codigo a su correo electronico',
 			});
 		} else {
-			res.status(200).json({
+			res.status(500).json({
 				mensagge: 'no se encontro el nit de usuario',
 			});
 		}
 	} catch (error) {
-		console.log('Error: Problemas al enviar correo para recuperar contraseña', error);
+		console.log('Error: Problemas al enviar el codigo ', error);
 		res.status(500).json({
-			message: 'Problemas al enviar correo para recuperar contraseña',
+			message: 'Problemas al enviar el codigo',
 		});
 	}
 };
@@ -142,9 +141,9 @@ const getrecoverpassword = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: Problemas al verificar codigo', error);
+		console.log('Error:Problemas al recuperar contraseña', error);
 		res.status(500).json({
-			message: 'Problemas al verificar codigo',
+			message: 'Problemas al recuperar contraseña',
 		});
 	}
 };
@@ -171,9 +170,9 @@ const getnewpassword = async (req, res) => {
 			});
 		}
 	} catch (error) {
-		console.log('Error: Problemas al actualizar contraseña', error);
+		console.log('Error: Problemas con la nueva contraseña', error);
 		res.status(500).json({
-			message: 'Problemas al actualizar contraseña',
+			message: 'Problemas con la nueva contraseña',
 		});
 	}
 };
