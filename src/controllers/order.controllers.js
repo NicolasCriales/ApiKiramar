@@ -599,7 +599,7 @@ const getPedido_response = async (req,res) => {
 		const cancelado = 2
 		const Rechazada = 4
 		const Expirada = 5
-		 var payment_method_type = ''
+		var payment_method_type = ''
 
 		if (data.transaction.payment_method_type == 0) {
 			var payment_method_type = 'Tarjeta de crédito'
@@ -678,9 +678,9 @@ const getPedido_response = async (req,res) => {
 			// enviar correo con objeto de transporte definido
 			const mailoption = {
 				from: config.CORREO_EMAIL, // dirección del remitente
-				to: `${data.user.email}`, //lista de receptores
+				to: 'dircartera@kiramar.com.co', //lista de receptores
 				subject: 'Factura Realizado', //Línea de asunto
-				text: `Se la Factura con el id_pedido ${data.user.id}`, //cuerpo de texto sin formato
+				text: `Factura con el Id ${data.transaction.id}`, //cuerpo de texto sin formato
 			};
 			transporter.sendMail(mailoption, (err, result) => {
 				if (err) {
@@ -737,9 +737,9 @@ const getPedido_response = async (req,res) => {
 			// enviar correo con objeto de transporte definido
 			const mailoption = {
 				from: config.CORREO_EMAIL, // dirección del remitente
-				to: `${data.user.email}`, //lista de receptores
+				to: `serclientenq2@kiramar.com.co`, //lista de receptores
 				subject: 'Pedido Realizado', //Línea de asunto
-				text: `Se realizo una compra con el id_pedido ${data.user.id}`, //cuerpo de texto sin formato
+				text: `Pedido con el Id ${data.transaction.id}`, //cuerpo de texto sin formato
 			};
 			transporter.sendMail(mailoption, (err, result) => {
 				if (err) {
