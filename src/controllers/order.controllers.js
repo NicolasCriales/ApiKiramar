@@ -678,7 +678,7 @@ const getPedido_response = async (req,res) => {
 			// enviar correo con objeto de transporte definido
 			const mailoption = {
 				from: ' dircartera@kiramar.com.co', // dirección del remitente
-				to: `${result.recordsets[0][0].Email}`, //lista de receptores
+				to: `${data.user.email}`, //lista de receptores
 				subject: 'Factura Realizado', //Línea de asunto
 				text: `Se la Factura con el id_pedido ${data.user.id}`, //cuerpo de texto sin formato
 			};
@@ -737,7 +737,7 @@ const getPedido_response = async (req,res) => {
 			// enviar correo con objeto de transporte definido
 			const mailoption = {
 				from: 'serclientenq2@kiramar.com.co', // dirección del remitente
-				to: `${result.recordsets[0][0].Email}`, //lista de receptores
+				to: `${data.user.email}`, //lista de receptores
 				subject: 'Pedido Realizado', //Línea de asunto
 				text: `Se realizo una compra con el id_pedido ${data.user.id}`, //cuerpo de texto sin formato
 			};
