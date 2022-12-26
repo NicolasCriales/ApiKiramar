@@ -7,6 +7,7 @@ export default {
 	mssql_password: process.env.MSSQL_PASSWORD,
 	mssql_port: process.env.MSSQL_PORT,
 	port: process.env.PORT || 8080,
-
 	token: process.env.TOKEN,
+	CORREO_EMAIL: process.env.CORREO_EMAIL,
+	CORREO_CONTRASENA:  process.env.CORREO_CONTRASENA,
 };

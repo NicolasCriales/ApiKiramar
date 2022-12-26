@@ -3,6 +3,8 @@ import { tsqllogin } from '../tsql';
 import bcryptjs from 'bcryptjs';
 import { express } from 'express';
 import nodemailer from 'nodemailer';
+import config from '../config';
+
 
 const getverifydata = async (req, res) => {
 	try {
@@ -89,13 +91,13 @@ const getsendmail = async (req, res) => {
 				port: 587,
 				secure: false, // verdadero para 587, falso para otros puertos
 				auth: {
-					user: 'auxsistemas1@kiramar.com.co', //correo etérea generada
-					pass: 'sistemas1020@', //contraseña etérea generada
+					user: config.CORREO_EMAIL, //correo etérea generada
+					pass: config.CORREO_CONTRASENA, //contraseña etérea generada
 				},
 			});
 			// enviar correo con objeto de transporte definido
 			const mailoption = {
-				from: 'auxsistemas1@kiramar.com.co', // dirección del remitente
+				from: config.CORREO_EMAIL, // dirección del remitente
 				to: `${result.recordsets[0][0].Email}`, //lista de receptores
 				subject: 'Recuperar clave Kiramar S.A.S', //Línea de asunto
 				text: `Este es su codigo de recuperacion ${codpassword}`, //cuerpo de texto sin formato
