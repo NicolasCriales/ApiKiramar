@@ -4,6 +4,8 @@ import { pagination } from '../helpers/pagination';
 import { GetToken } from '../helpers/auth/generate-jwt'
 import bcryptjs from 'bcryptjs';
 import axios from 'axios';
+import config from '../config';
+
 
 
 const getMtPedido = async (req, res) => {
@@ -662,6 +664,34 @@ const getPedido_response = async (req,res) => {
 				
 			} 
 
+			const transporter = nodemailer.createTransport({
+				host: 'smtp-mail.outlook.com',
+				port: 587,
+				secure: false, // verdadero para 587, falso para otros puertos
+				auth: {
+					user: config.CORREO_EMAIL, //correo etérea generada
+					pass: config.CORREO_CONTRASENA, //contraseña etérea generada
+				},
+			});
+			// enviar correo con objeto de transporte definido
+			const mailoption = {
+				from: ' dircartera@kiramar.com.co', // dirección del remitente
+				to: `${result.recordsets[0][0].Email}`, //lista de receptores
+				subject: 'Factura Realizado', //Línea de asunto
+				text: `Se la Factura con el id_pedido ${data.user.id}`, //cuerpo de texto sin formato
+			};
+			transporter.sendMail(mailoption, (err, result) => {
+				if (err) {
+					console.log(err);
+					res.json('ocurrio un error');
+				} else {
+					res.json('Se envio la notificacion al correo');
+				}
+			});
+			res.send({
+				message: 'Se envio el codigo a su correo electronico',
+			});
+
 
 		} else {
 			if( data.transaction.status == 1 ) {
@@ -690,8 +720,37 @@ const getPedido_response = async (req,res) => {
 				const resul = await pool
 					.request()
 					.query(`update MtPedido set ESTADOPED = 6, EstadoTransaccion='Rechazado', NOTA='Expirado por el banco ID_transaccion:  ${data.transaction.id}' where IdTransaccion = '${data.user.id}' `)
-				
-			} 	
+			}
+
+
+			const transporter = nodemailer.createTransport({
+				host: 'smtp-mail.outlook.com',
+				port: 587,
+				secure: false, // verdadero para 587, falso para otros puertos
+				auth: {
+					user: config.CORREO_EMAIL, //correo etérea generada
+					pass: config.CORREO_CONTRASENA, //contraseña etérea generada
+				},
+			});
+			// enviar correo con objeto de transporte definido
+			const mailoption = {
+				from: 'serclientenq2@kiramar.com.co', // dirección del remitente
+				to: `${result.recordsets[0][0].Email}`, //lista de receptores
+				subject: 'Pedido Realizado', //Línea de asunto
+				text: `Se realizo una compra con el id_pedido ${data.user.id}`, //cuerpo de texto sin formato
+			};
+			transporter.sendMail(mailoption, (err, result) => {
+				if (err) {
+					console.log(err);
+					res.json('ocurrio un error');
+				} else {
+					res.json('Se envio la notificacion al correo');
+				}
+			});
+			res.send({
+				message: 'Se envio el codigo a su correo electronico',
+			});
+
 		}
 		
 		res.send({
