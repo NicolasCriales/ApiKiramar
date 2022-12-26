@@ -677,7 +677,7 @@ const getPedido_response = async (req,res) => {
 			});
 			// enviar correo con objeto de transporte definido
 			const mailoption = {
-				from: ' dircartera@kiramar.com.co', // dirección del remitente
+				from: config.CORREO_EMAIL, // dirección del remitente
 				to: `${data.user.email}`, //lista de receptores
 				subject: 'Factura Realizado', //Línea de asunto
 				text: `Se la Factura con el id_pedido ${data.user.id}`, //cuerpo de texto sin formato
@@ -691,7 +691,7 @@ const getPedido_response = async (req,res) => {
 				}
 			});
 			res.send({
-				message: 'Se envio el codigo a su correo electronico',
+				message: 'se envio el correo',
 			});
 
 
@@ -736,7 +736,7 @@ const getPedido_response = async (req,res) => {
 			});
 			// enviar correo con objeto de transporte definido
 			const mailoption = {
-				from: 'serclientenq2@kiramar.com.co', // dirección del remitente
+				from: config.CORREO_EMAIL, // dirección del remitente
 				to: `${data.user.email}`, //lista de receptores
 				subject: 'Pedido Realizado', //Línea de asunto
 				text: `Se realizo una compra con el id_pedido ${data.user.id}`, //cuerpo de texto sin formato
@@ -750,7 +750,7 @@ const getPedido_response = async (req,res) => {
 				}
 			});
 			res.send({
-				message: 'Se envio el codigo a su correo electronico',
+				message: 'correo enviado',
 			});
 
 		}
