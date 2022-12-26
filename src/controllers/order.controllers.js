@@ -760,8 +760,10 @@ const getPedido_response = async (req,res) => {
 		})
 		console.log(data);
 	} catch (error) {
-		console.log('error: al insertar datos paymentes',error);
-		
+			res.status(500).json({
+				error: 'al insertar datos paymentes Error:',
+			});
+			
 	}
 }
 
