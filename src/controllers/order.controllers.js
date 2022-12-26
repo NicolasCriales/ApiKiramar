@@ -5,6 +5,8 @@ import { GetToken } from '../helpers/auth/generate-jwt'
 import bcryptjs from 'bcryptjs';
 import axios from 'axios';
 import config from '../config';
+import nodemailer from 'nodemailer';
+
 
 
 
