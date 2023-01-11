@@ -228,7 +228,7 @@ export const tsqlproducts = {
                                         LEFT JOIN MtArticuloImagen  IMG on IMG.IdArticulo = mta.IdArticulo                                                                                              
                                 WHERE   SAL.IdBodega='1101' AND MTA.Habilitado='1'AND LISTAP.IdListaPrecios=@IdListaPrecios AND  
                                         PROV.SWACTIVO='1' AND PROV.SWappkiramar='1' AND SAL.Disponible > 30 AND NOT SUBL.NOMBRE='REPUESTOS' AND 
-                                        IMG.item_order ='0' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1'
+                                        IMG.item_order ='0' AND MTA.swDisponibleVenta ='1' AND MTA.swImagen='1' AND TRADE.fecha <= GETDATE() AND TRADE.fecha > (getdate()-3)
                         ) AS AUX ORDER BY AUX.FECHA DESC
 
                         
