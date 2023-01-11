@@ -170,7 +170,7 @@ const getstatus = async (req, res) => {
 
 		const pool = await getConnection();
 		const { NRODCTO, TIPODCTO, Total } = req.body;
-		console.log( 'datos que recivo',NRODCTO, TIPODCTO);
+		console.log( 'datos que recibo',NRODCTO, TIPODCTO);
 		var FechaActual = new Date().getTime();
 		const IdTransaccion =  'xxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxx'.replace(/[xy]/g,function(c) {
 			const aleatorio =(FechaActual + Math.random() * 16) % 16 | 0;
@@ -685,7 +685,7 @@ const getPedido_response = async (req,res) => {
 			transporter.sendMail(mailoption, (err, result) => {
 				if (err) {
 					console.log(err);
-					res.json('ocurrio un error');
+					res.json('ocurrio un error al enviar el correo');
 				} else {
 					res.json('Se envio la notificacion al correo');
 				}
@@ -758,7 +758,7 @@ const getPedido_response = async (req,res) => {
 		res.send({
 			Data: data
 		})
-		console.log(data);
+		console.log('Estos datos',data);
 	} catch (error) {
 			res.status(500).json({
 				error: 'al insertar datos paymentes Error:',
