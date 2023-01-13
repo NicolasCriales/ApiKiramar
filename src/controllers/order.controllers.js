@@ -736,7 +736,10 @@ const getPedido_response = async (req,res) => {
 				from: config.CORREO_EMAIL, // dirección del remitente
 				to: `serclientenq2@kiramar.com.co`, //lista de receptores
 				subject: 'Pedido Realizado', //Línea de asunto
-				text: `Pedido con el Id ${data.transaction.id}`, //cuerpo de texto sin formato
+				text: `Numero de Identificacion: ${data.transaction.id}`,
+				html: `<p>Cedula:${data.user.fiscal_number}</p><br>
+					   <p>Correo:${data.user.email}</p><br>
+					   <p>Estado:${data.transaction.status}</p>` //cuerpo de texto sin formato
 			};
 			transporter.sendMail(mailoption, (err, result) => {
 				if (err) {
