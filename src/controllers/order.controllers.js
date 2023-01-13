@@ -737,9 +737,12 @@ const getPedido_response = async (req,res) => {
 				to: `serclientenq2@kiramar.com.co`, //lista de receptores
 				subject: 'Pedido Realizado', //Línea de asunto
 				text: `Numero de Identificacion: ${data.transaction.id}`,
-				html: `<p>Cedula:${data.user.fiscal_number}</p><br>
-					   <p>Correo:${data.user.email}</p><br>
-					   <p>Estado:${data.transaction.status}</p>` //cuerpo de texto sin formato
+				html: `<p>Numero de Identificacion: ${data.transaction.id}</p><br>
+					   <p>Cedula: ${data.user.fiscal_number}</p><br>	
+					   <p>Correo: ${data.user.email}</p><br>
+					   <p>Estado: ${data.transaction.status}</p><br>
+					   <p>Metodo pago: ${payment_method_type}</p>`
+					    //cuerpo de texto sin formato
 			};
 			transporter.sendMail(mailoption, (err, result) => {
 				if (err) {
