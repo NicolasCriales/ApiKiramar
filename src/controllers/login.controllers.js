@@ -104,15 +104,15 @@ const getsendmail = async (req, res) => {
 			};
 			transporter.sendMail(mailoption, (err, result) => {
 				if (err) {
-					console.log(err);
-					res.json('ocurrio un error');
+					res.status(500).send(err.message);
 				} else {
-					res.json('Se envio la notificacion al correo');
+					console.log('Codigo enviado al Correo');
+					res.status(200).json(req.body);
 				}
 			});
-			res.send({
+			/*res.send({
 				message: 'Se envio el codigo a su correo electronico',
-			});
+			});*/
 		} else {
 			res.status(500).json({
 				mensagge: 'no se encontro el nit de usuario',

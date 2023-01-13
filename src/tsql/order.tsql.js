@@ -123,7 +123,7 @@ export const tsqlorder = {
                     `,
 
 	DetalleTransacción: `
-                            select  MetodoPago, LTRIM(RTRIM(estadotransaccion)) as  estadotransaccion,Motivo,
+                            select  MetodoPago, LTRIM(RTRIM(estadotransaccion)) as  estadotransaccion,
                                     idtransaccion as ReferenciaTransaccion from MtPedido 
 		                    where idtransaccion =@idtransaccion
                         `,
