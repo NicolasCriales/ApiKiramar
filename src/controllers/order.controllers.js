@@ -417,7 +417,7 @@ const getPedidoWEb = async (req, res) => {
 	try {
 		const pool = await getConnection();
 		const { Nit } = req.query;
-		const CLienteWeb = `and cliente.ListaPrecios='web' `;
+		const CLienteWeb = `and cliente.ListaPrecios='' `;
 		const PedidoWeb = tsqlorder.pedido + CLienteWeb;
 		const result = await pool.request().input('Nit', sql.VarChar, Nit).query(PedidoWeb);
 		if (result.rowsAffected[0] > 0) {
