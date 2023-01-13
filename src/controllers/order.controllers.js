@@ -743,15 +743,15 @@ const getPedido_response = async (req,res) => {
 			};
 			transporter.sendMail(mailoption, (err, result) => {
 				if (err) {
-					console.log(err);
-					res.json('ocurrio un error');
+					res.status(500).send(err.message);
 				} else {
-					res.json('Se envio la notificacion al correo');
+					console.log('Email enviado');
+					res.status(200).json(req.body);
 				}
 			});
-			res.send({
+			/*res.send({
 				message: 'correo enviado',
-			});
+			});*/
 
 		}
 		
